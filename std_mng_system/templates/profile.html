@@ -1,0 +1,34 @@
+{% extends 'core_std.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock head %}
+
+{% block title %}Thông tin sinh viên{% endblock title %}
+{% block content %}
+
+<div class="info-title">
+    <div class="title">
+        <span class="title-span">Thông tin sinh viên</span>
+    </div>
+</div>
+<div class="row pt-5 px-3">
+    <div class="col-sm-6">
+        <ul><strong>MSSV: </strong>{{stdinfo.idStd}}</ul>
+        <ul><strong>Họ Tên: </strong>{{stdinfo.nameStd}}</ul>
+        <ul><strong>Ngày sinh: </strong>{{datebirth}}</ul>
+        <ul><strong>Giới tính: </strong>{{stdinfo.sexStd}}</ul>
+    </div>
+    <div class="col-sm-6">
+        <ul><strong>Quê quán: </strong>{{stdinfo.addStd}}</ul>
+        <ul><strong>Ngành học: </strong>{{stdinfo.idFacultyClass.faculty}}</ul>
+        <ul><strong>Khóa học: </strong>{{stdinfo.idFacultyClass.idCourse}}</ul>
+        <ul><strong>Lớp: </strong>{{stdinfo.idFacultyClass}}</ul>
+        <ul><strong>Tình trạng: </strong>{% if stdinfo.stt %}
+            <p style="display: inline">Chưa tốt nghiệp</p> {% else %}
+            <p style="display: inline">Đã tốt nghiệp</p> {% endif %}
+        </ul>
+    </div>
+</div>
+
+{% endblock content %}

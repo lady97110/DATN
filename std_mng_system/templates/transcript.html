@@ -1,0 +1,55 @@
+{% extends 'core_std.html' %}
+{% load static %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/transcript.css' %}">
+  <script src="{% static 'js/transcript.js' %}"></script>
+{% endblock %}
+
+{% block title %}Kết quả học tập{% endblock title %}
+
+{% block content %}
+
+  <h2>Kết quả học tập</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+       <thead>
+        <tr>
+      <th>STT</th>
+      <th>Mã học phần</th>
+      <th>Tên học phần</th>
+      <th>Mã lớp </th>
+      <th>Số tín chỉ </th>
+      <th>ĐQT </th>
+      <th>ĐKT </th>
+      <th>Điểm tổng kết </th>
+      <th>Thang điểm 4 </th>
+      <th>Điểm chữ </th>
+      <th>Đạt </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for transcript in transcripts %}
+    <tr>
+      <td>{{ forloop.counter }} </td>
+      <td>{{transcript.idSub.idSub}}</td>
+      <td>{{transcript.idSub.nameSub}}</td>
+      <td>{{transcript.idClass}}</td>
+      <td class="creditnum">{{transcript.idSub.creditsnum}}</td>
+      <td>{{transcript.progress_grade}}</td>
+      <td>{{transcript.final_grade}}</td>
+      <td class="over_grade">{{transcript.overall_grade}}</td>
+      <td class="over_grade_4">{{transcript.overall_grade_4}}</td>
+      <td>{{transcript.overall_grade_text}}</td>
+      <td class="pass">{% if transcript.stt_pass %} Đạt{% else %}Chưa đạt{% endif %}</td>
+    </tr>
+    {% endfor %}
+       </tbody>
+  </table>
+   <div>
+    <p class="font-weight-bold">Điểm trung bình: <span id="average"></span></p>
+    <p class="font-weight-bold">Điểm trung bình hệ 4: <span id="average_4"></span></p>
+    <p class="font-weight-bold">Số tín chỉ tích lũy: <span id="totalcredited"></span></p>
+</div>
+{% endblock content %}
+
+

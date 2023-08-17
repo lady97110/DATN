@@ -1,0 +1,31 @@
+.sidebar{
+    position: fixed;
+    top: 0;
+    left : 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    background-color: #343a40;
+}
+
+.main{
+    padding-left: 250px;
+    background-color: #fff;
+}
+
+.navbarcustom{
+    background-color: #d9dcdf !important;
+   
+}
+
+.main-content{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #f2f4f7;
+}
+
+.titlepage{
+    margin-left: 3rem;
+    margin-bottom: 0;
+}

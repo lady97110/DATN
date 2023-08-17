@@ -1,0 +1,172 @@
+
+
+/* form search */
+
+.search-profile{
+    padding-top: 5px;
+    padding-left: 20px;
+}
+
+
+.search-profile h5{
+    margin-bottom: 0;
+
+}
+
+
+.results-table{
+    margin-top: 25px;
+}
+
+.search-box{
+    margin-top: 20px;
+}
+
+.search-box > *{
+margin-right: 10px;
+}
+
+.search-box label{
+    margin-bottom: 0px;
+}
+
+.table-custom {
+    width: 100%;
+}
+
+
+.table-head th {
+    text-align: center;
+    border: 1px solid ;
+    
+}
+
+.action-buttons{
+    display: flex;
+}
+
+
+
+.table-body td{
+    text-align: center;
+    border: 1px solid ;
+}
+
+.colume2{
+    width: 2%!important;
+}
+
+.colume10{
+    width: 10%;
+}
+
+.colume20{
+    width: 20%;
+}
+
+
+.results-table {
+    max-height: 200px;
+    overflow-y:auto;
+}
+
+.results-table thead th{
+    position: sticky;
+    top: 0px;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th{
+    background:  #d9dcdf;
+    border: 1px solid;
+}
+
+.action{
+    border: 0 !important;
+}
+
+.trash-icon {
+    color: rgb(255, 255, 255); 
+    background-color: rgb(212, 20, 20); 
+    padding: 5px; 
+}
+
+.pencil-icon{
+    color: rgb(255, 255, 255);
+    background-color: rgb(9, 255, 0); 
+    padding: 5px; 
+}
+
+
+#row-table:hover{
+    background-color: #8b8282; /* Màu highlight */
+    cursor: pointer;
+}
+
+
+
+/* form edit profile */
+
+.form-editprofile{
+    margin-top: 20px;
+    padding-top: 5px;
+    padding-left: 20px;
+}
+
+
+.showprofile{
+    background-color: #f2f4f7;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.edit-profile{
+    background-color: blue;
+    width: 100%;
+    height: 500px;
+}
+
+.detailprofile>h5{
+    margin-bottom: 40px;
+}
+
+.detailprofile > div{
+    margin: 20px 0;
+}
+
+.detailprofile{
+    border: 1px solid ;
+    width: 80%;
+}
+.detailprofile label{
+    width: 100%;
+    margin-left: 20px;
+}
+
+.action-profile{
+    padding-left: 5%;
+}
+.action-profile>div{
+    height: 50%;
+}
+
+.action-profile button{
+    font-weight: bold;
+}
+
+.action-profile button i{
+    margin-right: 10px;
+}
+
+.btn-custom{
+    background-color: #f0f0f0 !important;
+    border: 2px solid;
+}
+
+.span-context{
+    font-weight: bold;
+}

@@ -1,0 +1,174 @@
+{% extends 'core_admin.html'%}
+{% load static %}
+{% block title%}Hồ sơ sinh viên{% endblock %}
+{% block head %} <link rel="stylesheet" href="{% static 'css/admin_mngprofilestd.css' %}"> 
+ <script src="{% static 'js/admin_mngprofilestd.js' %}"></script>
+{% endblock %}
+{% block titlepage %}HỒ SƠ SINH VIÊN {% endblock %}
+{% block content %}
+    <div class="search-profile">
+    <h5>Tìm kiếm hồ sơ</h5>
+    <div class="search-box d-flex">
+    <label class="d-flex align-items-center">Tìm theo:</label>
+    <form method="get">
+    {% csrf_token %}
+    <select name="search_field">
+        <option value="id" {% if search_field == 'id' %}selected{% endif %}>MSSV</option>
+        <option value="name" {% if search_field == 'name' %}selected{% endif %}>Họ Tên</option>
+        <option value="birthdate" {% if search_field == 'birthdate' %}selected{% endif %}>Ngày sinh</option>
+        <option value="address" {% if search_field == 'address' %}selected{% endif %}>Quê quán</option> 
+        <option value="class" {% if search_field == 'class' %}selected{% endif %}>Lớp</option> 
+        <option value="gender"{% if search_field == 'gender' %}selected{% endif %}>Giới tính</option>
+        <option value="ethenicity" {% if search_field == 'ethenicity' %}selected{% endif %}>Dân tộc</option>
+        <option value="phone" {% if search_field == 'phone' %}selected{% endif %}>Điện thoại</option>
+        <option value="email" {% if search_field == 'email' %}selected{% endif %}>Email</option>
+        <option value="identity" {% if search_field == 'identity' %}selected{% endif %}>CCCD/CMND</option> 
+    </select>
+        {{ search_form.search_query }}
+        <button type="submit">Tìm kiếm</button>
+    </form>
+    </div>
+    <div class="results-table ">
+        <table class="table-custom ">
+            <thead class="table-head">
+                <tr>
+                    <th class= "colume2"></th>
+                    <th>MSSV</th>                   
+                    <th >Họ và tên</th>
+                    <th >Ngày sinh</th>
+                    <th >Giới tính</th>
+                    <th>Lớp</th>
+                    <th >Quê quán</th>
+                    <th >Khoa</th>
+                    <th>Khóa</th>
+                    <th class="d-none"></th>
+                    
+
+
+                </tr>
+            </thead>
+            <tbody class='results-body'>
+                {% for result in results %}
+                    <tr class="table-body" id="row-table" onclick="rowClick(this)" data-idStd="{{result.idStd}}">
+                        <td class= "colume2">{{ forloop.counter }}</td>
+                        <td >{{ result.idStd }}</td>
+                        <td >{{ result.nameStd }}</td>
+                        <td >{{ result.datebirthStd|date:"d/m/Y" }}</td>
+                        <td >{{ result.genderStd }}</td>
+                        <td >{{ result.idFacultyClass.idFacultyClass }}</td>
+                        <td >{{ result.addressStd }}</td>
+                        <td >{{ result.idFacultyClass.faculty }}</td>
+                        <td >{{ result.idFacultyClass.idCourse }}</td>
+                        <td class="action">
+                            <div class="action-buttons justify-content-center">
+                        <button type="button" class="btn btn-light"><i class="fa fa-pencil pencil-icon" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-light">
+                             <a href="{% url 'delete_profile' result.idStd %}">
+                                <i class="fa fa-trash trash-icon" aria-hidden="true"></i>
+                            </a>
+                        </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
+    </div>
+    </div>
+
+
+<div class="form-editprofile">
+    <div class="showprofile d-flex" style="display: none !important; ">
+        <div class="detailprofile">
+            <h5>Thông tin sinh viên</h5>
+            <div class="d-flex">
+                <label>
+                    <span>MSSV:</span>
+                    <span id="select-idStd" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Điện thoại:</span>
+                    <span id="select-phoneStd" class="span-context"></span>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span>Họ tên:</span>
+                    <span id="select-nameStd" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Email:</span>
+                    <span id="select-emailStd" class="span-context"></span>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span>Ngày sinh:</span>
+                    <span id="select-datebirthStd" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Khoa:</span>
+                    <span id="select-idFacultyClas-faculty" class="span-context"></span>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span>Giới tính:</span>
+                    <span id="select-genderStd" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Chuyên ngành:</span>
+                    <span id="select-idFacultyClass-department" class="span-context"></span>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span>Hộ khẩu thường trú:</span>
+                    <span id="select-addressStd" class="span-context" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Khóa học:</span>
+                    <span id="select-idFacultyClass-idCourse" class="span-context"></span>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span>Lớp:</span>
+                    <span id="select-idFacultyClass" class="span-context"></span>
+                </label>
+                <label>
+                    <span>Tốt nghiệp:</span>
+                    <span id="select-graduate" class="span-context"></span>
+                </label>
+            </div>
+        
+        </div>
+
+        <div class="action-profile ">
+        {% csrf_token %}
+                    <div class="button-edit d-flex align-items-center">
+                        <button type="button" class="btn btn-light btn-custom"><i class="fa fa-pencil pencil-icon" aria-hidden="true"></i>Sửa</button>
+                    </div>
+
+                    <div class="button-remove">
+                        <button type="button" class="btn btn-light btn-custom">
+                             <a href="{% url 'delete_profile' idStd=-1 %}">
+                                <i class="fa fa-trash trash-icon" aria-hidden="true"></i>Xóa
+                            </a>
+                        </button>
+                    </div>
+            
+        </div>
+
+
+    </div>
+
+    <div class="edit-profile d-none">
+
+    </div>
+
+</div>
+
+    
+
+{% endblock %}
