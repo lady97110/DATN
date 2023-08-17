@@ -1,6 +1,8 @@
 function rowClick(row) {
     const showProfile = document.querySelector(".showprofile");
-    showProfile.style.display = "";
+    const profileedit = document.querySelector(".edit-profile");
+    profileedit.style.display = "none";
+    showProfile.style.display = "flex";
         var idStd = row.getAttribute("data-idStd");
         $.ajax({
             url: 'detail-profile-std/' + idStd + '/',
@@ -30,13 +32,83 @@ function rowClick(row) {
                 alert("Không thể lấy thông tin sinh viên.");
             }
         });
-    }
+}
 
+
+function deleteProfile() {
+    const csrfToken = getCSRFToken();
+    $.ajax({
+        url: 'delete-profile/',
+        method: 'post',
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        success: function(data) {
+            if (data.confirm) {
+                location.reload();
+                alert('Xóa thành công');
+            }
+            else {
+                alert('Xóa không thành công, thử lại');
+            }
+        },
+        error: function() {
+            alert('Lỗi trong quá trình xử lý.');
+        },
+    }); 
+}
+
+
+function getCSRFToken() {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split('=');
+        if (cookie[0] === 'csrftoken') {
+            return cookie[1];
+        }
+    }
+    return null;
+}
     document.addEventListener("DOMContentLoaded", function() {
     const rows = document.querySelectorAll(".table-body");
     rows.forEach(function(row) {
         row.addEventListener("click", function(){
             rowClick(this);
         });
+    });
+
+    const confirmDeleteButton = document.querySelector("#confirmDeleteButton");
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener("click", function (event){
+            event.preventDefault();
+            deleteProfile();
+        });           
+    };
+// Nút đóng detail
+    const closeBtnDetail = document.getElementById("closedetail");
+    const profiledetail = document.querySelector(".showprofile");
+    closeBtnDetail.addEventListener("click", function() {
+        profiledetail.style.display = "none";
+    });
+
+// Nút đóng edit
+    const closeBtnEdit = document.getElementById("closeedit");
+    const profileedit = document.querySelector(".edit-profile");
+    closeBtnEdit.addEventListener("click", function() {
+        profileedit.style.display = "none";
+    });
+
+// Nút thêm mới
+    const addprofileBtn = document.getElementById("addprofile");
+    addprofileBtn.addEventListener("click", function() {
+        profileedit.style.display = "flex";
+    });
+
+// Nút sửa hồ sơ
+    const editprofileBtn = document.getElementById("editprofile");
+    editprofileBtn.addEventListener("click", function() {
+        profileedit.style.display = "flex";
+        profiledetail.style.display = "none";
     });
 });

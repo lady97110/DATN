@@ -67,9 +67,9 @@
       {% if user.is_authenticated %}  
           <h3 class="titlepage">{% block titlepage %}{% endblock %}</h3>
           <div class="navbar-text ml-auto d-flex align-items-center">
-              <a class="d-flex align-items-center navinfo" href="{% url 'profile' %}">
+              <a class="d-flex align-items-center navinfo">
                 <i class="fa fa-user-circle-o fa-2x mr-2 clr" aria-hidden="true"> </i>
-                <p class="d-flex align-items-center clrtext no-margin">{{ admininfo.nameAdmin }} ({{admininfo.idAdmin}})</p> 
+                <p class="d-flex align-items-center clrtext no-margin">{{ admininfo.nameAdmin }}</p> 
               </a>
           </div>
          <div class="dropdown">

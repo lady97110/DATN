@@ -10,9 +10,9 @@
     <h5>Tìm kiếm hồ sơ</h5>
     <div class="search-box d-flex">
     <label class="d-flex align-items-center">Tìm theo:</label>
-    <form method="get">
+    <form method="get" class="d-flex align-items-center">
     {% csrf_token %}
-    <select name="search_field">
+    <select name="search_field" class="search_field">
         <option value="id" {% if search_field == 'id' %}selected{% endif %}>MSSV</option>
         <option value="name" {% if search_field == 'name' %}selected{% endif %}>Họ Tên</option>
         <option value="birthdate" {% if search_field == 'birthdate' %}selected{% endif %}>Ngày sinh</option>
@@ -27,6 +27,13 @@
         {{ search_form.search_query }}
         <button type="submit">Tìm kiếm</button>
     </form>
+    <div class="creat-profile ml-auto">
+        <div class="button-add-profile">
+                        <button  type="button" class="btn btn-light btn-custom" id="addprofile">
+                                <i class="fa fa-plus add-icon" aria-hidden="true"></i>Thêm mới
+                        </button>
+                    </div>
+    </div>
     </div>
     <div class="results-table ">
         <table class="table-custom ">
@@ -41,13 +48,13 @@
                     <th >Quê quán</th>
                     <th >Khoa</th>
                     <th>Khóa</th>
-                    <th class="d-none"></th>
+            
                     
 
 
                 </tr>
             </thead>
-            <tbody class='results-body'>
+            <tbody class="results-body">
                 {% for result in results %}
                     <tr class="table-body" id="row-table" onclick="rowClick(this)" data-idStd="{{result.idStd}}">
                         <td class= "colume2">{{ forloop.counter }}</td>
@@ -59,16 +66,7 @@
                         <td >{{ result.addressStd }}</td>
                         <td >{{ result.idFacultyClass.faculty }}</td>
                         <td >{{ result.idFacultyClass.idCourse }}</td>
-                        <td class="action">
-                            <div class="action-buttons justify-content-center">
-                        <button type="button" class="btn btn-light"><i class="fa fa-pencil pencil-icon" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-light">
-                             <a href="{% url 'delete_profile' result.idStd %}">
-                                <i class="fa fa-trash trash-icon" aria-hidden="true"></i>
-                            </a>
-                        </button>
-                            </div>
-                        </td>
+                    
                     </tr>
                 {% endfor %}
             </tbody>
@@ -78,9 +76,10 @@
 
 
 <div class="form-editprofile">
-    <div class="showprofile d-flex" style="display: none !important; ">
+    <div class="showprofile" style="display: none;">
         <div class="detailprofile">
             <h5>Thông tin sinh viên</h5>
+            <div class="bordercard">
             <div class="d-flex">
                 <label>
                     <span>MSSV:</span>
@@ -141,34 +140,135 @@
                     <span id="select-graduate" class="span-context"></span>
                 </label>
             </div>
-        
         </div>
-
+        </div>
         <div class="action-profile ">
         {% csrf_token %}
                     <div class="button-edit d-flex align-items-center">
-                        <button type="button" class="btn btn-light btn-custom"><i class="fa fa-pencil pencil-icon" aria-hidden="true"></i>Sửa</button>
+                        <button type="button" class="btn btn-light btn-custom" id="editprofile"><i class="fa fa-pencil pencil-icon" aria-hidden="true"></i>Sửa</button>
                     </div>
 
                     <div class="button-remove">
-                        <button type="button" class="btn btn-light btn-custom">
-                             <a href="{% url 'delete_profile' idStd=-1 %}">
+                        <button type="button" class="btn btn-light btn-custom" data-toggle="modal" data-target="#confirmDeleteModal">
                                 <i class="fa fa-trash trash-icon" aria-hidden="true"></i>Xóa
-                            </a>
                         </button>
                     </div>
-            
+
+                    <div class="button-close-detail">
+                        <button  type="button" class="btn btn-light btn-custom" id="closedetail">
+                                <i class="fa fa-window-close-o trash-icon" aria-hidden="true"></i>Đóng
+                        </button>
+                    </div>
         </div>
-
-
     </div>
 
-    <div class="edit-profile d-none">
+    <div class="edit-profile" style="display: none;">
+        <div class="insert-profile">
+            <h5>Thông tin sinh viên</h5>
+            <div class="bordercard">
+            <div class="d-flex">
+                <label>
+                    <span class="span-context">MSSV:</span>
+                    <input id="select-idStd" ></input>
+                </label>
+                <label>
+                    <span class="span-context">Điện thoại:</span>
+                    <input id="select-phoneStd"></input>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span class="span-context">Họ tên:</span>
+                    <input id="select-nameStd"></input>
+                </label>
+                <label>
+                    <span class="span-context">Email:</span>
+                    <input id="select-emailStd" ></input>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span class="span-context">Ngày sinh:</span>
+                    <input id="select-datebirthStd" ></input>
+                </label>
+                <label>
+                    <span class="span-context">Khoa:</span>
+                    <select id="select-idFacultyClas-faculty" ></select>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span class="span-context">Giới tính:</span>
+                    <select id="select-genderStd" ></select>
+                </label>
+                <label>
+                    <span class="span-context">Chuyên ngành:</span>
+                    <select id="select-idFacultyClass-department" ></select>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span class="span-context">Hộ khẩu thường trú:</span>
+                    <input id="select-addressStd"></input>
+                </label>
+                <label>
+                    <span class="span-context">Khóa học:</span>
+                    <select id="select-idFacultyClass-idCourse" ></select>
+                </label>
+            </div>
+             <div class="d-flex">
+                <label>
+                    <span class="span-context">Lớp:</span>
+                    <select id="select-idFacultyClass" ></select>
+                </label>
+                <label>
+                    <span class="span-context">Tốt nghiệp:</span>
+                    <select id="select-graduate"></select>
+                </label>
+            </div>
+            </div>
+        </div>
 
+        <div class="action-edit">
+                    <div class="button-save d-flex align-items-center">
+                        <button type="button" class="btn btn-light btn-custom"><i class="fa fa-floppy-o pencil-icon" aria-hidden="true"></i>Lưu</button>
+                    </div>
+
+                    <div class="button-refresh">
+                        <button type="button" class="btn btn-light btn-custom" data-toggle="modal" data-target="#confirmDeleteModal">
+                                <i class="fa fa-file-o trash-icon" aria-hidden="true"></i>Làm mới
+                        </button>
+                    </div>
+
+                    <div class="button-close-edit">
+                        <button type="button" class="btn btn-light btn-custom" id="closeedit">
+                                <i class="fa fa-window-close-o trash-icon" aria-hidden="true"></i>Đóng
+                        </button>
+                    </div>
+        </div>
     </div>
 
 </div>
 
-    
+{% comment %} Modal boostrap hội thoại xác nhận xóa {% endcomment %}
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa hồ sơ này không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" href="{% url 'delete_profile' %}" class="btn btn-danger" id="confirmDeleteButton">Xác nhận xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

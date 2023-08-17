@@ -1,4 +1,3 @@
-
 from django.shortcuts import render , redirect
 from login_std.models import profile_std 
 from .forms import *
@@ -6,9 +5,14 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from .globals import gotidStd
+from login_admin.models import *
 
 @login_required(login_url='login_admin')
 def admin_mngprofilestd(request):
+    getidAdmin = request.user.idAdmin
+    admininfo = profile_admin.objects.get(idAdmin=getidAdmin)
+    context = {'admininfo': admininfo,}
+
     search_form = CustomSearchForm(request.GET)
     results = []
     search_field = None
@@ -36,19 +40,17 @@ def admin_mngprofilestd(request):
             results = profile_std.objects.filter(emailStd__icontains=search_query)
         elif search_field == 'identity':
             results = profile_std.objects.filter(identityStd__icontains=search_query)
-    return render(request, 'admin_mngprofilestd.html', {'search_form': search_form, 'results': results, 'search_field': search_field})
+    return render(request, 'admin_mngprofilestd.html', {'search_form': search_form, 'results': results, 'search_field': search_field, **context})
 
 @login_required(login_url='login_admin')
-def delete_profile(request, idStd):
+def delete_profile(request):
     try:
-        if idStd == -1:
-            idStd = gotidStd
+        idStd = gotidStd
         profile = profile_std.objects.get(idStd=idStd)
         profile.delete()
-        print(gotidStd)
-        return JsonResponse({'message': 'Xóa thành công'})
+        return JsonResponse({'confirm': True})
     except profile_std.DoesNotExist:
-        return JsonResponse({'message': 'Không tìm thấy sinh viên'})
+        return JsonResponse({'confirm': False})
     
     
 

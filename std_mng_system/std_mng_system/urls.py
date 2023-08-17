@@ -40,6 +40,6 @@ urlpatterns = [
     path('delete-subjects/', course_views.delete_subjects, name='delete_subjects'),
     path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
-    path('delete_profile/<str:idStd>/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
+    path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),
 ]

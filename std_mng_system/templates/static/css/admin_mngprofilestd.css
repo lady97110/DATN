@@ -41,10 +41,6 @@ margin-right: 10px;
     
 }
 
-.action-buttons{
-    display: flex;
-}
-
 
 
 .table-body td{
@@ -85,9 +81,7 @@ th{
     border: 1px solid;
 }
 
-.action{
-    border: 0 !important;
-}
+
 
 .trash-icon {
     color: rgb(255, 255, 255); 
@@ -109,8 +103,6 @@ th{
 
 
 
-/* form edit profile */
-
 .form-editprofile{
     margin-top: 20px;
     padding-top: 5px;
@@ -125,33 +117,40 @@ th{
 }
 
 .edit-profile{
-    background-color: blue;
+    background-color: #f2f4f7;
     width: 100%;
-    height: 500px;
+    margin-top: 30px;
+}
+
+.bordercard > div{
+    margin: 20px 0;
 }
 
 .detailprofile>h5{
     margin-bottom: 40px;
 }
 
-.detailprofile > div{
-    margin: 20px 0;
-}
 
 .detailprofile{
-    border: 1px solid ;
+
     width: 80%;
 }
+
 .detailprofile label{
     width: 100%;
     margin-left: 20px;
+} 
+
+.bordercard{
+    border: 1px solid ;
 }
 
 .action-profile{
     padding-left: 5%;
+    padding-top: 2%;
 }
 .action-profile>div{
-    height: 50%;
+    height: 35%;
 }
 
 .action-profile button{
@@ -165,8 +164,63 @@ th{
 .btn-custom{
     background-color: #f0f0f0 !important;
     border: 2px solid;
+    width: 100%;
 }
 
 .span-context{
     font-weight: bold;
+}
+
+
+.insert-profile>h5{
+    margin-bottom: 40px;
+}
+
+
+.insert-profile{
+
+    width: 80%;
+}
+
+.insert-profile label{
+    width: 100%;
+    margin-left: 20px;
+    height: 24px;
+} 
+
+.action-edit{
+    padding-left: 5%;
+    padding-top: 2%;
+}
+.action-edit>div{
+    height: 35%;
+}
+
+.action-edit button{
+    font-weight: bold;
+}
+
+.action-edit button i{
+    margin-right: 10px;
+}
+
+
+.search_field{
+    height: 31px;
+    margin-right: 10px;
+}
+
+.creat-profile{
+    margin-right: 7.8%;
+}
+
+.button-add-profile button{
+    font-weight: bold;
+}
+
+.add-icon {
+    color: rgb(255, 255, 255); 
+    background-color: rgb(18, 71, 218); 
+    padding: 5px; 
+    margin-right: 10px;
 }
