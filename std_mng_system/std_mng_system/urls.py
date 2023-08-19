@@ -42,4 +42,7 @@ urlpatterns = [
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
     path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),
+    path('get-faculty/', admin_mngprofilestd_views.get_faculty, name = 'get_faculty'),
+    path('get-department/<str:idFaculty>/', admin_mngprofilestd_views.get_department, name = 'get_department'),
+    path('get-class/<str:idDepartment>/', admin_mngprofilestd_views.get_class, name = 'get_class'),
 ]

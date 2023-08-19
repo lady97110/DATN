@@ -16,11 +16,12 @@ from django.test import override_settings
 def login_std(request):
     
     if request.method == 'POST':
-        request.session.clear()
         username = request.POST['username']
         password = request.POST['password']
         user_std = authenticate(request, username=username, password=password)
         if user_std is not None:
+            if 'session_key' in request.session:
+                request.session.flush()
             login(request, user_std)
             return redirect('profile')
         else:

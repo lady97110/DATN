@@ -17,6 +17,7 @@ class Faculty(models.Model):
 #bảng danh sách các ngành trong một khoa
 class Department(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete= models.CASCADE, verbose_name= "Tên Khoa" )
+    idDepartment = models.CharField(max_length=10, verbose_name= "Mã ngành", primary_key= True )
     nameDepartment = models.CharField(max_length=50, verbose_name= "Tên Ngành")
 
     def __str__(self):
@@ -30,13 +31,13 @@ class Department(models.Model):
 
 # bảng danh sách lớp thuộc khoa
 class FacultyClasses(models.Model):
-    idFacultyClass = models.CharField(max_length = 10, verbose_name= "Mã lớp", primary_key= True)
+    idClass = models.CharField(max_length = 10, verbose_name= "Mã lớp", primary_key= True)
     faculty = models.ForeignKey(Faculty, on_delete= models.CASCADE, verbose_name= "Tên Khoa" )
     department = models.ForeignKey(Department, on_delete= models.CASCADE, verbose_name= "Tên Ngành")
     idCourse = models.CharField(max_length=15, verbose_name= "Khoá")
 
     def __str__(self):
-        return self.idFacultyClass
+        return self.idClass
 
     class Meta:
         verbose_name = "Lớp"

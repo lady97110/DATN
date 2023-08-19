@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from .globals import gotidStd
 from login_admin.models import *
+from faculty.models import *
 
 @login_required(login_url='login_admin')
 def admin_mngprofilestd(request):
@@ -65,12 +66,38 @@ def get_profile_detail(request, idStd):
         datedmy = profile_detail.datebirthStd
         details = model_to_dict(profile_detail)
         details.update({
-            'department': profile_detail.idFacultyClass.department.nameDepartment,
-            'faculty': profile_detail.idFacultyClass.faculty.nameFaculty,
-            'idCourse': profile_detail.idFacultyClass.idCourse,
+            'department': profile_detail.idClass.department.nameDepartment,
+            'idDepartment': profile_detail.idClass.department.idDepartment,   #valuedepartment
+            'faculty': profile_detail.idClass.faculty.nameFaculty,
+            'idFaculty': profile_detail.idClass.faculty.idFaculty,    #valuefaculty
+            'idCourse': profile_detail.idClass.idCourse,
             'datebirthStd': datedmy.strftime('%d/%m/%Y')
         })
+        print(details)
         return JsonResponse(details)
 
     except profile_std.DoesNotExist:
         return JsonResponse({"error": "Không tìm thấy hồ sơ"}, status=404)
+
+
+
+# lấy danh sách khoa
+@login_required(login_url='login_admin')
+def get_faculty(request):
+    faculties = Faculty.objects.all()
+    faculties_data = [{'idFaculty': faculty.idFaculty, 'nameFaculty': faculty.nameFaculty} for faculty in faculties]
+    return JsonResponse({'faculties': faculties_data})
+
+# lấy danh sách ngành thuộc khoa
+@login_required(login_url='login_admin')
+def get_department(request, idFaculty):
+    departments = Department.objects.filter(faculty = idFaculty)
+    departments_data = [{'idDepartment': department.idDepartment, 'nameDepartment': department.nameDepartment} for department in departments]
+    return JsonResponse({'departments': departments_data})
+
+# lấy danh sách lớp thuộc ngành
+@login_required(login_url='login_admin')
+def get_class(request, idDepartment):
+    classes = FacultyClasses.objects.filter(department = idDepartment)
+    classes_data = [{'idClass': classe.idClass} for classe in classes]
+    return JsonResponse({'classes': classes_data})

@@ -13,13 +13,15 @@ from django.test import override_settings
 #view login danh cho quan tri vien
 @override_settings(AUTHENTICATION_BACKENDS=['login_admin.backends.CustomAuthBackendAdmin'])
 def login_admin(request):
-    request.session.clear()
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user_admin = authenticate(request,username=username, password=password)
         
         if user_admin is not None:
+            if 'session_key' in request.session:
+                request.session.flush()
+
             login(request, user_admin)
             
             return redirect('admin_page')

@@ -28,14 +28,14 @@ admin.site.register(Department, DepartmentAdmin)
 
 #tùy chỉnh giao diện của bảng lớp trong Khoa
 class FacultyClassesAdmin(admin.ModelAdmin):
-     list_display = ('idFacultyClass','faculty', 'department','idCourse','view_students')
-     search_fields = ('idFacultyClass','faculty__nameFaculty', 'department__nameDepartment','idCourse')
+     list_display = ('idClass','faculty', 'department','idCourse','view_students')
+     search_fields = ('idClass','faculty__nameFaculty', 'department__nameDepartment','idCourse')
      autocomplete_fields = ('faculty', 'department',)
      class Media:
         js = ('falculty/static/js/faculty_classes_admin.js',)
 
      def view_students(self, obj):
-         url = "/admin/profile_std/std_info/?idFacultyClass={}".format(obj.idFacultyClass)
+         url = "/admin/profile_std/std_info/?idClass={}".format(obj.idClass)
          link = '<a href="{}">Xem danh sách</a>'.format(url)
          return mark_safe(link)
      view_students.short_description = 'Danh sách'
