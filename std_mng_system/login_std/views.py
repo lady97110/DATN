@@ -19,6 +19,7 @@ def login_std(request):
         username = request.POST['username']
         password = request.POST['password']
         user_std = authenticate(request, username=username, password=password)
+        print(user_std)
         if user_std is not None:
             if 'session_key' in request.session:
                 request.session.flush()

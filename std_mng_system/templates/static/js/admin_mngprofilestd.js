@@ -11,6 +11,7 @@
                 success: function (data) {
                     var select = data;
                     document.querySelector("#select-idStd").textContent = select.idStd;
+                    document.querySelector("#select-password-edit").value = select.password;
                     document.querySelector("#select-phoneStd").textContent = select.phoneStd;
                     document.querySelector("#select-nameStd").textContent = select.nameStd;
                     document.querySelector("#select-emailStd").textContent = select.emailStd;
@@ -19,6 +20,8 @@
                     document.querySelector("#select-idClass-faculty").setAttribute("data-value", select.idFaculty);  //mã khoa
                     document.querySelector("#select-genderStd").textContent = select.genderStd;
                     document.querySelector("#select-addressStd").textContent = select.addressStd;
+                    document.querySelector("#select-identityStd").textContent = select.identityStd;
+                    document.querySelector("#select-ethnicityStd").textContent = select.ethnicityStd;
                     document.querySelector("#select-idClass-department").textContent = select.department;
                     document.querySelector("#select-idClass-idCourse").textContent = select.idCourse;
                     document.querySelector("#select-idClass").textContent = select.idClass;
@@ -27,8 +30,10 @@
                     
                     if (select.graduate) {
                         graduate.textContent = "Chưa tốt nghiệp";
+                        document.querySelector("#select-graduate").setAttribute("data-value", "True");
                     } else {
                         graduate.textContent = "Đã tốt nghiệp";
+                        document.querySelector("#select-graduate").setAttribute("data-value", "False");
                     }
 
                     //tạo select box department từ idFaculty (dung de hien thi gia tri mac dinh)
@@ -63,7 +68,6 @@
                                         optionClass.appendChild(option);
                                     });
                                     document.querySelector("#select-idClass").setAttribute("data-value", select.idClass);
-                                    console.log(select.idClass);
                                 },
                                 error: function(){
                                     alert('Có lỗi trong quá trình lấy dữ liệu');
@@ -141,7 +145,7 @@
     }
 
     //khi cả trang web được load
-        document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
         const rows = document.querySelectorAll(".table-body");
         rows.forEach(function(row) {
             row.addEventListener("click", function(){
@@ -174,27 +178,61 @@
 
         // Nút thêm mới
         const addprofileBtn = document.getElementById("addprofile");
+        const titlecard = document.getElementById("title-card");
+        const hidden_idStd = document.getElementById("value-idStd");
+        const text_Std = document.getElementById("select-idStd-edit");
         addprofileBtn.addEventListener("click", function() {
+            hidden_idStd.style.display = "";
+            refreshBtn.style.display="";
+            text_Std.style.display="none";
+            profiledetail.style.display = "none";
+            titlecard.textContent = "Thêm mới hồ sơ";
             profileedit.style.display = "flex";
+            const optionFaculty = document.getElementById("select-idClass-faculty-edit");
+            $.ajax({
+                url: 'get-faculty/',
+                method: 'get',
+                dataType: 'json',
+                success: function(data){
+                    optionFaculty.innerHTML = '';
+                    data.faculties.forEach(function(faculty) {
+                        const option = document.createElement("option");
+                        option.value = faculty.idFaculty;
+                        option.textContent = faculty.nameFaculty;
+                        optionFaculty.appendChild(option);
+                    });
+                    document.getElementById("select-idClass-faculty-edit").value = "abc";
+                },
+                error: function(){
+                    alert('Có lỗi trong quá trình lấy dữ liệu');
+                }
+            });
         });
 
         // Nút sửa hồ sơ
         const editprofileBtn = document.getElementById("editprofile");
         editprofileBtn.addEventListener("click", function() {
+            hidden_idStd.style.display = "none";
+            titlecard.textContent = "Chỉnh sửa hồ sơ";
+            text_Std.style.display="";
+            refreshBtn.style.display="none";
             profileedit.style.display = "flex";
             profiledetail.style.display = "none";
             document.getElementById("select-idStd-edit").textContent =  document.getElementById("select-idStd").textContent;
+            document.getElementById("value-idStd").value =  document.getElementById("select-idStd").textContent;
             document.getElementById("select-phoneStd-edit").value =  document.getElementById("select-phoneStd").textContent;
             document.getElementById("select-nameStd-edit").value =  document.getElementById("select-nameStd").textContent;
             document.getElementById("select-emailStd-edit").value =  document.getElementById("select-emailStd").textContent;
             document.getElementById("select-datebirthStd-edit").value =  document.getElementById("select-datebirthStd").textContent;
             document.getElementById("select-idClass-faculty-edit").value = document.querySelector("#select-idClass-faculty").getAttribute("data-value");
             document.getElementById("select-genderStd-edit").value =  document.getElementById("select-genderStd").textContent;
+            document.getElementById("select-identityStd-edit").value =  document.getElementById("select-identityStd").textContent;
+            document.getElementById("select-ethnicityStd-edit").value =  document.getElementById("select-ethnicityStd").textContent;
             document.getElementById("select-idClass-department-edit").value = document.querySelector("#select-idClass-department").getAttribute("data-value");
             document.getElementById("select-addressStd-edit").value =  document.getElementById("select-addressStd").textContent;
             document.getElementById("select-idClass-idCourse-edit").textContent =  document.getElementById("select-idClass-idCourse").textContent;
             document.getElementById("select-idClass-edit").value =  document.querySelector("#select-idClass").getAttribute("data-value");
-            document.getElementById("select-graduate-edit").value =  document.getElementById("select-graduate").textContent;
+            document.getElementById("select-graduate-edit").value =  document.querySelector("#select-graduate").getAttribute("data-value");
         });
 
 
@@ -249,7 +287,51 @@
                 },
             });     
         });
-        
-    });
+
+
+        //hàm làm mới
+        function clearFormInputs() {
+            const inputs = document.querySelectorAll(".edit-profile input");
+            inputs.forEach(function(input) {
+                input.value = "";
+            });
+            
+            const selects = document.querySelectorAll(".edit-profile select");
+            selects.forEach(function(select){
+                select.value = select.options[0].value;
+            });
+        }
+
+        const refreshBtn = document.getElementById("button-refresh");
+        refreshBtn.addEventListener("click", function() {
+            clearFormInputs();
+        });
+
+
+
+        // // Nút  lưu
+        // const saveBtn = document.getElementById("saveprofile");
+        // saveBtn.addEventListener("click", function(event) {
+        //     const csrfToken = getCSRFToken();
+        //     $.ajax({
+        //         url: 'update-or-create-profile/',
+        //         method: 'post',
+        //         dataType: 'json',
+        //         headers: {
+        //             'X-CSRFToken': csrfToken
+        //         },
+        //         success: function(data) {
+        //             if (data.success === '1') {
+        //                 location.reload();
+        //                 alert('Xóa thành công');
+        //             };
+        //         },
+        //         error: function() {
+        //             alert('Lỗi trong quá trình xử lý.');
+        //         },
+        //     });
+        //     event.preventDefault();
+        // });
+});
 
 

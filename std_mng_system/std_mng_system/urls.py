@@ -45,4 +45,5 @@ urlpatterns = [
     path('get-faculty/', admin_mngprofilestd_views.get_faculty, name = 'get_faculty'),
     path('get-department/<str:idFaculty>/', admin_mngprofilestd_views.get_department, name = 'get_department'),
     path('get-class/<str:idDepartment>/', admin_mngprofilestd_views.get_class, name = 'get_class'),
+    path('update-or-create-profile/', admin_mngprofilestd_views.update_or_create_profile, name = 'update_or_create_profile'),
 ]
