@@ -28,13 +28,24 @@ class Department(models.Model):
         verbose_name_plural = "Ngành đào tạo"
 
 
+class idCourse(models.Model):
+    idCourse = models.CharField(max_length=3, verbose_name= "Mã khóa", primary_key= True)
+    nameCourse = models.CharField(max_length=20, verbose_name="Niên khóa")
+    
+    def __str__(self):
+        return self.nameCourse
+    
+    class Meta:
+        verbose_name = "Niên khóa"
+        verbose_name_plural = "Niên khóa"
+
+
 
 # bảng danh sách lớp thuộc khoa
 class FacultyClasses(models.Model):
     idClass = models.CharField(max_length = 10, verbose_name= "Mã lớp", primary_key= True)
-    faculty = models.ForeignKey(Faculty, on_delete= models.CASCADE, verbose_name= "Tên Khoa" )
     department = models.ForeignKey(Department, on_delete= models.CASCADE, verbose_name= "Tên Ngành")
-    idCourse = models.CharField(max_length=15, verbose_name= "Khoá")
+    idCourse = models.ForeignKey(idCourse, on_delete = models.CASCADE, verbose_name = "Khóa")
 
     def __str__(self):
         return self.idClass

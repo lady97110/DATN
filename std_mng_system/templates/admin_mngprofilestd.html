@@ -64,7 +64,7 @@
                         <td >{{ result.genderStd }}</td>
                         <td >{{ result.idClass.idClass }}</td>
                         <td >{{ result.addressStd }}</td>
-                        <td >{{ result.idClass.faculty }}</td>
+                        <td >{{ result.idClass.department.faculty }}</td>
                         <td >{{ result.idClass.idCourse }}</td>
                     
                     </tr>
@@ -126,8 +126,8 @@
                     <span id="select-addressStd" class="span-context"></span>
                 </label>
                 <label>
-                    <span>Lớp:</span>
-                    <span id="select-idClass" class="span-context"></span>
+                    <span>Khóa học:</span>
+                    <span id="select-idClass-idCourse" class="span-context"></span>
                 </label>
             </div>
             <div class="d-flex">
@@ -135,9 +135,10 @@
                     <span>CCCD:</span>
                     <span id="select-identityStd" class="span-context"></span>
                 </label>
+                
                 <label>
-                    <span>Khóa học:</span>
-                    <span id="select-idClass-idCourse" class="span-context"></span>
+                    <span>Lớp:</span>
+                    <span id="select-idClass" class="span-context"></span>
                 </label>
             </div>
              <div class="d-flex">
@@ -172,43 +173,42 @@
         </div>
     </div>
 
-<form method="post" action="{% url 'update_or_create_profile' %}">
-    {% csrf_token %}
     <div class="edit-profile" style="display: none;">
         <div class="editcard-profile">
             <h5 id="title-card"></h5>
+            <form>
             <div class="bordercard">
             <div class="d-flex">
                 <label>
                     <span class="span-context">MSSV:</span>
                     <span id="select-idStd-edit"></span>
-                    <input id="value-idStd" name="idStd">
+                    <input id="value-idStd" name="idStd" type="number" required>
                 </label>
             </div>
             <div class="d-flex">
                 <label>
                     <span class="span-context">Mật khẩu:</span>
-                    <input id="select-password-edit" name="password"></input>
+                    <input id="select-password-edit" name="password" required></input>
                 </label>
                 <label>
                     <span class="span-context">Điện thoại:</span>
-                    <input id="select-phoneStd-edit" name="phoneStd"></input>
+                    <input id="select-phoneStd-edit" name="phoneStd" type="number"></input>
                 </label>
             </div>
              <div class="d-flex">
                 <label>
                     <span class="span-context">Họ tên:</span>
-                    <input id="select-nameStd-edit" name="nameStd"></input>
+                    <input id="select-nameStd-edit" name="nameStd" required></input>
                 </label>
                 <label>
                     <span class="span-context">Email:</span>
-                    <input id="select-emailStd-edit" name="emailStd"></input>
+                    <input id="select-emailStd-edit" name="emailStd" type="email"></input>
                 </label>
             </div>
              <div class="d-flex">
                 <label>
                     <span class="span-context">Ngày sinh:</span>
-                    <input id="select-datebirthStd-edit" name="datebirthStd"></input>
+                    <input id="select-datebirthStd-edit" name="datebirthStd" required></input>
                 </label>
                 <label>
                     <span class="span-context">Khoa:</span>
@@ -218,7 +218,7 @@
              <div class="d-flex">
                 <label>
                     <span class="span-context">Giới tính:</span>
-                    <select id="select-genderStd-edit" name="genderStd">
+                    <select id="select-genderStd-edit" name="genderStd" required>
                         <option value="Nam">Nam</option>
                         <option value="Nữ">Nữ</option>
                         <option value="Khác">Khác</option>
@@ -235,18 +235,18 @@
                     <input id="select-addressStd-edit" name="addressStd"></input>
                 </label>
                 <label>
-                    <span class="span-context">Lớp:</span>
-                    <select id="select-idClass-edit" name="idClass"></select>
+                    <span class="span-context">Khóa học:</span>
+                    <select id="select-idClass-idCourse-edit" ></select>
                 </label>
             </div>
             <div class="d-flex">
                 <label>
                     <span class="span-context">CCCD:</span>
-                    <input id="select-identityStd-edit" name="identityStd"></input>
+                    <input id="select-identityStd-edit" name="identityStd" type="number"></input>
                 </label>
-                <label>
-                    <span class="span-context">Khóa học:</span>
-                    <span id="select-idClass-idCourse-edit" ></span>
+                  <label>
+                    <span class="span-context">Lớp:</span>
+                    <select id="select-idClass-edit" name="idClass" required></select>
                 </label>
             </div>
              <div class="d-flex">
@@ -254,7 +254,7 @@
                     <span class="span-context">Dân tộc:</span>
                     <input id="select-ethnicityStd-edit" name="ethnicityStd"></input>
                 </label>
-                <label>
+                <label id="gradutelb">
                     <span class="span-context">Tốt nghiệp:</span>
                     <select id="select-graduate-edit" name="graduate">
                         <option value="True">Chưa tốt nghiệp</option>
@@ -281,9 +281,9 @@
                                 <i class="fa fa-window-close-o trash-icon" aria-hidden="true"></i>Đóng
                         </button>
                     </div>
+            </form>
         </div>
     </div>
-</form>
 
 </div>
 
@@ -307,18 +307,4 @@
         </div>
     </div>
 </div>
-{% if response_data %}
-    <div class="alert alert-success">
-        {% if response_data.success == '1' %}
-            Hồ sơ đã được cập nhật thành công.
-        {% elif response_data.success == '2' %}
-            Hồ sơ mới đã được tạo thành công.
-        {% else %}
-            Có lỗi xảy ra trong quá trình xử lý.
-        {% endif %}
-    </div>
-{% if detail_url %}
-    <a href="{{ detail_url }}">Xem chi tiết hồ sơ</a>
-{% endif %}
-{% endif %}
 {% endblock %}

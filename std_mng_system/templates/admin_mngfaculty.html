@@ -1,0 +1,16 @@
+{% extends 'core_admin.html' %}
+{% load static %}
+{% block title %}Quản lý về Khoa {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/admin_mngfaculty.css' %}"> 
+{% endblock %}
+
+{% block content %}
+<div class="option-function d-flex">
+    <div class="function">Khoa</div>
+    <div class="function">Chuyên Ngành</div>
+    <div class="function">Lớp</div>
+</div>
+{% endblock %}

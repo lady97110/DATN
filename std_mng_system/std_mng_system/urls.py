@@ -21,6 +21,7 @@ from tuitionfee import views as tuitionfee_views
 from login_std import views as login_std_views
 from login_admin import views as login_admin_views
 from admin_mngprofilestd import views as admin_mngprofilestd_views
+from admin_mngfaculty import views as admin_mngfaculty_views
 
 
 
@@ -39,11 +40,16 @@ urlpatterns = [
     path('coursereg-success/', course_views.coursereg_success_view, name='coursereg_success'),
     path('delete-subjects/', course_views.delete_subjects, name='delete_subjects'),
     path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
+    # page quan ly ho so sinh vie
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
     path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),
     path('get-faculty/', admin_mngprofilestd_views.get_faculty, name = 'get_faculty'),
     path('get-department/<str:idFaculty>/', admin_mngprofilestd_views.get_department, name = 'get_department'),
+    path('get-idCourse/', admin_mngprofilestd_views.get_idCourse, name = 'get_idCourse'),
     path('get-class/<str:idDepartment>/', admin_mngprofilestd_views.get_class, name = 'get_class'),
+    path('get-class-add-course/<str:idDepartment>/<str:idCourse>/', admin_mngprofilestd_views.get_class_add_course, name = 'get_class'),
     path('update-or-create-profile/', admin_mngprofilestd_views.update_or_create_profile, name = 'update_or_create_profile'),
+    #quản lý khoa, nganh , lop
+    path('admin-mngfaculty/', admin_mngfaculty_views.admin_mngfaculty, name = 'admin_mngfaculty'),
 ]

@@ -28,11 +28,9 @@ admin.site.register(Department, DepartmentAdmin)
 
 #tùy chỉnh giao diện của bảng lớp trong Khoa
 class FacultyClassesAdmin(admin.ModelAdmin):
-     list_display = ('idClass','faculty', 'department','idCourse','view_students')
-     search_fields = ('idClass','faculty__nameFaculty', 'department__nameDepartment','idCourse')
-     autocomplete_fields = ('faculty', 'department',)
-     class Media:
-        js = ('falculty/static/js/faculty_classes_admin.js',)
+     list_display = ('idClass', 'department','idCourse','view_students')
+     search_fields = ('idClass', 'department__nameDepartment','idCourse__idCourse','view_students')
+     autocomplete_fields = ('department','idCourse')
 
      def view_students(self, obj):
          url = "/admin/profile_std/std_info/?idClass={}".format(obj.idClass)
@@ -42,3 +40,11 @@ class FacultyClassesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FacultyClasses, FacultyClassesAdmin)
+
+
+#Niên khóa
+class idCourseAdmin(admin.ModelAdmin):
+    list_display = ('idCourse', 'nameCourse')
+    search_fields = ('idCourse', 'nameCourse')
+
+admin.site.register(idCourse, idCourseAdmin)

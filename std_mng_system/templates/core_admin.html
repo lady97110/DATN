@@ -25,16 +25,19 @@
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a href="{% url 'admin_mngprofilestd' %}" class="nav-link text-white text-center" aria-current="page">
-            Hồ sơ sinh viên
+          <a href="{% url 'admin_mngprofilestd' %}" class="nav-link text-white text-center">
+            HỒ SƠ SINH VIÊN
           </a>
         </li>
-        <li>
-          <a href="#" class="nav-link text-white">
-            <svg class="bi me-2" width="16" height="16">
-              <use xlink:href="#speedometer2"></use>
-            </svg>Dashboard
-          </a>
+        <li class="nav-item">
+          <div class="dropdown-sidebar text-white text-center">
+            <button class="dropbtn-sidebar">QUẢN LÝ KHOA</button>
+            <div class="dropdown-content-sidebar">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+          </div>
         </li>
         <li>
           <a href="#" class="nav-link text-white">

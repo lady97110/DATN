@@ -71,9 +71,10 @@ def get_profile_detail(request, idStd):
         details.update({
             'department': profile_detail.idClass.department.nameDepartment,
             'idDepartment': profile_detail.idClass.department.idDepartment,   #valuedepartment
-            'faculty': profile_detail.idClass.faculty.nameFaculty,
-            'idFaculty': profile_detail.idClass.faculty.idFaculty,    #valuefaculty
-            'idCourse': profile_detail.idClass.idCourse,
+            'faculty': profile_detail.idClass.department.faculty.nameFaculty,
+            'idFaculty': profile_detail.idClass.department.faculty.idFaculty,    #valuefaculty
+            'idCourse': profile_detail.idClass.idCourse.idCourse,
+            'nameCourse': profile_detail.idClass.idCourse.nameCourse,
             'datebirthStd': datedmy.strftime('%d/%m/%Y')
         })
         return JsonResponse(details)
@@ -104,6 +105,19 @@ def get_class(request, idDepartment):
     classes_data = [{'idClass': classe.idClass} for classe in classes]
     return JsonResponse({'classes': classes_data})
 
+#lấy danh sách lớp thuộc ngành + khóa
+@login_required(login_url='login_admin')
+def get_class_add_course(request, idDepartment, idCourse):
+    classes = FacultyClasses.objects.filter(department = idDepartment, idCourse = idCourse)
+    classes_data = [{'idClass': classe.idClass} for classe in classes]
+    return JsonResponse({'classes': classes_data})
+
+#lấy danh sách khóa
+@login_required(login_url='login_admin')
+def get_idCourse(request):
+    idCourses = idCourse.objects.all()
+    idCourses_data = [{'idCourse': idCourse.idCourse, 'nameCourse': idCourse.nameCourse} for idCourse in idCourses]
+    return JsonResponse({'idCourses': idCourses_data})
 
 #cập nhật profile
 @login_required(login_url='login_admin')
@@ -111,63 +125,59 @@ def update_or_create_profile(request):
     response_data = {}
     if request.method == 'POST':
         idStd = request.POST.get('idStd')
-        pwd = request.POST.get('password')
-        password = make_password(pwd)
-        phoneStd = request.POST.get('phoneStd')
-        nameStd = request.POST.get('nameStd')
-        emailStd = request.POST.get('emailStd')
-        datebirth = request.POST.get('datebirthStd')
-        datebirthStd = datetime.strptime(datebirth, '%d/%m/%Y').strftime('%Y-%m-%d')
-        genderStd = request.POST.get('genderStd')
-        identityStd = request.POST.get('identityStd')
-        ethnicityStd = request.POST.get('ethnicityStd')
-        addressStd = request.POST.get('addressStd')
-        idClass = request.POST.get('idClass')
-        graduate = request.POST.get('graduate')
-        selected_class_instance = FacultyClasses.objects.get(idClass = idClass)
+        if idStd is not None:
+            pwd = request.POST.get('password')
+            password = make_password(pwd)
+            phoneStd = request.POST.get('phoneStd')
+            nameStd = request.POST.get('nameStd')
+            emailStd = request.POST.get('emailStd')
+            datebirth = request.POST.get('datebirthStd')
+            datebirthStd = datetime.strptime(datebirth, '%d/%m/%Y').strftime('%Y-%m-%d')
+            genderStd = request.POST.get('genderStd')
+            identityStd = request.POST.get('identityStd')
+            ethnicityStd = request.POST.get('ethnicityStd')
+            addressStd = request.POST.get('addressStd')
+            idClass = request.POST.get('idClass')
+            graduate = request.POST.get('graduate')
+            selected_class_instance = FacultyClasses.objects.get(idClass = idClass)
 
-        try:
-            profile_selected = profile_std.objects.get(idStd=idStd)
-            profile_selected.phoneStd = phoneStd
-            profile_selected.nameStd = nameStd
-            profile_selected.emailStd = emailStd
-            profile_selected.datebirthStd = datebirthStd
-            profile_selected.genderStd = genderStd
-            profile_selected.identityStd = identityStd
-            profile_selected.ethnicityStd = ethnicityStd
-            profile_selected.addressStd = addressStd
-            profile_selected.idClass = selected_class_instance
-            profile_selected.graduate = graduate
-            if pwd != profile_selected.password:
-                profile_selected.password = password
-            profile_selected.save()
-            response_data['success'] = '1'
-        
-        except profile_std.DoesNotExist:
-            new_profile = profile_std(
-                idStd = idStd,
-                phoneStd = phoneStd,
-                nameStd = nameStd,
-                emailStd = emailStd,
-                datebirthStd = datebirthStd,
-                genderStd = genderStd,
-                identityStd = identityStd,
-                ethnicityStd = ethnicityStd,
-                addressStd = addressStd,
-                idClass = selected_class_instance,
-                graduate = graduate
-                )
-            new_profile.save()
-            response_data['success'] = '2'
-        except Exception:
+            try:
+                profile_selected = profile_std.objects.get(idStd=idStd)
+                profile_selected.phoneStd = phoneStd
+                profile_selected.nameStd = nameStd
+                profile_selected.emailStd = emailStd
+                profile_selected.datebirthStd = datebirthStd
+                profile_selected.genderStd = genderStd
+                profile_selected.identityStd = identityStd
+                profile_selected.ethnicityStd = ethnicityStd
+                profile_selected.addressStd = addressStd
+                profile_selected.idClass = selected_class_instance
+                profile_selected.graduate = graduate
+                if pwd != profile_selected.password:
+                    profile_selected.password = password
+                profile_selected.save()
+                response_data['success'] = '1'
+            
+            except profile_std.DoesNotExist:
+                new_profile = profile_std(
+                    idStd = idStd,
+                    phoneStd = phoneStd,
+                    nameStd = nameStd,
+                    emailStd = emailStd,
+                    datebirthStd = datebirthStd,
+                    genderStd = genderStd,
+                    identityStd = identityStd,
+                    ethnicityStd = ethnicityStd,
+                    addressStd = addressStd,
+                    idClass = selected_class_instance,
+                    )
+                new_profile.save()
+                response_data['success'] = '2'
+            except Exception:
+                response_data['success'] = '3'
+        else:
             response_data['success'] = '3'
-    idStd = request.POST.get('idStd')
-
-    # Tạo URL dẫn đến trang chi tiết hồ sơ với idStd là tham số
-    detail_url = reverse('detail_profile_std', kwargs={'idStd': idStd})
-
-    # Trả về JsonResponse chứa response_data và URL dẫn đến trang chi tiết
-    return redirect(detail_url)
+    return JsonResponse(response_data)
    
    
 

@@ -23,7 +23,8 @@
                     document.querySelector("#select-identityStd").textContent = select.identityStd;
                     document.querySelector("#select-ethnicityStd").textContent = select.ethnicityStd;
                     document.querySelector("#select-idClass-department").textContent = select.department;
-                    document.querySelector("#select-idClass-idCourse").textContent = select.idCourse;
+                    document.querySelector("#select-idClass-idCourse").setAttribute("data-value", select.idCourse);  //Mã khóa
+                    document.querySelector("#select-idClass-idCourse").textContent = select.nameCourse;
                     document.querySelector("#select-idClass").textContent = select.idClass;
                     var graduate = document.querySelector("#select-graduate");
 
@@ -56,7 +57,7 @@
                             const idDepartment = select.idDepartment;
                             const optionClass = document.getElementById("select-idClass-edit");
                             $.ajax({
-                                url : 'get-class/' + idDepartment + '/',
+                                url : 'get-class/' + idDepartment + '/' ,
                                 method : 'get',
                                 typeData : 'json',
                                 success : function (data){
@@ -84,6 +85,9 @@
                     alert("Không thể lấy thông tin sinh viên.");
                 }
             });
+
+           
+
 
             //lấy thông tin về khoa và tạo select box
             const optionFaculty = document.getElementById("select-idClass-faculty-edit");
@@ -181,7 +185,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const titlecard = document.getElementById("title-card");
         const hidden_idStd = document.getElementById("value-idStd");
         const text_Std = document.getElementById("select-idStd-edit");
+        const graduate = document.getElementById("gradutelb");
         addprofileBtn.addEventListener("click", function() {
+            clearFormInputs();
+            graduate.style.display = "none";
             hidden_idStd.style.display = "";
             refreshBtn.style.display="";
             text_Std.style.display="none";
@@ -213,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const editprofileBtn = document.getElementById("editprofile");
         editprofileBtn.addEventListener("click", function() {
             hidden_idStd.style.display = "none";
+            graduate.style.display = "";
             titlecard.textContent = "Chỉnh sửa hồ sơ";
             text_Std.style.display="";
             refreshBtn.style.display="none";
@@ -230,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("select-ethnicityStd-edit").value =  document.getElementById("select-ethnicityStd").textContent;
             document.getElementById("select-idClass-department-edit").value = document.querySelector("#select-idClass-department").getAttribute("data-value");
             document.getElementById("select-addressStd-edit").value =  document.getElementById("select-addressStd").textContent;
-            document.getElementById("select-idClass-idCourse-edit").textContent =  document.getElementById("select-idClass-idCourse").textContent;
+            document.getElementById("select-idClass-idCourse-edit").value =  document.getElementById("select-idClass-idCourse").getAttribute("data-value");
             document.getElementById("select-idClass-edit").value =  document.querySelector("#select-idClass").getAttribute("data-value");
             document.getElementById("select-graduate-edit").value =  document.querySelector("#select-graduate").getAttribute("data-value");
         });
@@ -263,14 +271,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
 
-        // cập nhật select class khi thay đổi department
 
-        const onchangeDepartment = document.getElementById("select-idClass-department-edit");
-        onchangeDepartment.addEventListener("change", function () {
+        //hàm cập nhật class
+        function updateselectClass() {
             const optionClass = document.getElementById("select-idClass-edit");
+            const selectidCourseValue = document.getElementById("select-idClass-idCourse-edit").value;
             const selectDepartmentValue = onchangeDepartment.value;
             $.ajax({
-                url : 'get-class/' + selectDepartmentValue + '/',
+                url : 'get-class-add-course/' + selectDepartmentValue + '/' + selectidCourseValue + '/',
                 method : 'get',
                 typeData : 'json',
                 success : function (data){
@@ -282,13 +290,48 @@ document.addEventListener("DOMContentLoaded", function() {
                         optionClass.appendChild(option);
                     });
                 },
-                error: function(){
-                    alert('Có lỗi trong quá trình lấy dữ liệu');
-                },
             });     
+        }
+
+        // cập nhật select class khi thay đổi department
+
+        const onchangeDepartment = document.getElementById("select-idClass-department-edit");
+        onchangeDepartment.addEventListener("change", updateselectClass);
+
+        //cập nhật select khi thay đổi khóa
+
+        const onchangeidCourse = document.getElementById("select-idClass-idCourse-edit");
+        onchangeidCourse.addEventListener("change", updateselectClass);
+
+
+
+        
+
+
+      
+
+        
+        //danh sách khóa và select box lần đầu
+
+        const optionidCourse = document.getElementById("select-idClass-idCourse-edit");
+        $.ajax({
+            url: 'get-idCourse',
+            method: 'get',
+            typeData: 'json',
+            success : function (data) {
+                    optionidCourse.innerHTML = "";
+                    data.idCourses.forEach(function (idCourse) {
+                       const option = document.createElement("option");
+                       option.value = idCourse.idCourse;
+                       option.textContent = idCourse.nameCourse;
+                       optionidCourse.appendChild(option); 
+                    });
+                },
+            error: function(){
+                    alert('Có lỗi trong quá trình lấy dữ liệu');
+            },
         });
-
-
+        
         //hàm làm mới
         function clearFormInputs() {
             const inputs = document.querySelectorAll(".edit-profile input");
@@ -298,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             const selects = document.querySelectorAll(".edit-profile select");
             selects.forEach(function(select){
-                select.value = select.options[0].value;
+                select.value = "0";
             });
         }
 
@@ -309,29 +352,64 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-        // // Nút  lưu
-        // const saveBtn = document.getElementById("saveprofile");
-        // saveBtn.addEventListener("click", function(event) {
-        //     const csrfToken = getCSRFToken();
-        //     $.ajax({
-        //         url: 'update-or-create-profile/',
-        //         method: 'post',
-        //         dataType: 'json',
-        //         headers: {
-        //             'X-CSRFToken': csrfToken
-        //         },
-        //         success: function(data) {
-        //             if (data.success === '1') {
-        //                 location.reload();
-        //                 alert('Xóa thành công');
-        //             };
-        //         },
-        //         error: function() {
-        //             alert('Lỗi trong quá trình xử lý.');
-        //         },
-        //     });
-        //     event.preventDefault();
-        // });
+
+        // Nút  lưu
+        const saveBtn = document.getElementById("saveprofile");
+        saveBtn.addEventListener("click", function(event) {
+            const csrfToken = getCSRFToken();
+            var profile_data = {
+                idStd : $("#value-idStd").val(),
+                password : $("#select-password-edit").val(),
+                phoneStd : $("#select-phoneStd-edit").val(),
+                nameStd : $("#select-nameStd-edit").val(),
+                emailStd : $("#select-emailStd-edit").val(),
+                datebirthStd : $("#select-datebirthStd-edit").val(),
+                genderStd : $("#select-genderStd-edit").val(),
+                addressStd : $("#select-addressStd-edit").val(),
+                idClass : $("#select-idClass-edit").val(),
+                identityStd : $("#select-identityStd-edit").val(),
+                ethnicityStd : $("#select-ethnicityStd-edit").val(),
+                graduate : $("#select-graduate-edit").val(),
+            };
+
+            var requiredFields = document.querySelectorAll("[required]");
+            var passed = true;
+            requiredFields.forEach(function(field){
+                if (field.value.trim() === ""){
+                    passed = false;
+                    return;
+                };
+            });
+
+            if (passed){
+            $.ajax({
+                url: 'update-or-create-profile/',
+                method: 'post',
+                data: profile_data,
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                success: function(data) {
+                    if (data.success === '1') {
+                        alert('Cập nhật hồ sơ thành công');
+                    }
+                    else if (data.success === '2') {
+                        alert('Tạo hồ sơ thành công');
+                    }
+                    else {
+                        alert('Đã có lỗi xảy ra');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi, vui lòng kiểm tra lại !');
+                },
+            });
+        }
+        else {
+            alert("Hãy nhập đủ các trường ")
+        };
+        });
 });
 
 
