@@ -150,6 +150,20 @@
 
     //khi cả trang web được load
 document.addEventListener("DOMContentLoaded", function() {
+
+        //nut tim kiem
+        const resultstable = document.getElementById("results-table");
+        const vluecount = document.getElementById("avc");
+        if (vluecount != null){
+            resultstable.style.display = "flex";
+        }
+        else{
+            resultstable.style.display = "none";
+        };
+        console.log(vluecount);
+        
+
+
         const rows = document.querySelectorAll(".table-body");
         rows.forEach(function(row) {
             row.addEventListener("click", function(){

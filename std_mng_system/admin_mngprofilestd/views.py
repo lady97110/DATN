@@ -9,6 +9,7 @@ from .globals import gotidStd
 from login_admin.models import *
 from faculty.models import *
 from datetime import datetime
+from django.contrib import messages
 
 
 @login_required(login_url='login_admin')
@@ -44,6 +45,8 @@ def admin_mngprofilestd(request):
             results = profile_std.objects.filter(emailStd__icontains=search_query)
         elif search_field == 'identity':
             results = profile_std.objects.filter(identityStd__icontains=search_query)
+        if not results:
+            messages.error(request, 'Không có kết quả phù hợp.')
     return render(request, 'admin_mngprofilestd.html', {'search_form': search_form, 'results': results, 'search_field': search_field, **context})
 
 @login_required(login_url='login_admin')

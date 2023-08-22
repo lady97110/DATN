@@ -24,18 +24,20 @@
       </a>
       <hr>
       <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
+        <li class="nav-item hssv">
           <a href="{% url 'admin_mngprofilestd' %}" class="nav-link text-white text-center">
             HỒ SƠ SINH VIÊN
           </a>
         </li>
         <li class="nav-item">
-          <div class="dropdown-sidebar text-white text-center">
-            <button class="dropbtn-sidebar">QUẢN LÝ KHOA</button>
+          <div class="dropdown-sidebar text-white text-center d-flex justify-content-center">
+            <div class = "btndrop">
+            <button class="dropbtn-sidebar">QUẢN LÝ KHOA <i class="fa fa-angle-right ml-2" aria-hidden="true"></i></button>
             <div class="dropdown-content-sidebar">
-              <a href="#">Link 1</a>
-              <a href="#">Link 2</a>
-              <a href="#">Link 3</a>
+              <a href="{% url 'admin_mngfaculty'%}">KHOA</a>
+              <a href="#">NGÀNH</a>
+              <a href="#">LỚP</a>
+            </div>
             </div>
           </div>
         </li>

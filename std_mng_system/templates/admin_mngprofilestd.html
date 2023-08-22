@@ -35,7 +35,16 @@
                     </div>
     </div>
     </div>
-    <div class="results-table ">
+    <div class="notfound">
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+    <div class="results-table" id="results-table">
         <table class="table-custom ">
             <thead class="table-head">
                 <tr>
@@ -57,7 +66,7 @@
             <tbody class="results-body">
                 {% for result in results %}
                     <tr class="table-body" id="row-table" onclick="rowClick(this)" data-idStd="{{result.idStd}}">
-                        <td class= "colume2">{{ forloop.counter }}</td>
+                        <td class= "colume2" id="avc">{{ forloop.counter }}</td>
                         <td >{{ result.idStd }}</td>
                         <td >{{ result.nameStd }}</td>
                         <td >{{ result.datebirthStd|date:"d/m/Y" }}</td>
