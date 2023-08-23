@@ -28,11 +28,11 @@ class profile_std(models.Model):
     def is_authenticated(self):
         return True
     
-        
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
+    def set_custom_password(self, raw_password):
+        hashed_password = make_password(raw_password)
+        self.password = hashed_password
 
-    def check_password(self, raw_password):
+    def check_custom_password(self, raw_password):
         return check_password(raw_password, self.password)
 
     class Meta:

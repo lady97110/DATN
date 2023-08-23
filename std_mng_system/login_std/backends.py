@@ -7,7 +7,10 @@ class CustomAuthBackendStd(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user_std = profile_std.objects.get(idStd=username)
-            if user_std.check_password(password):
+            print(password)
+            if user_std.check_custom_password(password):
+
+                print(user_std)
                 return user_std
         except profile_std.DoesNotExist:
             return None

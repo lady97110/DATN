@@ -10,6 +10,7 @@ from login_admin.models import *
 from faculty.models import *
 from datetime import datetime
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 @login_required(login_url='login_admin')
@@ -129,8 +130,7 @@ def update_or_create_profile(request):
     if request.method == 'POST':
         idStd = request.POST.get('idStd')
         if idStd is not None:
-            pwd = request.POST.get('password')
-            password = make_password(pwd)
+            password = request.POST.get('password')
             phoneStd = request.POST.get('phoneStd')
             nameStd = request.POST.get('nameStd')
             emailStd = request.POST.get('emailStd')
@@ -156,8 +156,11 @@ def update_or_create_profile(request):
                 profile_selected.addressStd = addressStd
                 profile_selected.idClass = selected_class_instance
                 profile_selected.graduate = graduate
-                if pwd != profile_selected.password:
-                    profile_selected.password = password
+                is_matching = check_password(password, profile_selected.password)
+                print(is_matching)
+                if not is_matching:
+                    profile_selected.set_custom_password(password)
+                    
                 profile_selected.save()
                 response_data['success'] = '1'
             
