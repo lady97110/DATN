@@ -160,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function() {
         else{
             resultstable.style.display = "none";
         };
-        console.log(vluecount);
         
 
 
@@ -386,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 graduate : $("#select-graduate-edit").val(),
             };
 
-            var requiredFields = document.querySelectorAll("[required]");
+            var requiredFields = document.querySelectorAll(".not-empty");
             var passed = true;
             requiredFields.forEach(function(field){
                 if (field.value.trim() === ""){
@@ -412,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         alert('Tạo hồ sơ thành công');
                     }
                     else {
-                        alert('Đã có lỗi xảy ra');
+                        alert('Đã có hồ sơ được tạo với MSSV này');
                     }
                 },
                 error: function() {
@@ -421,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
         else {
-            alert("Hãy nhập đủ các trường ")
+            alert("Hãy nhập đủ các trường bắt buộc !")
         };
         });
 });

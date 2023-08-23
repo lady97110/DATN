@@ -30,14 +30,14 @@ class Department(models.Model):
 
 class idCourse(models.Model):
     idCourse = models.CharField(max_length=3, verbose_name= "Mã khóa", primary_key= True)
-    nameCourse = models.CharField(max_length=20, verbose_name="Niên khóa")
+    nameCourse = models.CharField(max_length=20, verbose_name="Tên khóa")
     
     def __str__(self):
         return self.nameCourse
     
     class Meta:
-        verbose_name = "Niên khóa"
-        verbose_name_plural = "Niên khóa"
+        verbose_name = "Khóa sinh viên"
+        verbose_name_plural = "Khóa sinh viên"
 
 
 

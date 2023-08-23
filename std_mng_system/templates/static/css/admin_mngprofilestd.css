@@ -8,6 +8,10 @@
     padding-right: 20px;
 }
 
+.search-box>label{
+    font-weight: 600;
+}
+
 .notfound{
     padding: 20px;
     font-size: 20px;
@@ -154,7 +158,8 @@ th{
 } 
 
 .bordercard{
-    border: 1px solid ;
+    border: 2px solid ;
+    border-radius: 10px;
 }
 
 .action-profile{
@@ -239,6 +244,10 @@ th{
 
 #searchbutton{
     margin-left: 10px;
+    border-radius: 5px;
+    background-color: rgb(62, 59, 231);
+    color: #f0f0f0;
+    border-color: azure;
 }
 
 
@@ -246,4 +255,21 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+
+.required {
+    color: red;
+    margin-left: 5px; 
+}
+
+.bordercard input, .bordercard select {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+.search-box input, .search-box select {
+    border: 1px solid black;
+    border-radius: 5px;
 }

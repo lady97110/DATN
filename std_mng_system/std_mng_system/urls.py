@@ -39,7 +39,7 @@ urlpatterns = [
     path('save-subjects/', course_views.save_subjects, name='save_subjects'),
     path('coursereg-success/', course_views.coursereg_success_view, name='coursereg_success'),
     path('delete-subjects/', course_views.delete_subjects, name='delete_subjects'),
-    path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
+    # path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
     # page quan ly ho so sinh vie
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
     path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),

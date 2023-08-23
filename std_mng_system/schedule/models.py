@@ -1,10 +1,20 @@
 from django.db import models
 from course.models import *
 
+#table phòng học
+class ClassRoom(models.Model):
+    idClassRoom = models.CharField(max_length=10, primary_key= True, verbose_name='Mã phòng học')
+    nameClassRoom = models.CharField(max_length=20, verbose_name= "Tên phòng học")
 
-#bảng thời khóa biểu
-class SessionSchedule(models.Model):
-    day_choices = [
+    def __str__(self):
+        return self.idClassRoom
+    class Meta:
+        verbose_name = 'Phòng học'
+        verbose_name_plural = 'Danh sách phòng học'
+
+#table lịch học cho lớp học phần
+class ScheduleModuleClass(models.Model):
+    days_of_week = [                                                             #thu trong tuan
         ('T2','T2'),
         ('T3','T3'),
         ('T4','T4'),
@@ -13,21 +23,25 @@ class SessionSchedule(models.Model):
         ('T7','T7'),
         ('CN','CN'),
     ]
-
-    period_choices = [
-        ('1','1'), ('2','2'), ('3','3'), ('4','4'), ('5','5'), ('6','6'), ('7','7'), ('8','8'), ('9','9'), ('10','10'), ('11','11'), ('12','12'), ('13','13'), ('14','14'), ('15','15')
+    period_start = [                                                            #tiet bat dau
+        ('1','1') , ('4','4'), ('7','7'), ('10','10'), ('13','13')
     ]
-    idCourseClass = models.ForeignKey(courseClass, related_name= 'schedule_course', on_delete= models.CASCADE, verbose_name= 'Mã lớp môn học')
-    day_of_week = models.CharField(max_length= 2, choices= day_choices, verbose_name= 'Thứ')
-    start_period = models.CharField(max_length= 2 , choices= period_choices, verbose_name= 'Tiết bắt đầu')
-    num_period = models.IntegerField(default= 3, verbose_name= 'Số tiết')
-    idRoom = models.CharField(max_length= 10, verbose_name= 'Phòng học')
-    exam_check = models.BooleanField(default= False, verbose_name= 'Lịch thi?')
 
+    idSMC = models.AutoField(primary_key=True)
+    idModuleClass = models.ForeignKey(ModuleClass, on_delete=models.CASCADE, related_name='schedules', verbose_name='Lớp học phần')
+    days_of_week = models.CharField(max_length=2, choices=days_of_week, verbose_name='Thứ')
+    period_start = models.CharField(max_length=2, choices=period_start, verbose_name='Tiết bắt đầu')
+    periods_count = models.IntegerField(default= 3, verbose_name='Số tiết')
+    start_date = models.DateField(verbose_name= 'Ngày bắt đầu', null= True, blank= True)
+    end_date = models.DateField(verbose_name= 'Ngày kết thúc', null= True, blank= True)
+    class_room = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, verbose_name= 'Phòng học', null = True, blank= True)
+    is_final_exam = models.BooleanField(default=False, verbose_name= 'Lịch thi ?')
+
+    def __str__(self):
+        return f"{self.days_of_week}_{self.period_start}_{self.class_room}"
     class Meta:
-        verbose_name = 'Lịch học'
-        verbose_name_plural = 'Lịch học'
-
+        verbose_name = 'Lịch học, lịch thi'
+        verbose_name_plural = 'Lịch học, lịch thi'
 
 
 
