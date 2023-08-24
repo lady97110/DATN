@@ -167,6 +167,7 @@ def update_or_create_profile(request):
             except profile_std.DoesNotExist:
                 new_profile = profile_std(
                     idStd = idStd,
+                    password = password,
                     phoneStd = phoneStd,
                     nameStd = nameStd,
                     emailStd = emailStd,

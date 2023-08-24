@@ -1,0 +1,58 @@
+{% extends 'core_admin.html' %}
+{% load static %}
+{% block title %}Quản lý về Khoa {% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/admin_moduleclass.css' %}"> 
+<script src="{% static 'js/admin_moduleclass.js'%}"></script>
+{% endblock %}
+
+{% block titlepage %}QUẢN LÝ KHOA{% endblock %}
+
+{% block content %}
+<div class="">
+   <div class="">
+       <h5>Thêm lớp môn học</h5>
+       <label>
+            <span>Khoa:</span>
+            <select id="list-faculty">
+            </select>
+       </label>
+       <label>
+            <span>Ngành:</span>
+            <select id="list-department">
+            </select>
+       </label>
+       <label>
+            <span>Khóa:</span>
+            <select id="list-idCourse">
+            </select>
+       </label>
+       <label>
+            <span>Lớp:</span>
+            <select id="list-class">
+            </select>
+       </label>
+       <label>
+            <span>Tìm lớp:</span>
+            <input id="search-value"></input>
+            <button id="search-btn" type="button">Tìm</button>
+       </label>
+    </div>
+    <div class="search-results">
+          <table class="table-class">
+               <thead>
+                    <tr>
+                         <th>Lớp</th>
+                         <th>Khoa</th>
+                         <th>Ngành</th>
+                         <th>Khóa</th>
+                    </tr>
+               </thead>
+               <tbody id="table-body">
+               </tbody>
+          </table>
+    </div>
+</div>
+{% endblock %}

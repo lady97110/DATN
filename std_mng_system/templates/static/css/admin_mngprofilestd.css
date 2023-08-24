@@ -109,7 +109,7 @@ th{
 
 
 #row-table:hover{
-    background-color: #8b8282; /* Màu highlight */
+    background-color: #8b8282; 
     cursor: pointer;
 }
 

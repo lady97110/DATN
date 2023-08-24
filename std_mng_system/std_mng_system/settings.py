@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'login_std',
     'login_admin',
     'admin_mngprofilestd',
-    'admin_mngfaculty',
+    'admin_moduleclass',
 ]
 
 
