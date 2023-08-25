@@ -7,4 +7,6 @@ urlpatterns = [
     path('get-idCourse/', views.get_idCourse, name ='get_idCourse'),
     path('get-class/<str:idDepartment>/<str:idCourse>/', views.get_class, name ='get_class'),
     path('search-class/<str:input_value>/', views.get_search_class, name ='search_class'),
+    path('get-list-module/<str:idClass>/', views.get_list_module, name ='get_list_module'),
+    path('get-module-byidModule/<str:idModule>/', views.get_module_byidModule, name='get_module_byidModule'),
 ]

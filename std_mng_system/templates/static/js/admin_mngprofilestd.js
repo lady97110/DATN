@@ -4,6 +4,7 @@
         profileedit.style.display = "none";
         showProfile.style.display = "flex";
             var idStd = row.getAttribute("data-idStd");
+            console.log(idStd);
             $.ajax({
                 url: 'detail-profile-std/' + idStd + '/',
                 method: 'get',

@@ -60,9 +60,6 @@ def delete_profile(request):
     except profile_std.DoesNotExist:
         return JsonResponse({'confirm': False})
     
-    
-
-    
 
 @login_required(login_url='login_admin')
 def get_profile_detail(request, idStd):

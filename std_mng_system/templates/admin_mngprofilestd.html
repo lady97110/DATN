@@ -53,7 +53,7 @@
             </thead>
             <tbody class="results-body">
                 {% for result in results %}
-                    <tr class="table-body" id="row-table" onclick="rowClick(this)" data-idStd="{{result.idStd}}">
+                    <tr class="table-body" id="row-table" data-idStd="{{result.idStd}}">
                         <td class= "colume2" id="avc">{{ forloop.counter }}</td>
                         <td >{{ result.idStd }}</td>
                         <td >{{ result.nameStd }}</td>

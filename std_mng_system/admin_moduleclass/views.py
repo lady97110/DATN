@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from faculty.models import *
 from django.http import JsonResponse
 from django.db.models import Q
+from course.models import *
+from django.forms.models import model_to_dict
 # Create your views here.
 def admin_moduleclass(request):
 
@@ -44,7 +46,7 @@ def get_class(request, idDepartment, idCourse):
 
 #tìm lớp
 @login_required(login_url='login_admin')
-def get_search_class(request, input_value):
+def get_search_class(request ,input_value):
     classes_results = FacultyClasses.objects.filter(
         Q(idClass__icontains = input_value) |
         Q(department__nameDepartment__icontains = input_value) |
@@ -56,3 +58,20 @@ def get_search_class(request, input_value):
                      'faculty': classes.department.faculty.nameFaculty,
                      'idCourse': classes.idCourse.nameCourse } for classes in classes_results]
     return JsonResponse({'classes' :classes_data})
+
+
+
+#lấy danh sách môn  học
+@login_required(login_url='login_admin')
+def get_list_module(request, idClass):
+    Department = FacultyClasses.objects.get(idClass = idClass).department
+    module_departments = Module.objects.filter(department = Department)
+    module_departments_data = [{'idModule': module_department.idModule, 'nameModule': module_department.nameModule, 'credits': module_department.credits, 'department': module_department.department.nameDepartment} for module_department in module_departments]
+    return JsonResponse({'module_departments': module_departments_data})
+
+
+@login_required(login_url='login_admin')
+def get_module_byidModule(request, idModule):
+    module = Module.objects.get(idModule=idModule)
+    module_data = model_to_dict(module)
+    return JsonResponse(module_data)

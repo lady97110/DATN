@@ -5,14 +5,16 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/admin_moduleclass.css' %}"> 
+<link rel="stylesheet" href="{% static 'css/popup_addmoduleclass.css' %}">
 <script src="{% static 'js/admin_moduleclass.js'%}"></script>
+<script src="{% static 'js/admin_moduleclass_add.js'%}"></script>
 {% endblock %}
 
-{% block titlepage %}QUẢN LÝ KHOA{% endblock %}
+{% block titlepage %}QUẢN LÝ LỚP HỌC PHẦN{% endblock %}
 
 {% block content %}
 <div class="">
-   <div class="">
+   <div class="choose-idClass">
        <h5>Thêm lớp môn học</h5>
        <label>
             <span>Khoa:</span>
@@ -54,5 +56,65 @@
                </tbody>
           </table>
     </div>
+
+    <div class="add-moduleclass">
+          <h5>Tạo học phần cho lớp</h5>
+          <label>
+               <span>Lớp đã chọn:</span>
+               <span id="choosen-class"></span>
+          </label>
+          <label>
+               <button id="get-list-module">Lấy danh sách môn học</button>
+          </label>
+    </div>
+
+    <div class="added-moduleclass">
+          <h5>Môn học đã chọn</h5>
+          <table class="">
+               <thead>
+                    <tr>
+                         <th></th>
+                         <th>Mã học phần</th>
+                         <th>Tên học phần</th>
+                         <th>Tín chỉ</th>
+                         <th>Sĩ số tối đa</th>
+                         <th>Lịch học</th>
+                    </tr>
+               </thead>
+               <tbody id="choosen-module">
+               </tbody>
+          </table>
+    </div>
 </div>
+
+<div>
+     <div id="popup" class="popup">
+          <div class="popup-content">
+               <div class="header-popup">
+                    <span class="close" id="closePopup">&times;</span>
+               </div>
+               <div class="body-popup">
+                    <h5>Danh sách học phần</h5>
+                    <hr>
+                    <table class="list-module">
+                         <thead>
+                              <tr>
+                                   <th></th>
+                                   <th>Mã học phần</th>
+                                   <th>Tên học phần</th>
+                                   <th>Số tín</th>
+                                   <th>Chuyên ngành</th>
+                              </tr>
+                         </thead>
+                         <tbody id="tbody-module">
+                         </tbody>
+                    </table>
+               </div>
+               <div class="footer-popup">
+                    <button type="button" id="button-add">Thêm</button>
+               </div>
+          </div>
+     </div>
+</div>
+
 {% endblock %}

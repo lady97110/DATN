@@ -44,7 +44,7 @@ class idCourse(models.Model):
 # bảng danh sách lớp thuộc khoa
 class FacultyClasses(models.Model):
     idClass = models.CharField(max_length = 10, verbose_name= "Mã lớp", primary_key= True)
-    department = models.ForeignKey(Department, on_delete= models.CASCADE, verbose_name= "Tên Ngành")
+    department = models.ForeignKey(Department, on_delete= models.CASCADE, related_name="department_class",verbose_name= "Tên Ngành")
     idCourse = models.ForeignKey(idCourse, on_delete = models.CASCADE, verbose_name = "Khóa")
 
     def __str__(self):

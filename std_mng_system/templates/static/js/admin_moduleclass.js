@@ -90,21 +90,31 @@ document.addEventListener("DOMContentLoaded", function(){
 
         optionClass = document.getElementById("list-class");
         const option_class = document.createElement('option');
-        option_class.value = "0";
+        option_class.value = "";
         option_class.textContent = "----- Lớp -----";
         optionClass.appendChild(option_class);
 
             //lay danh sach lop
-            optionDepartment.addEventListener("change", get_class);
-            optionidCourse.addEventListener("change", get_class);
+        optionDepartment.addEventListener("change", get_class);
+        optionidCourse.addEventListener("change", get_class);
+
+        optionClass.addEventListener("change", function() {
+            const idClass = optionClass.value;
+            choosen_class(idClass);
+        });
         
 
 
         //tim lop
         const search_btn =  document.getElementById("search-btn");
-        search_btn.addEventListener("click", get_search_class);
-
+        search_btn.addEventListener("click", function() {
+            get_search_class();
+        });
 });
+
+
+
+
 
 
 
@@ -124,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function(){
             success : function (data) {
                 optionClass.innerHTML = '';
                 const option = document.createElement('option');
-                option.value = "0";
+                option.value = "";
                 option.textContent = "----- Chọn lớp -----";
                 optionClass.appendChild(option);
                 data.classes.forEach(function(classe){
@@ -152,10 +162,11 @@ document.addEventListener("DOMContentLoaded", function(){
                 result_rows.innerHTML = "";
                 data.classes.forEach(function(classe) {
                     const newRow = document.createElement("tr");
-                        newRow.classList.add("result-row");
+                    newRow.setAttribute("idClass", classe.idClass);
+                    newRow.classList.add("result-row");
+
                     const cell1 = document.createElement("td");
                     cell1.textContent = classe.idClass;
-                    console.log(cell1.textContent);
                     newRow.appendChild(cell1);
 
                     const cell2 = document.createElement("td");
@@ -172,6 +183,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     result_rows.appendChild(newRow);
 
+                    newRow.addEventListener("click",function () {
+                        idClass = newRow.getAttribute("idClass");
+                        choosen_class(idClass);
+                    });
+
                 });
             },
             error: function () {
@@ -179,5 +195,12 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         });        
     }
+
+
+    function choosen_class(idClass){
+        const choosen_class_value = document.getElementById("choosen-class");
+        choosen_class_value.textContent = idClass;
+        choosen_class_value.setAttribute("data-value", idClass);
+    };
 
 
