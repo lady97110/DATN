@@ -4,7 +4,6 @@
         profileedit.style.display = "none";
         showProfile.style.display = "flex";
             var idStd = row.getAttribute("data-idStd");
-            console.log(idStd);
             $.ajax({
                 url: 'detail-profile-std/' + idStd + '/',
                 method: 'get',
@@ -16,8 +15,9 @@
                     document.querySelector("#select-phoneStd").textContent = select.phoneStd;
                     document.querySelector("#select-nameStd").textContent = select.nameStd;
                     document.querySelector("#select-emailStd").textContent = select.emailStd;
-                    document.querySelector("#select-datebirthStd").textContent = select.datebirthStd;
-                    document.querySelector("#select-idClass-faculty").textContent = select.faculty;
+                    document.querySelector("#select-datebirthStd").textContent = select.datebirth;
+                    document.querySelector("#select-datebirthStd").setAttribute("data-value", select.datebirthStd);
+                    document.querySelector("#select-idClass-faculty").textContent = select.faculty; 
                     document.querySelector("#select-idClass-faculty").setAttribute("data-value", select.idFaculty);  //mã khoa
                     document.querySelector("#select-genderStd").textContent = select.genderStd;
                     document.querySelector("#select-addressStd").textContent = select.addressStd;
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
         };
         
 
-
+        //click xem thong tin tu bang ket qua
         const rows = document.querySelectorAll(".table-body");
         rows.forEach(function(row) {
             row.addEventListener("click", function(){
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("select-phoneStd-edit").value =  document.getElementById("select-phoneStd").textContent;
             document.getElementById("select-nameStd-edit").value =  document.getElementById("select-nameStd").textContent;
             document.getElementById("select-emailStd-edit").value =  document.getElementById("select-emailStd").textContent;
-            document.getElementById("select-datebirthStd-edit").value =  document.getElementById("select-datebirthStd").textContent;
+            document.getElementById("select-datebirthStd-edit").value =  document.getElementById("select-datebirthStd").getAttribute("data-value");
             document.getElementById("select-idClass-faculty-edit").value = document.querySelector("#select-idClass-faculty").getAttribute("data-value");
             document.getElementById("select-genderStd-edit").value =  document.getElementById("select-genderStd").textContent;
             document.getElementById("select-identityStd-edit").value =  document.getElementById("select-identityStd").textContent;
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 ethnicityStd : $("#select-ethnicityStd-edit").val(),
                 graduate : $("#select-graduate-edit").val(),
             };
-
+            console.log(profile_data.datebirthStd);
             var requiredFields = document.querySelectorAll(".not-empty");
             var passed = true;
             requiredFields.forEach(function(field){

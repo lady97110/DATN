@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 from course.models import *
 from django.forms.models import model_to_dict
+from schedule.models import *
 # Create your views here.
 def admin_moduleclass(request):
 
@@ -75,3 +76,10 @@ def get_module_byidModule(request, idModule):
     module = Module.objects.get(idModule=idModule)
     module_data = model_to_dict(module)
     return JsonResponse(module_data)
+
+#lay danh sach phong hoc tu database
+@login_required(login_url='login_admin')
+def get_room(request):
+    rooms = ClassRoom.objects.all()
+    rooms_data = [{'idRoom': room.idClassRoom, 'nameRoom': room.nameClassRoom} for room in rooms]
+    return JsonResponse({'rooms': rooms_data})

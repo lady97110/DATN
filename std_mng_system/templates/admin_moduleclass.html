@@ -18,7 +18,7 @@
        <h5>Thêm lớp môn học</h5>
        <label>
             <span>Khoa:</span>
-            <select id="list-faculty">
+            <select id="list-faculty" >
             </select>
        </label>
        <label>
@@ -43,7 +43,7 @@
        </label>
     </div>
     <div class="search-results">
-          <table class="table-class">
+          <table class="table-class" style="display: none;" id="list-idClass">
                <thead>
                     <tr>
                          <th>Lớp</th>
@@ -112,6 +112,84 @@
                </div>
                <div class="footer-popup">
                     <button type="button" id="button-add">Thêm</button>
+               </div>
+          </div>
+     </div>
+</div>
+
+
+<div>
+     <div id="popup-schedule" class="popup">
+          <div class="popup-content">
+               <div class="header-popup">
+                    <span class="close" id="closePopup-schedule">&times;</span>
+               </div>
+               <div class="body-popup">
+                    <h5>Thông tin lịch học</h5>
+                    <hr>
+                    <label>
+                    <span id="info-moduleclass"></span>
+                    </label>
+                    <table class="schedule-moduleclass">
+                         <thead>
+                              <tr>
+                                   <th>Thứ</th>
+                                   <th>Tiết bắt đầu</th>
+                                   <th>Số tiết</th>
+                                   <th>Ngày bắt đầu</th>
+                                   <th>Ngày kết thúc</th>
+                                   <th>Phòng học</th>
+                              </tr>
+                         </thead>
+                         <tbody id="tbody-schedule">
+                         </tbody>
+                         <button type="button" id="btn-addrowschedule">
+                              <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                         </button>
+                    </table>
+               </div>
+               <div class="body-popup">
+                    <h5>Lịch thi</h5>
+                    <table class="finalexam-moduleclass">
+                         <thead>
+                              <tr>
+                                   <th>Ngày thi</th>
+                                   <th>Tiết bắt đầu</th>
+                                   <th>Phòng thi</th>
+                              </tr>
+                         </thead>
+                         <tbody id="tbody-finalexam">
+                              <tr>
+                                   <td>
+                                        <input id="date-exam" type="date"></td>
+                                   </td>
+                                   <td id="dayofweek" style="display: none;">
+                                        <select>
+                                             <option value="T2">T2</option>
+                                             <option value="T3">T3</option>
+                                             <option value="T4">T4</option>
+                                             <option value="T5">T5</option>
+                                             <option value="T6">T6</option>
+                                             <option value="T7">T7</option>
+                                             <option value="CN">CN</option>
+                                        </select>
+                                   </td>
+                                   <td id="period-start">
+                                        <select>
+                                             <option value="1">1</option>
+                                             <option value="4">4</option>
+                                             <option value="7">7</option>
+                                             <option value="10">10</option>
+                                             <option value="13">13</option>
+                                        </select>
+                                   </td>
+                                   <td id="room-exam"></td>
+                              </tr>
+                         </tbody>
+                    </table>
+               </div>
+               <div class="footer-popup">
+                    <button type="button" id="button-add">Lưu</button>
                </div>
           </div>
      </div>

@@ -76,7 +76,7 @@ def get_profile_detail(request, idStd):
             'idFaculty': profile_detail.idClass.department.faculty.idFaculty,    #valuefaculty
             'idCourse': profile_detail.idClass.idCourse.idCourse,
             'nameCourse': profile_detail.idClass.idCourse.nameCourse,
-            'datebirthStd': datedmy.strftime('%d/%m/%Y')
+            'datebirth': datedmy.strftime('%d/%m/%Y')
         })
         return JsonResponse(details)
 
@@ -131,8 +131,7 @@ def update_or_create_profile(request):
             phoneStd = request.POST.get('phoneStd')
             nameStd = request.POST.get('nameStd')
             emailStd = request.POST.get('emailStd')
-            datebirth = request.POST.get('datebirthStd')
-            datebirthStd = datetime.strptime(datebirth, '%d/%m/%Y').strftime('%Y-%m-%d')
+            datebirthStd = request.POST.get('datebirthStd')
             genderStd = request.POST.get('genderStd')
             identityStd = request.POST.get('identityStd')
             ethnicityStd = request.POST.get('ethnicityStd')
@@ -154,7 +153,6 @@ def update_or_create_profile(request):
                 profile_selected.idClass = selected_class_instance
                 profile_selected.graduate = graduate
                 is_matching = check_password(password, profile_selected.password)
-                print(is_matching)
                 if not is_matching:
                     profile_selected.set_custom_password(password)
                     

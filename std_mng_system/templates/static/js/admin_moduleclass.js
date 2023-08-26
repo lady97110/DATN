@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function(){
             method : 'get',
             dataType : 'json',
             success : function (data) {
+                document.getElementById("list-idClass").style.display = "block";
                 optionClass.innerHTML = '';
                 const option = document.createElement('option');
                 option.value = "";

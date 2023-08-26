@@ -9,4 +9,5 @@ urlpatterns = [
     path('search-class/<str:input_value>/', views.get_search_class, name ='search_class'),
     path('get-list-module/<str:idClass>/', views.get_list_module, name ='get_list_module'),
     path('get-module-byidModule/<str:idModule>/', views.get_module_byidModule, name='get_module_byidModule'),
+    path('get-room/',views.get_room, name='get_room'),
 ]
