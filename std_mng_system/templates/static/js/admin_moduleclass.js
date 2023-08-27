@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function(){
             method : 'get',
             dataType : 'json',
             success : function (data) {
-                document.getElementById("list-idClass").style.display = "block";
                 optionClass.innerHTML = '';
                 const option = document.createElement('option');
                 option.value = "";
@@ -155,11 +154,13 @@ document.addEventListener("DOMContentLoaded", function(){
     function get_search_class() {
         const search_value = document.getElementById("search-value").value;
         const result_rows = document.getElementById("table-body");
+        if (search_value.trim() !== ""){
         $.ajax({
             url : 'search-class/' + search_value + '/',
             method : 'get',
             dataType : 'json',
             success : function(data){
+                document.getElementById("list-idClass").style.display = "block";
                 result_rows.innerHTML = "";
                 data.classes.forEach(function(classe) {
                     const newRow = document.createElement("tr");
@@ -194,7 +195,8 @@ document.addEventListener("DOMContentLoaded", function(){
             error: function () {
                 alert('Có lỗi trong quá trình tìm Lớp')
             }
-        });        
+        });
+    }       
     }
 
 

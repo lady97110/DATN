@@ -2,3 +2,7 @@
     background-color: #8b8282; 
     cursor: pointer;
 }
+
+#list-idClass{
+    display: none;
+}

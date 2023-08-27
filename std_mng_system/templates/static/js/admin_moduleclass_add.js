@@ -90,10 +90,12 @@ addBtn.addEventListener("click", async function() {
 
     //nut cap nhat lich hoc
     const btnSchedules = document.querySelectorAll(".btn-schedule");
+    console.log(btnSchedules);
     btnSchedules.forEach(function (btnSchedule) {
-        btnSchedule.addEventListener("click", function(){
-            document.getElementById("popup-schedule").style.display = "block";
-            document.getElementById("tbody-schedule").innerHTML = "";
+            const row_choosen_module = btnSchedule.closest("tr");
+            console.log(row_choosen_module);
+            btnSchedule.addEventListener("click", function(){
+                btnAddSchedule(row_choosen_module);
             });
         });   
     });   
@@ -107,6 +109,13 @@ addBtn.addEventListener("click", async function() {
 
 
 
+
+    //nut luu thong tin lich hoc va lich thi
+
+    const rowListModule = document.querySelectorAll
+    const btnSaveSchedule = document.getElementById("button-save-schedule");
+    btnSaveSchedule.addEventListener("click",function(){
+    });
 
     //popup close button
       
@@ -127,7 +136,7 @@ addBtn.addEventListener("click", async function() {
 function add_row_choosen_module(module, index) {
     const choosen_module = document.getElementById("choosen-module");
     const newRow = document.createElement("tr");
-    newRow.classList.add("result-row");
+    newRow.classList.add("row-choosen-module");
 
     const cell1 = document.createElement("td");
     cell1.textContent = index;
@@ -145,13 +154,6 @@ function add_row_choosen_module(module, index) {
     cell4.textContent = module.credits;
     newRow.appendChild(cell4);
 
-    const cell5 = document.createElement("td");
-    const cell5_input = document.createElement("input");
-    cell5_input.classList.add("max_slot");
-    cell5_input.type = "number";
-    cell5.appendChild(cell5_input);
-    newRow.appendChild(cell5);
-
     const cell6 = document.createElement("td");
     const btnschedule = document.createElement("button");
     btnschedule.textContent= "Cập nhật";
@@ -160,6 +162,9 @@ function add_row_choosen_module(module, index) {
     newRow.appendChild(cell6);
 
     choosen_module.appendChild(newRow);
+
+    newRow.setAttribute("idModule", module.idModule);
+    newRow.setAttribute("nameModule", module.nameModule);
 }
 
 
@@ -233,3 +238,20 @@ function add_rows_schedule() {
     tbody_schedule.appendChild(tr_schedule);
 
 }
+
+
+
+//nut cap nhat  lịch học
+function btnAddSchedule(row){
+    document.getElementById("popup-schedule").style.display = "block";
+    document.getElementById("tbody-schedule").innerHTML = "";
+
+    const choosen_class_value = document.getElementById("choosen-class").getAttribute("data-value");
+    const idModuleClass = document.getElementById("info-moduleclass");
+    idModuleClass.textContent = "Lớp " + choosen_class_value;
+    idModuleClass.setAttribute("data-value",choosen_class_value);
+
+    const choosen_module_value = document.getElementById("info-module");
+    choosen_module_value.textContent = row.getAttribute("idModule") + " - " + row.getAttribute("nameModule");
+
+};
