@@ -7,6 +7,7 @@ from django.db.models import Q
 from course.models import *
 from django.forms.models import model_to_dict
 from schedule.models import *
+import json
 # Create your views here.
 def admin_moduleclass(request):
 
@@ -70,7 +71,7 @@ def get_list_module(request, idClass):
     module_departments_data = [{'idModule': module_department.idModule, 'nameModule': module_department.nameModule, 'credits': module_department.credits, 'department': module_department.department.nameDepartment} for module_department in module_departments]
     return JsonResponse({'module_departments': module_departments_data})
 
-
+#lay thong tin mon hoc tu idModule
 @login_required(login_url='login_admin')
 def get_module_byidModule(request, idModule):
     module = Module.objects.get(idModule=idModule)
@@ -83,3 +84,100 @@ def get_room(request):
     rooms = ClassRoom.objects.all()
     rooms_data = [{'idRoom': room.idClassRoom, 'nameRoom': room.nameClassRoom} for room in rooms]
     return JsonResponse({'rooms': rooms_data})
+
+
+# lay danh sach hoc ky tu database
+@login_required(login_url='login_admin')
+def get_semester(request):
+    semesters = Semester.objects.all()
+    semester_data = [{'idSemester': semester.idSemester, 'nameSemester': semester.nameSemester} for semester in semesters]
+    return JsonResponse({'semesters': semester_data})
+
+
+# luu thong tin ve lop mon hoc da tao
+@login_required(login_url='login_admin')
+def save_moduleclass(request, idClass, idModule, idSemester):
+    response_data = {}
+    if request.method == 'POST':
+        data_schedule = json.loads(request.body)
+        tableSchedules = data_schedule.get('tableSchedule')
+        tableScheduleExam = data_schedule.get('tableScheduleExam')
+        max_slot = data_schedule.get('max_slot')
+
+        module_instance = Module.objects.get(idModule = idModule)
+        idClass_instance = FacultyClasses.objects.get(idClass = idClass)
+        semester_instance = Semester.objects.get(idSemester = idSemester)
+
+        try:
+            thisModuleClass = ModuleClass.objects.get(module = module_instance, idClass = idClass_instance)
+            thisModuleClass.max_slot = max_slot
+            thisScheduleModuleClass = ScheduleModuleClass.objects.filter(idModuleClass = thisModuleClass)
+            for schedule , thisSchedule in zip(tableSchedules, thisScheduleModuleClass):
+                thisSchedule.days_of_week = schedule[0]
+                thisSchedule.period_start = schedule[1]
+                thisSchedule.periods_count = schedule[2]
+                thisSchedule.start_date = schedule[3]
+                thisSchedule.end_date = schedule[4]
+                class_room_instance = ClassRoom.objects.get(idClassRoom=schedule[5])
+                thisSchedule.class_room = class_room_instance
+                thisSchedule.save()
+            
+            save_ScheduleExam(tableScheduleExam, thisModuleClass)
+            response_data['schedule'] = 'updated_schedule'
+            
+        except ModuleClass.DoesNotExist:
+            newModuleClass = ModuleClass(
+                module = module_instance,
+                idClass = idClass_instance,
+                semester = semester_instance,
+                max_slot = max_slot,
+            )
+            newModuleClass.save()
+            print(newModuleClass)
+            for schedule in  tableSchedules:
+                class_room_instance = ClassRoom.objects.get(idClassRoom = schedule[5])
+                newSchedule = ScheduleModuleClass(
+                    idModuleClass = newModuleClass,
+                    days_of_week = schedule[0],
+                    period_start = schedule[1],
+                    periods_count = schedule[2],
+                    start_date = schedule[3],
+                    end_date = schedule[4],
+                    class_room = class_room_instance
+                )
+                newSchedule.save()
+                newScheduleExam = ScheduleFinalExam(
+                idModuleClass = newModuleClass,
+                date_exam = tableScheduleExam[0],
+                period_start = tableScheduleExam[1],
+                class_room = class_room_instance
+            )
+            newScheduleExam.save()
+            response_data['schedule'] = 'added_new_ModuleClass'
+            return JsonResponse(response_data)
+
+
+
+
+def save_ScheduleExam(ScheduleExam_data, idModuleClass_data):
+    class_room_exam_instance = ClassRoom.objects.get(idClassRoom = ScheduleExam_data[2])
+    try:
+        thisScheduleExam = ScheduleFinalExam.objects.get(idModuleClass = idModuleClass_data)
+        thisScheduleExam.date_exam = ScheduleExam_data[0]
+        thisScheduleExam.period_start = ScheduleExam_data[1]
+        thisScheduleExam.class_room = class_room_exam_instance
+        thisScheduleExam.save()
+        print('updated')
+    
+    except ScheduleFinalExam.DoesNotExist:
+        newScheduleExam = ScheduleFinalExam(
+            idModuleClass = idModuleClass_data,
+            date_exam = ScheduleExam_data[0],
+            period_start = ScheduleExam_data[1],
+            class_room = class_room_exam_instance
+        )
+        newScheduleExam.save()
+        print('added')
+     
+
+

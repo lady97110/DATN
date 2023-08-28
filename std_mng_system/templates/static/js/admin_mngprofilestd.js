@@ -385,7 +385,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 ethnicityStd : $("#select-ethnicityStd-edit").val(),
                 graduate : $("#select-graduate-edit").val(),
             };
-            console.log(profile_data.datebirthStd);
             var requiredFields = document.querySelectorAll(".not-empty");
             var passed = true;
             requiredFields.forEach(function(field){

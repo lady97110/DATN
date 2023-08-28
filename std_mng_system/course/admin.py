@@ -11,7 +11,7 @@ admin.site.register(Semester, SemesterAdmin)
 
 
 #đăng ký bảng môn học sinh viên vào trang quản trị
-class Student_ModuleAdmin(admin.ModelAdmin):
+class Student_ModuleClassAdmin(admin.ModelAdmin):
     list_display = ('id', 'module_class_display', 'idStd_display', 'process_grade', 'final_grade', 'overall_grade', 'overall_grade_4', 'overall_grade_text', 'is_pass')
     search_fields = ('id','idSub','idStd', 'process_grade', 'final_grade', 'overall_grade', 'overall_grade_4', 'overall_grade_text','stt_pass')
   
@@ -25,7 +25,7 @@ class Student_ModuleAdmin(admin.ModelAdmin):
     idStd_display.short_description = 'MSSV'
 
     
-admin.site.register(Student_Module, Student_ModuleAdmin)
+admin.site.register(Student_ModuleClass, Student_ModuleClassAdmin)
 
 
 

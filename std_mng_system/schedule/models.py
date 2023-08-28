@@ -44,21 +44,12 @@ class ScheduleModuleClass(models.Model):
 #table lịch thi
 
 class ScheduleFinalExam(models.Model):
-    days_of_week = [                                                             #thu trong tuan
-        ('T2','T2'),
-        ('T3','T3'),
-        ('T4','T4'),
-        ('T5','T5'),
-        ('T6','T6'),
-        ('T7','T7'),
-        ('CN','CN'),
-    ]
     period_start = [                                                            #tiet bat dau
         ('1','1') , ('4','4'), ('7','7'), ('10','10'), ('13','13')
     ]
     idSFE = models.AutoField(primary_key=True)
     idModuleClass = models.ForeignKey(ModuleClass, on_delete=models.CASCADE, related_name='finalexam', verbose_name='Lớp học phần')
-    days_of_week = models.CharField(max_length=2, choices=days_of_week, verbose_name='Thứ')
+    date_exam = models.DateField(verbose_name= 'Ngày thi', null= True, blank= True)    
     period_start = models.CharField(max_length=2, choices=period_start, verbose_name='Tiết bắt đầu')
     class_room = models.ForeignKey(ClassRoom, on_delete=models.SET_NULL, verbose_name= 'Phòng học', null = True, blank= True)
 

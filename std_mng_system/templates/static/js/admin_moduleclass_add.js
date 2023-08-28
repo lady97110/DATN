@@ -57,6 +57,10 @@ document.addEventListener("DOMContentLoaded", function(){
     const room_td = document.getElementById("room-exam");
     get_room(room_td);
 
+    //danh sach kỳ
+    const semesterSelect = document.getElementById("list-semester");
+    get_semester(semesterSelect);
+
 
 
     //thêm các học phần vào danh sách mở lớp
@@ -81,7 +85,7 @@ addBtn.addEventListener("click", async function() {
                 index = index + 1;
                 add_row_choosen_module(data, index);
             } else {
-                throw new Error('Không có phản hồi từ sever');
+                throw new Error('Không có phản hồi từ server');
             }
         } catch (error) {
             alert('Lỗi xử lý dữ liệu');
@@ -90,10 +94,8 @@ addBtn.addEventListener("click", async function() {
 
     //nut cap nhat lich hoc
     const btnSchedules = document.querySelectorAll(".btn-schedule");
-    console.log(btnSchedules);
     btnSchedules.forEach(function (btnSchedule) {
             const row_choosen_module = btnSchedule.closest("tr");
-            console.log(row_choosen_module);
             btnSchedule.addEventListener("click", function(){
                 btnAddSchedule(row_choosen_module);
             });
@@ -111,11 +113,73 @@ addBtn.addEventListener("click", async function() {
 
 
     //nut luu thong tin lich hoc va lich thi
-
-    const rowListModule = document.querySelectorAll
+    //lay du lieu tu bang lich hoc de gui ve views
+    
     const btnSaveSchedule = document.getElementById("button-save-schedule");
     btnSaveSchedule.addEventListener("click",function(){
+        var tableSchedule = [];
+        var tableScheduleExam = [];
+
+        var rows_schedule = document.getElementById("tbody-schedule").rows;
+        
+        for (var i=0; i < rows_schedule.length; i++){
+            var rowData = [];
+            var cells = rows_schedule[i].cells;
+
+            for (var j=0; j < cells.length; j++) {
+                var inputElement = cells[j].querySelector("input");
+                var selectElement = cells[j].querySelector("select");
+                if (inputElement) {
+                    rowData.push(inputElement.value);
+                } else if (selectElement) {
+                    rowData.push(selectElement.value);
+                }
+            };
+            tableSchedule.push(rowData);
+        };
+        
+        var rows_schedule_exam = document.getElementById("tbody-finalexam").rows;
+        var date_exam = rows_schedule_exam[0].cells[0].querySelector("input").value;
+        tableScheduleExam.push(date_exam);
+        var start_period_exam = rows_schedule_exam[0].cells[2].querySelector("select").value;
+        tableScheduleExam.push(start_period_exam);
+        var room_exam = rows_schedule_exam[0].cells[3].querySelector("select").value;
+        tableScheduleExam.push(room_exam);
+        console.log(tableScheduleExam);
+       
+        const idClass = document.getElementById("info-moduleclass").getAttribute("data-value");
+        const idModule = document.getElementById("info-module").getAttribute("data-value");
+        const idSemester = document.getElementById("list-semester").value;
+        var max_slot = document.getElementById("max-slots").value;
+
+        const csrfToken = getCSRFToken();
+        var data_json = JSON.stringify({
+            'tableSchedule' : tableSchedule,
+            'tableScheduleExam' : tableScheduleExam,
+            'max_slot' : max_slot
+        });
+
+        console.log(data_json);
+        console.log(csrfToken);
+        $.ajax({
+            url : 'save-moduleclass/' + idClass + '/' + idModule + '/' + idSemester + '/',
+            method : 'post',
+            data : data_json,
+            contentType : 'application/json',
+            dataType : 'json',
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(data){
+
+            },
+            error: function(){
+
+            }
+        });
     });
+
+
 
     //popup close button
       
@@ -167,6 +231,26 @@ function add_row_choosen_module(module, index) {
     newRow.setAttribute("nameModule", module.nameModule);
 }
 
+
+//lay danh sach ky tu database
+function get_semester(semesterSelect) {
+    $.ajax({
+        url : 'get-semester/',
+        method : 'get',
+        dataType : 'json',
+        success : function(data){
+            data.semesters.forEach(function (semester) {
+                const option = document.createElement("option");
+                option.value = semester.idSemester;
+                option.textContent = semester.nameSemester;
+                semesterSelect.appendChild(option);
+            });
+        },
+        error: function(){
+            alert("Lỗi khi lấy danh sách kỳ học");
+        },
+    });
+}
 
 
 //lay danh sách phong tu database
@@ -252,6 +336,20 @@ function btnAddSchedule(row){
     idModuleClass.setAttribute("data-value",choosen_class_value);
 
     const choosen_module_value = document.getElementById("info-module");
+    choosen_module_value.setAttribute("data-value", row.getAttribute("idModule"));
     choosen_module_value.textContent = row.getAttribute("idModule") + " - " + row.getAttribute("nameModule");
 
 };
+
+
+//tao xac nhan csrftoken
+function getCSRFToken() {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].split('=');
+        if (cookie[0] === 'csrftoken') {
+            return cookie[1];
+        }
+    }
+    return null;
+}
