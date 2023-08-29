@@ -13,55 +13,65 @@
 {% block titlepage %}QUẢN LÝ LỚP HỌC PHẦN{% endblock %}
 
 {% block content %}
-<div class="">
-   <div class="choose-idClass">
-       <h5>Thêm lớp môn học</h5>
-       <label>
-            <span>Khoa:</span>
-            <select id="list-faculty" >
-            </select>
-       </label>
-       <label>
-            <span>Ngành:</span>
-            <select id="list-department">
-            </select>
-       </label>
-       <label>
-            <span>Khóa:</span>
-            <select id="list-idCourse">
-            </select>
-       </label>
-       <label>
-            <span>Lớp:</span>
-            <select id="list-class">
-            </select>
-       </label>
-       <label>
-            <span>Tìm lớp:</span>
-            <input id="search-value"></input>
-            <button id="search-btn" type="button">Tìm</button>
-       </label>
-    </div>
+<div class="site-view">
+     <div>
+          <h5 id="search-class">Tìm lớp</h5>
+          <div class="choose-idClass">
+               <div class="filter-select">
+                    <span>Khoa</span>
+                    <select id="list-faculty" >
+                    </select>
+               </div>
+               <div class="filter-select">
+                    <span>Ngành</span>
+                    <select id="list-department">
+                    </select>
+               </div>
+               <div class="filter-select">
+                    <span>Khóa</span>
+                    <select id="list-idCourse">
+                    </select>
+               </div>
+               <div class="filter-select">
+                    <span>Lớp</span>
+                    <select id="list-class">
+                    </select>
+               </div>
+               <div class="filter-select ms-auto">
+                    <span>Tìm kiếm</span>
+                    <div>
+                         <input id="search-value"></input>
+                         <button id="search-btn" type="button">
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                         </button>
+                    </div>
+               </div>
+          </div>
+     </div>
     <div class="search-results">
-          <table class="table-class" id="list-idClass">
-               <thead>
-                    <tr>
-                         <th>Lớp</th>
-                         <th>Khoa</th>
-                         <th>Ngành</th>
-                         <th>Khóa</th>
-                    </tr>
-               </thead>
-               <tbody id="table-body">
-               </tbody>
-          </table>
+          <div  class = "d-flex">
+               <table class="table-class" id="list-idClass">
+                    <thead>
+                         <tr>
+                              <th>Lớp</th>
+                              <th>Khoa</th>
+                              <th>Ngành</th>
+                              <th>Khóa</th>
+                         </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+               </table>
+          </div>
     </div>
 
+    <hr>
+
     <div class="add-moduleclass">
-          <h5>Tạo học phần cho lớp</h5>
-          <label>
-               <span>Lớp đã chọn:</span>
-               <span id="choosen-class"></span>
+          <label id="manage-center">
+               <h5>QUẢN LÝ HỌC PHẦN</h5>
+               <span id="choosen-class">LỚP:</span>
+               <span ></span>
           </label>
           <label>
                <button id="get-list-module">Lấy danh sách môn học</button>
@@ -71,7 +81,9 @@
     <div class="added-moduleclass">
           <label>
                <span>Học kỳ</span>
-               <select id="list-semester"></select>
+               <select id="list-semester">
+                    <option value="0">-- Học kỳ --</option>
+               </select>
           </label>
           <h5>Môn học đã chọn</h5>
           <table class="">

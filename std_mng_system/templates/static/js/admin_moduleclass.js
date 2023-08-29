@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(){
             optionFaculty.innerHTML = '';
             const option = document.createElement("option");
             option.value = "0";
-            option.textContent = "----- Chọn khoa -----";
+            option.textContent = "----- Khoa -----";
             optionFaculty.appendChild(option);
             data.faculties.forEach(function(faculty) {
                 const option = document.createElement("option");
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function(){
     optionDepartment = document.getElementById("list-department");
     const option_department = document.createElement('option');
     option_department.value = "0";
-    option_department.textContent = "----- Chọn ngành -----";
+    option_department.textContent = "----- Ngành -----";
     optionDepartment.appendChild(option_department);
 
 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 optionDepartment.innerHTML = '';
                 const option = document.createElement('option');
                 option.value = "0";
-                option.textContent = "----- Chọn ngành -----";
+                option.textContent = "----- Ngành -----";
                 optionDepartment.appendChild(option);
                 data.departments.forEach(function (department) {
                     const option = document.createElement('option');
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 optionidCourse.innerHTML = '';
                 const option = document.createElement('option');
                 option.value = "0";
-                option.textContent = "----- Chọn khóa -----";
+                option.textContent = "----- Khóa -----";
                 optionidCourse.appendChild(option);
                 data.idCourses.forEach(function(idCourse) {
                     const option = document.createElement('option');
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 optionClass.innerHTML = '';
                 const option = document.createElement('option');
                 option.value = "";
-                option.textContent = "----- Chọn lớp -----";
+                option.textContent = "----- Lớp -----";
                 optionClass.appendChild(option);
                 data.classes.forEach(function(classe){
                     const option = document.createElement('option');
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function choosen_class(idClass){
         const choosen_class_value = document.getElementById("choosen-class");
-        choosen_class_value.textContent = idClass;
+        choosen_class_value.textContent = "LỚP: " + idClass;
         choosen_class_value.setAttribute("data-value", idClass);
     };
 

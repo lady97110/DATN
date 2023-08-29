@@ -38,7 +38,7 @@ class Module(models.Model):
 #bang lop hoc phan
 class ModuleClass(models.Model):
     idModuleClass = models.AutoField(primary_key=True, verbose_name="Mã lớp học phần")
-    module = models.ForeignKey(Module, on_delete= models.CASCADE, verbose_name= "Tên học phần")
+    module = models.ForeignKey(Module, on_delete= models.CASCADE, related_name="ModuleClass_module", verbose_name= "Tên học phần")
     idClass = models.ForeignKey(FacultyClasses, on_delete = models.CASCADE, verbose_name= 'Lớp học phần', related_name='Module_of_idClass')
     semester = models.ForeignKey(Semester, on_delete= models.CASCADE, verbose_name= 'Học kỳ')
     max_slot = models.PositiveIntegerField(verbose_name="Sĩ số tối đa")

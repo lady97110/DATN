@@ -88,6 +88,10 @@ table{
     width: 100%;
 }
 
+tbody{
+    background:  #ffffff;
+}
+
 th{
     background:  #d9dcdf;
     border: 1px solid;

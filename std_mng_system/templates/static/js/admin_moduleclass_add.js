@@ -60,6 +60,12 @@ document.addEventListener("DOMContentLoaded", function(){
     //danh sach kỳ
     const semesterSelect = document.getElementById("list-semester");
     get_semester(semesterSelect);
+    semesterSelect.addEventListener("change",function(){
+        const idClass = document.getElementById("choosen-class").getAttribute("data-value");
+        const idSemester = semesterSelect.value;
+        get_moduleclass(idClass, idSemester);
+    });
+
 
 
 
@@ -352,4 +358,27 @@ function getCSRFToken() {
         }
     }
     return null;
+}
+
+
+//lay danh sach mon hoc theo lop + hoc ky
+
+function get_moduleclass(idClass, idSemester) {
+    $.ajax({
+    url : 'get-moduleclass/' + idClass + '/' + idSemester + '/',
+    method : 'GET',
+    dataType : 'json',
+    success : function(data){
+        console.log(data);
+        const module = document.getElementById("choosen-module");
+        module.innerHTML = "";
+        var index = 0;
+        data.modules.forEach(function (module) {
+            index = index + 1;
+            add_row_choosen_module(module, index)
+        });
+    },
+    error : function(){
+    }
+    });
 }

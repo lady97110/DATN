@@ -3,6 +3,78 @@
     cursor: pointer;
 }
 
+
+input, select {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
 #list-idClass{
     display: none;
+}
+
+.site-view{
+    padding: 20px;
+}
+
+
+.choose-idClass{
+    display: flex;
+}
+
+.filter-select{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.filter-select > span{
+    font-weight: 600;
+}
+
+.search-results{
+    margin-top: 30px;
+    padding-left: 40px;
+}
+
+th, td{
+    border:1px solid black;
+    padding: 5px 10px;
+    text-align: center;
+}
+
+
+tbody{
+    background-color: white;
+}
+
+thead{
+    background-color:  #d9dcdf;
+    border-bottom: 1px solid;
+}
+
+#list-idClass{
+    max-height: 176px;
+    overflow-y:auto;
+    border: 2px solid rgb(133, 130, 130);
+}
+
+#list-idClass thead{
+    position: sticky;
+    top: 0;
+}
+
+
+#search-class{
+    max-width: 50%;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(197, 186, 186);
+}
+
+#manage-center{
+    display: flex;
+}
+
+#manage-center h5, #manage-center span {
+    flex-grow: 1;
 }
