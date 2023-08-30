@@ -13,5 +13,6 @@ urlpatterns = [
     path('get-semester/', views.get_semester, name='get_semester'),
     path('get-moduleclass/<str:idClass>/<idSemester>/', views.get_module_idClass_idSemester, name = 'get_moduleclass'),
     path('save-moduleclass/<str:idClass>/<str:idModule>/<str:idSemester>/', views.save_moduleclass, name='save_moduleclass'),
-
+    path('delete-moduleclass/<str:idClass>/<str:idModule>/', views.delete_moduleclass, name='delete_moduleclass'),
+    path('check-moduleclass-exist/<str:idClass>/<str:idModule>/', views.check_moduleclass_exist, name='check_moduleclass_exist')
 ]

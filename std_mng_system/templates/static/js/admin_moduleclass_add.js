@@ -61,9 +61,9 @@ document.addEventListener("DOMContentLoaded", function(){
     const semesterSelect = document.getElementById("list-semester");
     get_semester(semesterSelect);
     semesterSelect.addEventListener("change",function(){
-        const idClass = document.getElementById("choosen-class").getAttribute("data-value");
-        const idSemester = semesterSelect.value;
-        get_moduleclass(idClass, idSemester);
+    const idClass = document.getElementById("choosen-class").getAttribute("data-value");
+    const idSemester = semesterSelect.value;
+    get_moduleclass(idClass, idSemester);
     });
 
 
@@ -77,7 +77,6 @@ addBtn.addEventListener("click", async function() {
     document.getElementById("popup").style.display = "none";
     const checkboxes = document.querySelectorAll("#tbody-module input[type='checkbox']:checked");
     const choosen_module = document.getElementById("choosen-module");
-    choosen_module.innerHTML = "";
     var index = 0;
 
     for (const checkbox of checkboxes) {
@@ -88,8 +87,9 @@ addBtn.addEventListener("click", async function() {
             const response = await fetch('get-module-byidModule/' + idModule + '/');
             if (response.ok) {
                 const data = await response.json();
-                index = index + 1;
-                add_row_choosen_module(data, index);
+                var index = index + 1;
+                const exist_in_db = false;
+                add_row_choosen_module(data, index, exist_in_db);
             } else {
                 throw new Error('Không có phản hồi từ server');
             }
@@ -151,7 +151,6 @@ addBtn.addEventListener("click", async function() {
         tableScheduleExam.push(start_period_exam);
         var room_exam = rows_schedule_exam[0].cells[3].querySelector("select").value;
         tableScheduleExam.push(room_exam);
-        console.log(tableScheduleExam);
        
         const idClass = document.getElementById("info-moduleclass").getAttribute("data-value");
         const idModule = document.getElementById("info-module").getAttribute("data-value");
@@ -165,8 +164,6 @@ addBtn.addEventListener("click", async function() {
             'max_slot' : max_slot
         });
 
-        console.log(data_json);
-        console.log(csrfToken);
         $.ajax({
             url : 'save-moduleclass/' + idClass + '/' + idModule + '/' + idSemester + '/',
             method : 'post',
@@ -203,7 +200,7 @@ addBtn.addEventListener("click", async function() {
 
 
 //them row cho bang hoc phan da chon
-function add_row_choosen_module(module, index) {
+function add_row_choosen_module(module, index, exist_in_db) {
     const choosen_module = document.getElementById("choosen-module");
     const newRow = document.createElement("tr");
     newRow.classList.add("row-choosen-module");
@@ -224,17 +221,47 @@ function add_row_choosen_module(module, index) {
     cell4.textContent = module.credits;
     newRow.appendChild(cell4);
 
-    const cell6 = document.createElement("td");
+    const cell5 = document.createElement("td");
     const btnschedule = document.createElement("button");
     btnschedule.textContent= "Cập nhật";
     btnschedule.classList.add("btn-schedule");
-    cell6.appendChild(btnschedule);
+    cell5.appendChild(btnschedule);
+    newRow.appendChild(cell5);
+
+
+    const cell6 = document.createElement("td");
+    if(exist_in_db){
+        cell6.textContent = "đã lưu";
+    }
+    else{
+        cell6.textContent = "chưa lưu";
+    };
     newRow.appendChild(cell6);
+
+
+
+    const cell7 = document.createElement("td");
+    cell7.classList.add("action");
+    const btndelete = document.createElement("button");
+    btndelete.classList.add("btn-custom");
+    const icontrash = document.createElement("i");
+    icontrash.classList.add("fa","fa-trash", "trash-icon");
+    btndelete.appendChild(icontrash);
+    cell7.appendChild(btndelete);
+    newRow.appendChild(cell7);
 
     choosen_module.appendChild(newRow);
 
     newRow.setAttribute("idModule", module.idModule);
     newRow.setAttribute("nameModule", module.nameModule);
+
+
+    const idClass = document.getElementById("choosen-class").getAttribute("data-value");
+    const idModule = module.idModule;
+    btndelete.addEventListener("click", function () {
+    delete_moduleclass(idClass, idModule, newRow);
+    });
+        
 }
 
 
@@ -369,16 +396,54 @@ function get_moduleclass(idClass, idSemester) {
     method : 'GET',
     dataType : 'json',
     success : function(data){
-        console.log(data);
         const module = document.getElementById("choosen-module");
         module.innerHTML = "";
         var index = 0;
         data.modules.forEach(function (module) {
-            index = index + 1;
-            add_row_choosen_module(module, index)
+            var index = index + 1;
+            const exist_in_db = true;
+            add_row_choosen_module(module, index, exist_in_db);
         });
     },
     error : function(){
     }
+    });
+}
+
+
+//xoa mon hoc tu danh sach mon hoc thuoc lop
+function delete_moduleclass(idClass, idModule, row) {
+    console.log(idClass);
+    $.ajax({
+        url : 'delete-moduleclass/'+idClass+'/'+idModule+'/',
+        method : 'get',
+        dataType : 'json',
+        success: function(data){
+            if (data.result == "deleted"){
+                alert("Xóa thành công");
+                row.remove();
+            }
+            else {
+                row.remove();
+            };
+        },
+        error: function () {
+            alert("có lỗi trong quá trình xử lý");
+        }
+    });
+}
+
+
+function check_moduleclass_exist(idClass, idMoudle) {
+    $.ajax({
+        url: 'check-moduleclass-exist/' + idClass + '/' + idMoudle + '/',
+        method: 'get',
+        dataType: 'json',
+        success: function(data){
+
+        },
+        error: function(){
+
+        }
     });
 }

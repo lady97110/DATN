@@ -15,7 +15,7 @@
 {% block content %}
 <div class="site-view">
      <div>
-          <h5 id="search-class">Tìm lớp</h5>
+          <h5 id="search-class">LỚP</h5>
           <div class="choose-idClass">
                <div class="filter-select">
                     <span>Khoa</span>
@@ -68,25 +68,18 @@
     <hr>
 
     <div class="add-moduleclass">
+          <h5 id="title-center">HỌC PHẦN</h5>
           <label id="manage-center">
-               <h5>QUẢN LÝ HỌC PHẦN</h5>
                <span id="choosen-class">LỚP:</span>
-               <span ></span>
-          </label>
-          <label>
-               <button id="get-list-module">Lấy danh sách môn học</button>
-          </label>
-    </div>
-
-    <div class="added-moduleclass">
-          <label>
-               <span>Học kỳ</span>
+               <div>
                <select id="list-semester">
                     <option value="0">-- Học kỳ --</option>
                </select>
+               </div>
           </label>
-          <h5>Môn học đã chọn</h5>
-          <table class="">
+    </div>
+    <div class="added-moduleclass">
+          <table class="table-choosenmodule">
                <thead>
                     <tr>
                          <th></th>
@@ -94,13 +87,19 @@
                          <th>Tên học phần</th>
                          <th>Tín chỉ</th>
                          <th>Lịch học</th>
+                         <th></th>
+                         <th class="action"></th>
                     </tr>
                </thead>
                <tbody id="choosen-module">
                </tbody>
           </table>
+<label>
+     <button id="get-list-module">Thêm học phần</button>
+</label>
     </div>
 </div>
+
 
 <div>
      <div id="popup" class="popup">

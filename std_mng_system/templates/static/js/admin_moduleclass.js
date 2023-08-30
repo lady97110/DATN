@@ -151,6 +151,8 @@ document.addEventListener("DOMContentLoaded", function(){
     };
 
 
+
+    //bang ket qua tim kiem lop
     function get_search_class() {
         const search_value = document.getElementById("search-value").value;
         const result_rows = document.getElementById("table-body");
@@ -188,6 +190,9 @@ document.addEventListener("DOMContentLoaded", function(){
                     newRow.addEventListener("click",function () {
                         idClass = newRow.getAttribute("idClass");
                         choosen_class(idClass);
+                        const semesterSelect = document.getElementById("list-semester");
+                        const idSemester = semesterSelect.value;
+                        get_moduleclass(idClass, idSemester);
                     });
 
                 });

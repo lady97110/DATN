@@ -107,6 +107,29 @@ def get_module_idClass_idSemester(request, idClass, idSemester):
     return JsonResponse({'modules': modules})
 
 
+#check môn học đã lưu trong database  hay chua
+@login_required(login_url='login_admin')
+def check_moduleclass_exist(request, idClass, idModule):
+    try:
+        get_moduleclass = ModuleClass.objects.get(idClass__idClass = idClass, module__idModule = idModule)
+        return JsonResponse({'exist': True})
+    except ModuleClass.DoesNotExist:
+        return JsonResponse({'exist': False})
+
+
+#xoa mon hoc thuoc lop
+@login_required(login_url='login_admin')
+def delete_moduleclass(request, idClass, idModule):
+    response_data ={}
+    try:
+        moduleclass = ModuleClass.objects.get(idClass__idClass= idClass, module__idModule=idModule)
+        moduleclass.delete()
+        response_data['result'] = 'deleted'
+        return JsonResponse(response_data)
+    except ModuleClass.DoesNotExist:
+        response_data['result'] = 'delete_failed'
+        return JsonResponse(response_data)
+
 
 # luu thong tin ve lop mon hoc da tao
 @login_required(login_url='login_admin')

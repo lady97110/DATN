@@ -66,15 +66,61 @@ thead{
 
 
 #search-class{
-    max-width: 50%;
+    display: inline-block;
     padding-bottom: 5px;
-    border-bottom: 1px solid rgb(197, 186, 186);
+    border-bottom: 1px solid rgb(0, 0, 0);
 }
 
 #manage-center{
     display: flex;
+    margin-top: 20px;
 }
 
-#manage-center h5, #manage-center span {
+#manage-center div, #manage-center span {
     flex-grow: 1;
+}
+
+#choosen-class{
+    font-weight: 600;
+}
+
+
+#title-center{
+    
+    display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.added-moduleclass{
+        margin-top: 30px;
+        padding-left: 40px;
+        display: inline-block;
+}
+
+
+.added-moduleclass>label{
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.added-moduleclass>label>button{
+    margin-left: auto;
+}
+
+
+.table-choosenmodule{
+    border: 2px solid rgb(133, 130, 130);
+}
+
+.trash-icon {
+    color: rgb(255, 255, 255); 
+    background-color: rgb(212, 20, 20); 
+    padding: 5px; 
+}
+
+.btn-custom{
+    background-color: #ffffff !important;
+    border-color: #ffffff;
 }
