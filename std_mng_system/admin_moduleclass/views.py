@@ -141,7 +141,6 @@ def get_schedule_detail(request, idClass, idModule):
 
     schedule_data = [model_to_dict(schedule) for schedule in schedule_list]
     schedule_exam_data = model_to_dict(schedule_exam)
-
     return JsonResponse({'schedule_data': schedule_data, 'schedule_exam_data': schedule_exam_data})
 
 

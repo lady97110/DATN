@@ -323,7 +323,7 @@ function get_semester(semesterSelect) {
 
 
 //lay danh sách phong tu database
-function get_room(td_room) {
+function get_room(td_room, currentvalue) {
     $.ajax({
         url: 'get-room/',
         method: 'get',
@@ -338,6 +338,7 @@ function get_room(td_room) {
                 roomSelect.appendChild(option);
             });
             td_room.appendChild(roomSelect);
+            roomSelect.value = currentvalue;
         },
         error : function(){
 
@@ -349,13 +350,13 @@ function get_room(td_room) {
 
 
 //lay thong tin ve lich hoc tu database
-function get_schedule_detail(idClass, idModule){
+function get_schedule_detail(idClass, idModule, callback){
     $.ajax({
         url: 'get-schedule-detail/'+ idClass+'/'+ idModule + '/',
         method: 'GET',
         dataType: 'json',
         success: function(data){
-            console.log(data.shedule_data);
+            callback(data);
         },
         error: function(){
 
@@ -367,7 +368,7 @@ function get_schedule_detail(idClass, idModule){
 
 
 //ham tao them row cho lich hoc chi tiet
-function add_rows_schedule() {
+function add_rows_schedule(schedule) {
     const period_start = document.getElementById("period-start").querySelector("select");
     const dayofweek = document.getElementById("dayofweek").querySelector("select");
     const tbody_schedule = document.getElementById("tbody-schedule");
@@ -377,36 +378,40 @@ function add_rows_schedule() {
     const cell1 = document.createElement("td");
     const dayofweekclone = dayofweek.cloneNode(true);
     cell1.appendChild(dayofweekclone);
+    dayofweekclone.value = schedule.days_of_week;
     tr_schedule.appendChild(cell1);
 
     
     const cell2 = document.createElement("td");
     const period_startclone = period_start.cloneNode(true);
     cell2.appendChild(period_startclone);
+    period_startclone.value = schedule.period_start;
     tr_schedule.appendChild(cell2);
 
     const cell3 = document.createElement("td");
     const input_period = document.createElement("input");
     input_period.type = "number";
-    input_period.value = "3";
+    input_period.value = schedule.periods_count;
     cell3.appendChild(input_period);
     tr_schedule.appendChild(cell3);
 
     const cell4 = document.createElement("td");
     const input_startdate = document.createElement("input");
     input_startdate.type = "date";
+    cell4.value = schedule.start_date;
     cell4.appendChild(input_startdate);
     tr_schedule.appendChild(cell4);
 
     const cell5 = document.createElement("td");
     const input_enddate = document.createElement("input");
     input_enddate.type = "date";
+    cell5.value = schedule.end_date;
     cell5.appendChild(input_enddate);
     tr_schedule.appendChild(cell5);
 
     const cell6 = document.createElement("td");
     tr_schedule.appendChild(cell6);
-    get_room(cell6);
+    get_room(cell6, schedule.class_room);
 
     tbody_schedule.appendChild(tr_schedule);
 }
@@ -418,14 +423,21 @@ function btnAddSchedule(row){
     document.getElementById("popup-schedule").style.display = "block";
     document.getElementById("tbody-schedule").innerHTML = "";
 
-    const choosen_class_value = document.getElementById("choosen-class").getAttribute("data-value");
+    const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const idModuleClass = document.getElementById("info-moduleclass");
-    idModuleClass.textContent = "Lớp " + choosen_class_value;
-    idModuleClass.setAttribute("data-value",choosen_class_value);
+    idModuleClass.textContent = "Lớp " + idClass;
+    idModuleClass.setAttribute("data-value",idClass);
 
-    const choosen_module_value = document.getElementById("info-module");
-    choosen_module_value.setAttribute("data-value", row.getAttribute("idModule"));
-    choosen_module_value.textContent = row.getAttribute("idModule") + " - " + row.getAttribute("nameModule");
+    const idModuel = document.getElementById("info-module");
+    idModuel.setAttribute("data-value", row.getAttribute("idModule"));
+    idModuel.textContent = row.getAttribute("idModule") + " - " + row.getAttribute("nameModule");
+
+    const idModule = row.getAttribute("idModule");
+    get_schedule_detail(idClass, idModule, function (data) {
+        data.schedule_data.forEach(function (schedule) {
+            add_rows_schedule(schedule);
+        });
+    });
 };
 
 
