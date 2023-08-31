@@ -12,7 +12,7 @@
   .popup-content {
     background-color: white;
     max-width: 90%;
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 20px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   }
@@ -30,3 +30,25 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+
+#list-module{
+    max-height: 316px;
+    overflow-y: auto;
+    border: 2px solid rgb(133, 130, 130);
+}
+
+#list-module thead {
+    position: sticky;
+    top: 0;
+}
+
+#filter-checkbox{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+#filter-checkbox > div{
+  margin-left: 20px;
+}

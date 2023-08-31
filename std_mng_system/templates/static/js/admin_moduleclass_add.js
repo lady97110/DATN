@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const get_list_modulBtn = document.getElementById("get-list-module");
     get_list_modulBtn.addEventListener("click", function(){
         const idClass = document.getElementById("choosen-class").getAttribute("data-value");
+        document.getElementById("idClass-choose-module").textContent = "LỚP: "+idClass;
         if(idClass !== null && idClass !== ""){
             $.ajax({
                 url : 'get-list-module/' + idClass +'/',
@@ -42,8 +43,44 @@ document.addEventListener("DOMContentLoaded", function(){
                         cell5.textContent = module.department;
                         newRow.appendChild(cell5);
 
+                        const cell6 = document.createElement("td");
+                        newRow.appendChild(cell6);
+
                         tbody_module.appendChild(newRow);
+
+                        check_moduleclass_exist(idClass, module.idModule, function (exist) {
+                            if (exist === true) {
+                                cell6.textContent = "Đã tồn tại";
+                                checkbox.disabled = true;
+                                cell6.setAttribute("exist", "1");
+                            }
+                            else{
+                                cell6.textContent = "Chưa tồn tại";
+                                cell6.setAttribute("exist", "0");
+                            };
+                        });
                     });
+
+
+                    const getallmodule = tbody_module.querySelectorAll("tr");
+                    const checkedbox_all = document.getElementById("flexRadioDefault1");
+                    checkedbox_all.addEventListener("click", function () {
+                        
+                        checkbox_all(getallmodule);                      
+                    });
+
+                    const checkedbox_exist = document.getElementById("flexRadioDefault2");
+                    checkedbox_exist.addEventListener("click", function () {
+                        
+                        checkbox_exist(getallmodule);                      
+                    });
+
+                    const checkedbox_non_exist = document.getElementById("flexRadioDefault3");
+                    checkedbox_non_exist.addEventListener("click", function () {
+                        
+                        checkbox_non_exist(getallmodule);                      
+                    })
+
                 },
             });
         }
@@ -77,7 +114,8 @@ addBtn.addEventListener("click", async function() {
     document.getElementById("popup").style.display = "none";
     const checkboxes = document.querySelectorAll("#tbody-module input[type='checkbox']:checked");
     const choosen_module = document.getElementById("choosen-module");
-    var index = 0;
+    const length_tbody = choosen_module.childElementCount;
+    var index = length_tbody;
 
     for (const checkbox of checkboxes) {
         const row = checkbox.closest("tr");
@@ -96,17 +134,8 @@ addBtn.addEventListener("click", async function() {
         } catch (error) {
             alert('Lỗi xử lý dữ liệu');
         }
-    }
-
-    //nut cap nhat lich hoc
-    const btnSchedules = document.querySelectorAll(".btn-schedule");
-    btnSchedules.forEach(function (btnSchedule) {
-            const row_choosen_module = btnSchedule.closest("tr");
-            btnSchedule.addEventListener("click", function(){
-                btnAddSchedule(row_choosen_module);
-            });
-        });   
-    });   
+    }  
+});   
   
 
     //nut them hang cho lich hoc
@@ -258,10 +287,17 @@ function add_row_choosen_module(module, index, exist_in_db) {
 
     const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const idModule = module.idModule;
+
+    //them su kien cho nut xoa module
     btndelete.addEventListener("click", function () {
-    delete_moduleclass(idClass, idModule, newRow);
-    });
-        
+    delete_moduleclass(idClass, idModule, newRow, updateRowNumbers);
+        });
+
+
+    //them su kien cho nut cap nhat lich hoc
+    btnschedule.addEventListener("click", function(){
+        btnAddSchedule(newRow);
+        });  
 }
 
 
@@ -310,6 +346,26 @@ function get_room(td_room) {
 }
 
 
+
+
+//lay thong tin ve lich hoc tu database
+function get_schedule_detail(idClass, idModule){
+    $.ajax({
+        url: 'get-schedule-detail/'+ idClass+'/'+ idModule + '/',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data){
+            console.log(data.shedule_data);
+        },
+        error: function(){
+
+        },
+    });
+}
+
+
+
+
 //ham tao them row cho lich hoc chi tiet
 function add_rows_schedule() {
     const period_start = document.getElementById("period-start").querySelector("select");
@@ -353,7 +409,6 @@ function add_rows_schedule() {
     get_room(cell6);
 
     tbody_schedule.appendChild(tr_schedule);
-
 }
 
 
@@ -371,7 +426,6 @@ function btnAddSchedule(row){
     const choosen_module_value = document.getElementById("info-module");
     choosen_module_value.setAttribute("data-value", row.getAttribute("idModule"));
     choosen_module_value.textContent = row.getAttribute("idModule") + " - " + row.getAttribute("nameModule");
-
 };
 
 
@@ -400,9 +454,10 @@ function get_moduleclass(idClass, idSemester) {
         module.innerHTML = "";
         var index = 0;
         data.modules.forEach(function (module) {
-            var index = index + 1;
+            var currentindex = index + 1;
             const exist_in_db = true;
-            add_row_choosen_module(module, index, exist_in_db);
+            add_row_choosen_module(module, currentindex, exist_in_db);
+            index += 1;
         });
     },
     error : function(){
@@ -412,8 +467,7 @@ function get_moduleclass(idClass, idSemester) {
 
 
 //xoa mon hoc tu danh sach mon hoc thuoc lop
-function delete_moduleclass(idClass, idModule, row) {
-    console.log(idClass);
+function delete_moduleclass(idClass, idModule, row , callback) {
     $.ajax({
         url : 'delete-moduleclass/'+idClass+'/'+idModule+'/',
         method : 'get',
@@ -422,9 +476,12 @@ function delete_moduleclass(idClass, idModule, row) {
             if (data.result == "deleted"){
                 alert("Xóa thành công");
                 row.remove();
+                callback();
+
             }
             else {
                 row.remove();
+                callback();
             };
         },
         error: function () {
@@ -433,17 +490,75 @@ function delete_moduleclass(idClass, idModule, row) {
     });
 }
 
-
-function check_moduleclass_exist(idClass, idMoudle) {
+// kiẻm tra mon hoc da ton tai trong moduleclass hay chua
+function check_moduleclass_exist(idClass, idMoudle, callback) {
     $.ajax({
         url: 'check-moduleclass-exist/' + idClass + '/' + idMoudle + '/',
         method: 'get',
         dataType: 'json',
         success: function(data){
 
+            callback(data.exist);
+
         },
         error: function(){
 
         }
+    });
+}
+
+
+
+
+//filter checkbox da ton tai
+
+function checkbox_exist(alltr) {
+    alltr.forEach(function(tr){
+        const alltd = tr.querySelectorAll("td");
+        const value = alltd[5].getAttribute("exist");
+        if (value === "0"){
+            
+            tr.style.display = "none";
+        }
+        else if (value === "1"){
+            
+            tr.style.display = "table-row";
+        };
+    });
+}
+
+//filter checbox chua ton tai
+
+function checkbox_non_exist(alltr) {
+    alltr.forEach(function(tr){
+        const alltd = tr.querySelectorAll("td");
+        const value = alltd[5].getAttribute("exist");
+        if (value === "0"){
+            tr.style.display = "table-row";
+        }
+        else if (value === "1"){
+            tr.style.display = "none";
+        };
+    });
+    
+}
+
+//filter checkboxx tat ca
+function checkbox_all(alltr) {
+    alltr.forEach(function(tr){
+        tr.style.display = "table-row";
+    });
+    
+}
+
+//update lai stt
+function updateRowNumbers() {
+    const tbody = document.getElementById("choosen-module");
+    const rows = tbody.querySelectorAll("tr");
+    index = 0;
+    rows.forEach(function (row) {
+        const numberCell = row.querySelector("td:first-child");
+        numberCell.textContent = index + 1;
+        index += 1;
     });
 }

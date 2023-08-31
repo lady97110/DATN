@@ -129,6 +129,20 @@ def delete_moduleclass(request, idClass, idModule):
     except ModuleClass.DoesNotExist:
         response_data['result'] = 'delete_failed'
         return JsonResponse(response_data)
+    
+
+
+#lay lich hoc va lich thi tu database
+@login_required(login_url='login_admin')
+def get_schedule_detail(request, idClass, idModule):
+    moduleclass = ModuleClass.objects.get(idClass__idClass = idClass, module__idModule = idModule)
+    schedule_list = ScheduleModuleClass.objects.filter(idModuleClass = moduleclass)
+    schedule_exam = ScheduleFinalExam.objects.get(idModuleClass = moduleclass)
+
+    schedule_data = [model_to_dict(schedule) for schedule in schedule_list]
+    schedule_exam_data = model_to_dict(schedule_exam)
+
+    return JsonResponse({'schedule_data': schedule_data, 'schedule_exam_data': schedule_exam_data})
 
 
 # luu thong tin ve lop mon hoc da tao

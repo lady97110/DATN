@@ -124,3 +124,12 @@ thead{
     background-color: #ffffff !important;
     border-color: #ffffff;
 }
+
+
+.list-module-div{
+    display: inline-block;
+}
+
+.add-btn{
+    margin-top: 10px;
+}

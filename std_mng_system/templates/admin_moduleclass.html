@@ -19,7 +19,7 @@
           <div class="choose-idClass">
                <div class="filter-select">
                     <span>Khoa</span>
-                    <select id="list-faculty" >
+                    <select id="list-faculty">
                     </select>
                </div>
                <div class="filter-select">
@@ -48,8 +48,8 @@
                </div>
           </div>
      </div>
-    <div class="search-results">
-          <div  class = "d-flex">
+     <div class="search-results">
+          <div class="d-flex">
                <table class="table-class" id="list-idClass">
                     <thead>
                          <tr>
@@ -63,22 +63,22 @@
                     </tbody>
                </table>
           </div>
-    </div>
+     </div>
 
-    <hr>
+     <hr>
 
-    <div class="add-moduleclass">
+     <div class="add-moduleclass">
           <h5 id="title-center">HỌC PHẦN</h5>
           <label id="manage-center">
                <span id="choosen-class">LỚP:</span>
                <div>
-               <select id="list-semester">
-                    <option value="0">-- Học kỳ --</option>
-               </select>
+                    <select id="list-semester">
+                         <option value="0">-- Học kỳ --</option>
+                    </select>
                </div>
           </label>
-    </div>
-    <div class="added-moduleclass">
+     </div>
+     <div class="added-moduleclass">
           <table class="table-choosenmodule">
                <thead>
                     <tr>
@@ -94,12 +94,11 @@
                <tbody id="choosen-module">
                </tbody>
           </table>
-<label>
-     <button id="get-list-module">Thêm học phần</button>
-</label>
-    </div>
+          <label>
+               <button id="get-list-module">Thêm học phần</button>
+          </label>
+     </div>
 </div>
-
 
 <div>
      <div id="popup" class="popup">
@@ -108,29 +107,52 @@
                     <span class="close" id="closePopup">&times;</span>
                </div>
                <div class="body-popup">
-                    <h5>Danh sách học phần</h5>
+                    <label>
+                         <h5>Danh sách học phần</h5>
+                         <h5 id="idClass-choose-module"></h5>
+                    </label>
                     <hr>
-                    <table class="list-module">
-                         <thead>
-                              <tr>
-                                   <th></th>
-                                   <th>Mã học phần</th>
-                                   <th>Tên học phần</th>
-                                   <th>Số tín</th>
-                                   <th>Chuyên ngành</th>
-                              </tr>
-                         </thead>
-                         <tbody id="tbody-module">
-                         </tbody>
-                    </table>
+                    <div id="filter-checkbox">
+                         <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                              <label class="form-check-label" for="flexRadioDefault1">Tất cả</label>
+                         </div>
+                         <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault"id="flexRadioDefault2" >
+                              <label class="form-check-label" for="flexRadioDefault2">Đã lưu</label>
+                         </div>
+                         <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault"id="flexRadioDefault3" >
+                              <label class="form-check-label" for="flexRadioDefault2">Chưa lưu</label>
+                         </div>
+                    </div>
+                    <div class="list-module-div">
+                         <div id="list-module">
+                              <table id="list-module">
+                                   <thead>
+                                        <tr>
+                                             <th></th>
+                                             <th>Mã học phần</th>
+                                             <th>Tên học phần</th>
+                                             <th>Số tín</th>
+                                             <th>Chuyên ngành</th>
+                                             <th></th>
+                                        </tr>
+                                   </thead>
+                                   <tbody id="tbody-module">
+                                   </tbody>
+                              </table>
+                         </div>
+                         <label class="d-flex add-btn">
+                              <button type="button" id="button-add" class="ms-auto">Thêm học phần vào lớp</button>
+                         </label>
+                    </div>
                </div>
                <div class="footer-popup">
-                    <button type="button" id="button-add">Thêm</button>
                </div>
           </div>
      </div>
 </div>
-
 
 <div>
      <div id="popup-schedule" class="popup">
@@ -141,13 +163,13 @@
                <div class="body-popup">
                     <h5>Thông tin lịch học</h5>
                     <hr>
-                    <label>  
+                    <label>
                          <span id="info-moduleclass"></span>
                          <span id="info-module"></span>
                     </label>
-                    <label> 
+                    <label>
                          <span>Sĩ số</span>
-                         <input type="number" id = "max-slots"></input>
+                         <input type="number" id="max-slots"></input>
                     </label>
                     <table class="schedule-moduleclass">
                          <thead>
