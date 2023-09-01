@@ -135,13 +135,16 @@ def delete_moduleclass(request, idClass, idModule):
 #lay lich hoc va lich thi tu database
 @login_required(login_url='login_admin')
 def get_schedule_detail(request, idClass, idModule):
-    moduleclass = ModuleClass.objects.get(idClass__idClass = idClass, module__idModule = idModule)
-    schedule_list = ScheduleModuleClass.objects.filter(idModuleClass = moduleclass)
-    schedule_exam = ScheduleFinalExam.objects.get(idModuleClass = moduleclass)
-
-    schedule_data = [model_to_dict(schedule) for schedule in schedule_list]
-    schedule_exam_data = model_to_dict(schedule_exam)
-    return JsonResponse({'schedule_data': schedule_data, 'schedule_exam_data': schedule_exam_data})
+    try:
+        moduleclass = ModuleClass.objects.get(idClass__idClass = idClass, module__idModule = idModule)
+        max_slot = moduleclass.max_slot
+        schedule_list = ScheduleModuleClass.objects.filter(idModuleClass = moduleclass)
+        schedule_exam = ScheduleFinalExam.objects.get(idModuleClass = moduleclass)
+        schedule_data = [model_to_dict(schedule) for schedule in schedule_list]
+        schedule_exam_data = model_to_dict(schedule_exam)
+        return JsonResponse({'schedule_data': schedule_data, 'schedule_exam_data': schedule_exam_data, 'max_slot': max_slot})
+    except ModuleClass.DoesNotExist:
+        return JsonResponse({'exist': 'none'})
 
 
 # luu thong tin ve lop mon hoc da tao
@@ -165,7 +168,7 @@ def save_moduleclass(request, idClass, idModule, idSemester):
             
             save_ScheduleExam(tableScheduleExam, thisModuleClass)
     
-            response_data['schedule'] = 'updated'
+            response_data['result'] = 'updated'
             return JsonResponse(response_data) 
             
         except ModuleClass.DoesNotExist:
@@ -181,7 +184,7 @@ def save_moduleclass(request, idClass, idModule, idSemester):
 
             save_ScheduleExam(tableScheduleExam, newModuleClass)
         
-            response_data['schedule'] = 'added'
+            response_data['result'] = 'added'
             return JsonResponse(response_data)
 
 
@@ -212,6 +215,8 @@ def save_ScheduleExam(ScheduleExam_data, idModuleClass_data):
         newScheduleExam.save()
         print('added_exam_schedule')
 
+
+#luu thong tin ve lich hoc
 def save_Schedule(Schedule_data, idModuleClass_data):
     try:
         thisScheduleModuleClass = ScheduleModuleClass.objects.filter(idModuleClass = idModuleClass_data)
@@ -265,6 +270,20 @@ def save_Schedule(Schedule_data, idModuleClass_data):
             newSchedule.save()
             print('added_schedule')
 
+
+
+#kiem tra lich hoc va xoa
+@login_required(login_url='login_admin')
+def delete_schedule(request, idSMC):
+    if idSMC != "undefined":
+        try:
+            schedule = ScheduleModuleClass.objects.get(idSMC=idSMC)
+            schedule.delete()
+            return JsonResponse({'exist': True})
+        except ScheduleModuleClass.DoesNotExist:
+            return JsonResponse({'exist': False})
+    else:
+        return JsonResponse({'exist': False})
      
 
 

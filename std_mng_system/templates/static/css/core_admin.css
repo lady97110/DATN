@@ -23,7 +23,7 @@
     margin-left: 10px;
     margin-right: 10px;
     background-color: #f2f4f7;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .titlepage{

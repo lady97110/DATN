@@ -52,3 +52,35 @@
 #filter-checkbox > div{
   margin-left: 20px;
 }
+
+#schedule-exam{
+  margin-top: 30px;
+}
+
+#btn-save{
+  margin-top: 30px;
+}
+
+#table-schedule{
+  display: inline-block;
+}
+
+#btn-saveschedule{
+  margin-top: 10px;
+  display: flex;
+  
+}
+
+#btn-saveschedule>button{
+  margin-left: auto;
+}
+
+
+#info-class-module>label{
+  margin-right: 30px;
+}
+
+#info-class-module>label>span{
+  margin-left: 30px;
+  font-weight: 600;
+}
