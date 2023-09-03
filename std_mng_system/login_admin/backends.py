@@ -7,7 +7,7 @@ class CustomAuthBackendAdmin(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user_admin = profile_admin.objects.get(idAdmin=username)
-            if user_admin.check_password(password):
+            if user_admin.check_custom_password(password):
                 return user_admin
         except profile_admin.DoesNotExist:
             return None

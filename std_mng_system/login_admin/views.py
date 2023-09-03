@@ -26,7 +26,7 @@ def login_admin(request):
             
             return redirect('admin_page')
         else:
-            messages.error(request, 'Sai tên đăng nhập hoặc mật khẩu.')
+            messages.error(request, 'Sai thông tin tài khoản')
     return render(request, 'login_admin.html')
 
 

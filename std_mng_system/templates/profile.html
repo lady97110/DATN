@@ -17,16 +17,21 @@
         <ul><strong>MSSV: </strong>{{stdinfo.idStd}}</ul>
         <ul><strong>Họ Tên: </strong>{{stdinfo.nameStd}}</ul>
         <ul><strong>Ngày sinh: </strong>{{datebirth}}</ul>
-        <ul><strong>Giới tính: </strong>{{stdinfo.sexStd}}</ul>
+        <ul><strong>Giới tính: </strong>{{stdinfo.genderStd}}</ul>
+        <ul><strong>Hộ khẩu thường trú: </strong>{{stdinfo.addressStd}}</ul>
+        <ul><strong>CCCD: </strong>{{stdinfo.identityStd}}</ul>
+        <ul><strong>Dân tộc: </strong>{{stdinfo.ethnicityStd}}</ul>
     </div>
     <div class="col-sm-6">
-        <ul><strong>Quê quán: </strong>{{stdinfo.addStd}}</ul>
-        <ul><strong>Ngành học: </strong>{{stdinfo.idFacultyClass.faculty}}</ul>
-        <ul><strong>Khóa học: </strong>{{stdinfo.idFacultyClass.idCourse}}</ul>
-        <ul><strong>Lớp: </strong>{{stdinfo.idFacultyClass}}</ul>
+        <ul><strong>Điện thoại: </strong>{{stdinfo.phoneStd}}</ul>
+        <ul><strong>Email: </strong>{{stdinfo.emailStd}}</ul>
+        <ul><strong>Khoa: </strong>{{stdinfo.idClass.department.faculty}}</ul>
+        <ul><strong>Ngành học: </strong>{{stdinfo.idClass.department}}</ul>
+        <ul><strong>Khóa học: </strong>{{stdinfo.idClass.idCourse}}</ul>
+        <ul><strong>Lớp: </strong>{{stdinfo.idClass}}</ul>
         <ul><strong>Tình trạng: </strong>{% if stdinfo.stt %}
-            <p style="display: inline">Chưa tốt nghiệp</p> {% else %}
-            <p style="display: inline">Đã tốt nghiệp</p> {% endif %}
+            <p style="display: inline">Đã tốt nghiệp</p> {% else %}
+            <p style="display: inline">Chưa tốt nghiệp</p> {% endif %}
         </ul>
     </div>
 </div>

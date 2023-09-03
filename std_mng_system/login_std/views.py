@@ -25,7 +25,7 @@ def login_std(request):
             login(request, user_std)
             return redirect('profile')
         else:
-            messages.error(request, 'Sai tên đăng nhập hoặc mật khẩu.')
+            messages.error(request, 'Sai thông tin tài khoản')
     return render(request, 'login_std.html')
 
 

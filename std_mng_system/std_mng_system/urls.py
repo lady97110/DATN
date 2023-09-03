@@ -26,7 +26,9 @@ from admin_moduleclass import views as admin_moduleclass_views
 
 
 urlpatterns = [
+    #superuser
     path('admin/', admin.site.urls),
+    #trang sinh vien
     path('', login_std_views.login_std, name='login_std'),
     path('loginadmin', login_admin_views.login_admin, name='login_admin'),
     path('profile/', login_std_views.profile_view, name='profile'),
@@ -34,13 +36,12 @@ urlpatterns = [
     path('logout-std/', login_std_views.logout_std_view, name='logout_std'),
     path('logout-admin/', login_admin_views.logout_admin_view, name='logout_admin'),
     path('change-password/', login_std_views.change_password, name='change_password'),
-    path('transcript/', course_views.transcript_view, name='transcript'),
-    path('course-regis/', course_views.course_regis_view, name='coursereg'),
-    path('save-subjects/', course_views.save_subjects, name='save_subjects'),
-    path('coursereg-success/', course_views.coursereg_success_view, name='coursereg_success'),
-    path('delete-subjects/', course_views.delete_subjects, name='delete_subjects'),
+    # path('transcript/', course_views.transcript_view, name='transcript'),
+    #dang ky hoc phan
+    path('module-registration/', course_views.module_registration_view, name= 'module_registration'),
+    path('module-registration/', include('course.urls')),
     # path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
-    # page quan ly ho so sinh vien
+    # trang quan tri vien
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
     path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),

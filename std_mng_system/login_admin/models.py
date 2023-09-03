@@ -26,16 +26,19 @@ class profile_admin(models.Model):
         return True
     
         
-    def set_password(self, raw_password):
-        self.password = make_password(raw_password)
+    def set_custom_password(self, raw_password):
+        hashed_password = make_password(raw_password)
+        self.password = hashed_password
 
-    def check_password(self, raw_password):
+    def check_custom_password(self, raw_password):
         return check_password(raw_password, self.password)
+
 
     class Meta:
         verbose_name = 'Quản trị viên'
         verbose_name_plural = 'Quản trị viên'
 
 @receiver(pre_save, sender = profile_admin)
-def pre_save_profile_std(sender, instance, **kwargs):
-    instance.password = make_password(instance.password)
+def pre_save_profile_admin(sender, instance, **kwargs):
+    if instance._state.adding:
+        instance.password = make_password(instance.password)

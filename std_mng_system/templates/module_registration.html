@@ -1,0 +1,50 @@
+{% extends 'core_std.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/module_registration.css' %}">
+<script src="{% static 'js/module_registration.js' %}"></script>
+{% endblock %}
+{% block title %} Đăng ký học phần {% endblock %}
+{% block content %}
+<div class="info-title">
+  <div class="title">
+    <span class="title-span">Đăng ký học phần</span>
+  </div>
+</div>
+
+<div id="invalid-registration" class="d-none">
+  <span>Ngoài thời gian đăng ký</span>
+</div>
+
+<div id="registration">
+  <div id="group-filter-moduleclass">
+    <button type="button" id="btn-process">Học phần theo tiến độ</button>
+    <div id="search-module">
+      <span>Tìm kiếm</span>
+      <div>
+        <input id="search-value" placeholder="mã HP, lớp HP"></input>
+        <button id="search-btn" type="button">
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <table "moduleclass-valid">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Mã học phần</th>
+          <th>Tên học phần</th>
+          <th>Số tín chỉ</th>
+          <th>Lớp học phần</th>
+          <th>Số lượng</th>
+          <th>Thời khóa biểu</th>
+        </tr>
+      <tbody id="moduleclass-schedule">
+      </tbody>
+      </thead>
+    </table>
+  </div>
+</div>
+{% endblock %}
