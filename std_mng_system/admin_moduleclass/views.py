@@ -220,30 +220,55 @@ def save_ScheduleExam(ScheduleExam_data, idModuleClass_data):
 def save_Schedule(Schedule_data, idModuleClass_data):
     try:
         thisScheduleModuleClass = ScheduleModuleClass.objects.filter(idModuleClass = idModuleClass_data)
-        print(thisScheduleModuleClass)
         if not thisScheduleModuleClass.exists():
             raise ScheduleModuleClass.DoesNotExist
-        for schedule , thisSchedule in zip(Schedule_data, thisScheduleModuleClass):
-            if schedule[3]:
-                date_start = schedule[3]
-            else:
-                date_start = None
+        for schedule in Schedule_data:
+            idSMC = schedule[6]
+            try:
+                schedule_exist = ScheduleModuleClass.objects.get(idSMC = idSMC)
+                if schedule[3]:
+                    date_start = schedule[3]
+                else:
+                    date_start = None
 
-            if schedule[4]:
-                date_end = schedule[4]
-            else:
-                date_end = None
+                if schedule[4]:
+                    date_end = schedule[4]
+                else:
+                    date_end = None
+                
+                schedule_exist.days_of_week = schedule[0]
+                schedule_exist.period_start = schedule[1]
+                schedule_exist.periods_count = schedule[2]
+                schedule_exist.start_date = date_start
+                schedule_exist.end_date = date_end
+                class_room_instance = ClassRoom.objects.get(idClassRoom=schedule[5])
+                schedule_exist.class_room = class_room_instance
+                schedule_exist.save()
+                print('updated_schedule')
             
+            except ScheduleModuleClass.DoesNotExist:
+                class_room_instance = ClassRoom.objects.get(idClassRoom = schedule[5])
+                if schedule[3]:
+                    date_start = schedule[3]
+                else:
+                    date_start = None
 
-            thisSchedule.days_of_week = schedule[0]
-            thisSchedule.period_start = schedule[1]
-            thisSchedule.periods_count = schedule[2]
-            thisSchedule.start_date = date_start
-            thisSchedule.end_date = date_end
-            class_room_instance = ClassRoom.objects.get(idClassRoom=schedule[5])
-            thisSchedule.class_room = class_room_instance
-            thisSchedule.save()
-            print('updated_schedule')
+                if schedule[4]:
+                    date_end = schedule[4]
+                else:
+                    date_end = None 
+                 
+                newSchedule = ScheduleModuleClass(
+                idModuleClass = idModuleClass_data,
+                days_of_week = schedule[0],
+                period_start = schedule[1],
+                periods_count = schedule[2],
+                start_date = date_start,
+                end_date = date_end,
+                class_room = class_room_instance
+                )
+                newSchedule.save()
+                print('added_schedule')
 
     except ScheduleModuleClass.DoesNotExist:
         for schedule in  Schedule_data:

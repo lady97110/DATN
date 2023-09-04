@@ -54,3 +54,11 @@ class ModuleAdmin(admin.ModelAdmin):
     search_fields = ('idModule','nameModule','credits','department')
 
 admin.site.register(Module, ModuleAdmin)
+
+
+#Lich dang ky hoc phan
+class RegistrationScheduleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'semester', 'idCourse', 'start_date', 'end_date')
+    search_fields = ('id', 'semester', 'idCourse', 'start_date', 'end_date')
+
+admin.site.register(RegistrationSchedule, RegistrationScheduleAdmin)

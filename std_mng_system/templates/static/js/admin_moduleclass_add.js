@@ -143,7 +143,8 @@ addBtn.addEventListener("click", async function() {
             start_date : "",
             end_date : "",
             periods_count : "3",
-            class_rooom : "0"
+            class_rooom : "0",
+            idSMC : "-1",
         };
         add_rows_schedule(default_schedule);
     });
@@ -407,8 +408,12 @@ function add_rows_schedule(schedule) {
     cell7.appendChild(btndelete);
     tr_schedule.appendChild(cell7);
 
+    tr_schedule.setAttribute("idSMC", schedule.idSMC);
+
     tbody_schedule.appendChild(tr_schedule);
     const idSMC = schedule.idSMC;
+
+    
     
     //them su kien cho nut xoa lich hoc
     btndelete.addEventListener("click", function() {
@@ -609,6 +614,8 @@ function btnSaveSchedule() {
                         rowData.push(selectElement.value);
                     }
                 };
+                const idSMC = rows_schedule[i].getAttribute("idSMC");
+                rowData.push(idSMC);
                 tableSchedule.push(rowData);
             };
             

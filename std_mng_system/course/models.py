@@ -8,8 +8,6 @@ class Semester(models.Model):
     nameSemester = models.CharField(max_length= 30, verbose_name= 'Học kỳ')
     start_date = models.DateField(verbose_name= 'Ngày bắt đầu', blank= True, null= True)
     end_date = models.DateField(verbose_name= 'Ngày kết thúc', blank= True, null= True)
-    enddate_registration = models.DateField(verbose_name='Hạn đăng ký', blank= True, null= True)
-    is_registration = models.BooleanField(verbose_name = 'Mở đăng ký',choices=[(True, 'Mở'),(False, 'Đóng')],default= True)
     
     def __str__(self):
         return f"{self.idSemester} - {self.nameSemester}"
@@ -57,56 +55,69 @@ class Student_ModuleClass(models.Model):
     id = models.AutoField(primary_key=True)
     module_class = models.ForeignKey(ModuleClass, on_delete= models.CASCADE, related_name= 'module_std' ,verbose_name='Học phần')
     idStd = models.ForeignKey(profile_std, on_delete= models.CASCADE, related_name='std_module', verbose_name='MSSV')
-    process_grade = models.FloatField(verbose_name='Điểm quá trình', default=0)
-    final_grade = models.FloatField(verbose_name='Điểm kết thúc', default=0)
-    overall_grade = models.FloatField(verbose_name='Điểm tổng kết', default=0)
-    overall_grade_4 = models.FloatField(verbose_name='Hệ số 4', default=0)
-    overall_grade_text = models.CharField(max_length=2, verbose_name='Điểm chữ', blank=True)
+    process_grade = models.FloatField(verbose_name='Điểm quá trình', blank = True, null = True)
+    final_grade = models.FloatField(verbose_name='Điểm kết thúc', blank = True, null = True)
+    overall_grade = models.FloatField(verbose_name='Điểm tổng kết', blank = True, null = True)
+    overall_grade_4 = models.FloatField(verbose_name='Hệ số 4', blank = True, null = True)
+    overall_grade_text = models.CharField(max_length=2, verbose_name='Điểm chữ', blank = True, null = True)
     is_pass = models.BooleanField(default=False, choices=[(True, 'Đạt'), (False, 'Chưa đạt')], verbose_name='Đạt')
 
     def __str__(self):
         return f'{self.idStd.idStd} - {self.module_class.module.nameModule}'
 
 
-    def save(self, *args, **kwargs):
-        if self.process_grade is not None and self.final_grade is not None:
-            self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
+    # def save(self, *args, **kwargs):
+    #     if self.process_grade is not None and self.final_grade is not None:
+    #         self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
             
-            if self.overall_grade >= 8.5:
-                self.overall_grade_4 = 4.0
-                self.overall_grade_text = 'A'
-                self.stt_pass = True
-            elif self.overall_grade >= 8.0:
-                self.overall_grade_4 = 3.5
-                self.overall_grade_text = 'B+'
-                self.stt_pass = True
-            elif self.overall_grade >= 7.5:
-                self.overall_grade_4 = 3.0
-                self.overall_grade_text = 'B'
-                self.stt_pass = True
-            elif self.overall_grade >= 6.5:
-                self.overall_grade_4 = 2.5
-                self.overall_grade_text = 'C+'
-                self.stt_pass = True
-            elif self.overall_grade >= 6.0:
-                self.overall_grade_4 = 2.0
-                self.overall_grade_text = 'C'
-                self.stt_pass = True
-            elif self.overall_grade >= 5.0:
-                self.overall_grade_4 = 1.5
-                self.overall_grade_text = 'D+'
-                self.stt_pass = True
-            elif self.overall_grade >= 4.0:
-                self.overall_grade_4 = 1
-                self.overall_grade_text = 'D'
-                self.stt_pass = True
-            else:
-                self.overall_grade_4 = 0.0
-                self.overall_grade_text = 'F'
-                self.stt_pass = False
+    #         if self.overall_grade >= 8.5:
+    #             self.overall_grade_4 = 4.0
+    #             self.overall_grade_text = 'A'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 8.0:
+    #             self.overall_grade_4 = 3.5
+    #             self.overall_grade_text = 'B+'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 7.5:
+    #             self.overall_grade_4 = 3.0
+    #             self.overall_grade_text = 'B'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 6.5:
+    #             self.overall_grade_4 = 2.5
+    #             self.overall_grade_text = 'C+'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 6.0:
+    #             self.overall_grade_4 = 2.0
+    #             self.overall_grade_text = 'C'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 5.0:
+    #             self.overall_grade_4 = 1.5
+    #             self.overall_grade_text = 'D+'
+    #             self.stt_pass = True
+    #         elif self.overall_grade >= 4.0:
+    #             self.overall_grade_4 = 1
+    #             self.overall_grade_text = 'D'
+    #             self.stt_pass = True
+    #         else:
+    #             self.overall_grade_4 = 0.0
+    #             self.overall_grade_text = 'F'
+    #             self.stt_pass = False
 
-            super().save(*args, **kwargs)
+    #         super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Bảng điểm'
         verbose_name_plural = 'Bảng điểm'
+
+
+#bang lich dang ky mon hoc
+class RegistrationSchedule(models.Model):
+    id = models.AutoField(primary_key=True)
+    semester = models.ForeignKey(Semester, on_delete= models.CASCADE, verbose_name= "Học kỳ")
+    idCourse = models.ForeignKey(idCourse, on_delete= models.CASCADE, verbose_name= "Khóa")
+    start_date = models.DateField(verbose_name="Ngày bắt đầu")
+    end_date = models.DateField(verbose_name="Ngày kết thúc")
+
+    class Meta:
+        verbose_name = "Lịch đăng ký học phần"
+        verbose_name_plural = "Lịch đăng ký học phần"
