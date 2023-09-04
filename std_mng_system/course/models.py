@@ -66,44 +66,44 @@ class Student_ModuleClass(models.Model):
         return f'{self.idStd.idStd} - {self.module_class.module.nameModule}'
 
 
-    # def save(self, *args, **kwargs):
-    #     if self.process_grade is not None and self.final_grade is not None:
-    #         self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
+    def save(self, *args, **kwargs):
+        if self.process_grade is not None and self.final_grade is not None:
+            self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
             
-    #         if self.overall_grade >= 8.5:
-    #             self.overall_grade_4 = 4.0
-    #             self.overall_grade_text = 'A'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 8.0:
-    #             self.overall_grade_4 = 3.5
-    #             self.overall_grade_text = 'B+'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 7.5:
-    #             self.overall_grade_4 = 3.0
-    #             self.overall_grade_text = 'B'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 6.5:
-    #             self.overall_grade_4 = 2.5
-    #             self.overall_grade_text = 'C+'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 6.0:
-    #             self.overall_grade_4 = 2.0
-    #             self.overall_grade_text = 'C'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 5.0:
-    #             self.overall_grade_4 = 1.5
-    #             self.overall_grade_text = 'D+'
-    #             self.stt_pass = True
-    #         elif self.overall_grade >= 4.0:
-    #             self.overall_grade_4 = 1
-    #             self.overall_grade_text = 'D'
-    #             self.stt_pass = True
-    #         else:
-    #             self.overall_grade_4 = 0.0
-    #             self.overall_grade_text = 'F'
-    #             self.stt_pass = False
+            if self.overall_grade >= 8.5:
+                self.overall_grade_4 = 4.0
+                self.overall_grade_text = 'A'
+                self.is_pass = True
+            elif self.overall_grade >= 8.0:
+                self.overall_grade_4 = 3.5
+                self.overall_grade_text = 'B+'
+                self.is_pass = True
+            elif self.overall_grade >= 7.5:
+                self.overall_grade_4 = 3.0
+                self.overall_grade_text = 'B'
+                self.is_pass = True
+            elif self.overall_grade >= 6.5:
+                self.overall_grade_4 = 2.5
+                self.overall_grade_text = 'C+'
+                self.is_pass = True
+            elif self.overall_grade >= 6.0:
+                self.overall_grade_4 = 2.0
+                self.overall_grade_text = 'C'
+                self.is_pass = True
+            elif self.overall_grade >= 5.0:
+                self.overall_grade_4 = 1.5
+                self.overall_grade_text = 'D+'
+                self.is_pass = True
+            elif self.overall_grade >= 4.0:
+                self.overall_grade_4 = 1
+                self.overall_grade_text = 'D'
+                self.is_pass = True
+            else:
+                self.overall_grade_4 = 0.0
+                self.overall_grade_text = 'F'
+                self.is_pass = False
 
-    #         super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Bảng điểm'

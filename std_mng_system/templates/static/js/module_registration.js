@@ -57,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    
-    //nut lu hoc phan vao csdl
+
+    //nut luu hoc phan vao csdl
     const saveBtn = document.getElementById("save-btn");
     saveBtn.addEventListener("click", function () {
         const moduleclass = document.getElementById("moduleclass");
@@ -71,9 +71,13 @@ document.addEventListener("DOMContentLoaded", function () {
             listModuleClass.push(idModuleClass);
         }
         save_moduleclass(idStd, listModuleClass);
-
     });
 
+
+
+    //tim kiem hoc phan
+    const searchBtn = document.getElementById("search-btn");
+    const searchValue = document.getElementById("search-value");
 });
 
 
@@ -204,10 +208,19 @@ function save_moduleclass(idStd, listModuleClass) {
         headers: {
             'X-CSRFToken': csrfToken
         },
-        success: function () {
-
+        success: function (data) {
+            if (data.success) {
+                alert("Lưu học phần vào CSDL thành công");
+            }
+            else {
+                var message = "Không được đăng ký nhiều hơn một lớp cùng môn trong một học kỳ: \n ";
+                for (var mess in data.exist) {
+                    message += data.exist[mess] + "\n";
+                }
+                alert(message);
+            }
         },
-        error: function () {
+        error: function (data) {
 
         }
     });

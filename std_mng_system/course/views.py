@@ -94,7 +94,7 @@ def save_moduleclass(request, idStd):
             try:
                 check = Student_ModuleClass.objects.get(idStd = idStd, module_class__module=idModule, module_class__semester=semester)
                 exist = True
-                exist_mess = "Không được đăng ký nhiều hơn một lớp "+idModule.idModule+" - " + idModule.nameModule+" cùng một kỳ!"
+                exist_mess = idModule.idModule+" - " + idModule.nameModule
                 list_exist.append(exist_mess)
             except Student_ModuleClass.DoesNotExist:
                 pass
