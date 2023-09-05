@@ -149,7 +149,7 @@
         return null;
     }
 
-    //khi cả trang web được load
+    //load
 document.addEventListener("DOMContentLoaded", function() {
 
         //nut tim kiem

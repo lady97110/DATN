@@ -60,7 +60,7 @@ class Student_ModuleClass(models.Model):
     overall_grade = models.FloatField(verbose_name='Điểm tổng kết', blank = True, null = True)
     overall_grade_4 = models.FloatField(verbose_name='Hệ số 4', blank = True, null = True)
     overall_grade_text = models.CharField(max_length=2, verbose_name='Điểm chữ', blank = True, null = True)
-    is_pass = models.BooleanField(default=False, choices=[(True, 'Đạt'), (False, 'Chưa đạt')], verbose_name='Đạt')
+    is_pass = models.BooleanField(default=False, choices=[(True, 'Đạt'), (False, 'Chưa đạt')], blank = True, null = True, verbose_name='Đạt')
 
     def __str__(self):
         return f'{self.idStd.idStd} - {self.module_class.module.nameModule}'

@@ -7,6 +7,7 @@ from login_std.models import profile_std
 from course.models import *
 from schedule.models import *
 from datetime import datetime
+from django.db.models import Q
 
 # Create your views here.
 
@@ -40,6 +41,31 @@ def module_registration_view(request):
         return render(request, 'not_module_registration.html', stdinfo)               
     except RegistrationSchedule.DoesNotExist:
         return render(request, 'not_module_registration.html', stdinfo)     
+
+
+
+#tim kiem hoc phan, lop hoc phan
+@login_required(login_url='login_std')
+def search_moduleclass(request, value):
+    global global_semester
+    results = ModuleClass.objects.filter(
+        Q(module__idModule=value, semester__idSemester=global_semester) |
+        Q(idClass__idClass=value, semester__idSemester=global_semester)
+    )
+    moduleclass_data = []
+    for moduleclass in results:
+        info =  {
+            'idModuleClass': moduleclass.idModuleClass,
+            'idModule': moduleclass.module.idModule,
+            'nameModule': moduleclass.module.nameModule,
+            'credit': moduleclass.module.credits,
+            'idClass': moduleclass.idClass.idClass,
+            'slot': '0',
+            'max_slot': moduleclass.max_slot,
+        }
+        moduleclass_data.append(info)
+    return JsonResponse({'moduleclasses': moduleclass_data})
+    
 
 
 
@@ -110,3 +136,39 @@ def save_moduleclass(request, idStd):
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'exist': list_exist})
+        
+
+
+#lay thong tin  hoc phan da  luu
+@login_required(login_url='login_std')
+def get_saved_moduleclass(request, idStd):
+    global global_semester
+    moduleclass_data = []
+    saved = Student_ModuleClass.objects.filter(idStd__idStd=idStd, module_class__semester__idSemester = global_semester)
+    for moduleclass in saved:
+        info =  {
+            'idModuleClass': moduleclass.module_class.idModuleClass,
+            'idModule': moduleclass.module_class.module.idModule,
+            'nameModule': moduleclass.module_class.module.nameModule,
+            'credit': moduleclass.module_class.module.credits,
+            'idClass': moduleclass.module_class.idClass.idClass,
+        }
+        moduleclass_data.append(info)
+    return JsonResponse({'moduleclasses': moduleclass_data})
+
+
+@login_required(login_url='login_std')
+def delete_moduleclass(request, idStd):
+    if request.method == 'POST':
+        idStd = profile_std.objects.get(idStd=idStd)
+        list_idModuleClass = json.loads(request.body)
+        
+        for moduleclass in list_idModuleClass:
+            try:
+                check_exist = Student_ModuleClass.objects.get(idStd=idStd, module_class__idModuleClass = moduleclass)
+                check_exist.delete()
+            except Student_ModuleClass.DoesNotExist:
+                pass
+    
+        return JsonResponse({'success': True})
+        

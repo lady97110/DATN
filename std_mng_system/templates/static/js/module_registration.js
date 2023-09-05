@@ -57,6 +57,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    //tim kiem hoc phan
+    const searchBtn = document.getElementById("search-btn");
+    searchBtn.addEventListener("click", function () {
+        document.getElementById("moduleclass").innerHTML = "";
+        const searchValue = document.getElementById("search-value").value;
+        search_moduleclass(searchValue)
+            .then(function (data) {
+                data.moduleclasses.forEach(function (moduleclass) {
+                    const this_idModuleClass = moduleclass.idModuleClass;
+                    get_detail_schedule(this_idModuleClass)
+                        .then(function (data) {
+                            const schedule = data.schedule;
+                            table_info_moduleclass(moduleclass, schedule);
+                        })
+                        .catch(function () {
+                            alert("Lỗi khi lấy dữ liệu thời khóa biểu");
+                        });
+                });
+            })
+            .catch(function () {
+                alert("Lỗi khi lấy dữ liệu lớp học phần");
+            });
+    })
+
+
 
     //nut luu hoc phan vao csdl
     const saveBtn = document.getElementById("save-btn");
@@ -75,9 +100,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    //tim kiem hoc phan
-    const searchBtn = document.getElementById("search-btn");
-    const searchValue = document.getElementById("search-value");
+    //load bang hoc phan da   luu
+    get_saved_moduleclass(idStd)
+        .then(function (data) {
+            data.moduleclasses.forEach(function (moduleclass) {
+                const this_idModuleClass = moduleclass.idModuleClass;
+                get_detail_schedule(this_idModuleClass)
+                    .then(function (data) {
+                        const schedule = data.schedule;
+                        table_saved_moduleclass(moduleclass, schedule);
+                    })
+                    .catch(function () {
+                        alert("Lỗi khi lấy dữ liệu thời khóa biểu");
+                    });
+            });
+        })
+        .catch(function () {
+            alert("Lỗi khi lấy dữ liệu lớp học phần");
+        });
+
+
+
+    //nut xoa hoc phan khoi CSDL
+    const deleteBtn = document.getElementById("delete-btn");
+    deleteBtn.addEventListener("click",function () {
+        const saved = document.getElementById("saved-moduleclass");
+        const checkedboxs = saved.querySelectorAll("input[type='checkbox']:checked");
+        
+        var listModuleClass = [];
+        for (const checkedbox of checkedboxs) {
+            const row = checkedbox.closest("tr");
+            const idModuleClass = row.getAttribute("idModuleClass");
+            listModuleClass.push(idModuleClass);
+        }
+        delete_moduleclass(idStd, listModuleClass);
+    });
+
+
+
+
 });
 
 
@@ -106,6 +167,26 @@ function get_moduleclass(idStd) {
         });
     });
 }
+
+
+//tim mon hoc, hoc phan
+function search_moduleclass(value) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: 'search-moduleclass/' + value + '/',
+            method: 'get',
+            dataType: 'json',
+            success: function (data) {
+                resolve(data);
+            },
+            error: function () {
+                reject(data);
+            }
+        });
+    });
+}
+
+
 
 // lay thong tin ve lich hoc, lich thi
 function get_detail_schedule(idModuleClass) {
@@ -196,7 +277,7 @@ function table_schedule(datas, td_parent) {
 }
 
 
-//ham gui du lieu danh sach lop hoc phan
+//ham gui du lieu danh sach lop hoc phan can luu
 function save_moduleclass(idStd, listModuleClass) {
     const csrfToken = getCSRFToken();
     $.ajax({
@@ -211,6 +292,7 @@ function save_moduleclass(idStd, listModuleClass) {
         success: function (data) {
             if (data.success) {
                 alert("Lưu học phần vào CSDL thành công");
+                location.reload();
             }
             else {
                 var message = "Không được đăng ký nhiều hơn một lớp cùng môn trong một học kỳ: \n ";
@@ -228,6 +310,84 @@ function save_moduleclass(idStd, listModuleClass) {
 
 
 
+//lay du lieu ve nhung mon hoc da luu trong csdl
+function get_saved_moduleclass(idStd) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: 'get-saved-moduleclass/' + idStd + '/',
+            method: 'get',
+            dataType: 'json',
+            success: function (data) {
+                resolve(data);
+            },
+            error: function () {
+                reject();
+            },
+        });
+    });
+}
+
+
+
+// tao bang thong tin lop hoc phan da luu
+function table_saved_moduleclass(data, schedule) {
+    const tbody = document.getElementById("saved-moduleclass");
+
+    const tr = document.createElement("tr");
+
+    const cell1 = document.createElement("td");
+    cell1.innerHTML = '<input type="checkbox">';
+    tr.appendChild(cell1);
+
+    const cell2 = document.createElement("td");
+    cell2.textContent = data.idModule;
+    tr.appendChild(cell2);
+
+    const cell3 = document.createElement("td");
+    cell3.textContent = data.nameModule;
+    tr.appendChild(cell3);
+
+    const cell4 = document.createElement("td");
+    cell4.textContent = data.credit;
+    tr.appendChild(cell4);
+
+    const cell5 = document.createElement("td");
+    cell5.textContent = data.idClass;
+    tr.appendChild(cell5);
+
+    const cell6 = document.createElement("td");
+    table_schedule(schedule, cell6);
+    cell6.classList.add("td-schedule");
+    tr.appendChild(cell6);
+
+    tbody.appendChild(tr);
+    tr.setAttribute("idModuleClass", data.idModuleClass);
+}
+
+
+
+
+//gui hoc phan can xoa
+function delete_moduleclass(idStd, listModuleClass) {
+    const csrfToken = getCSRFToken();
+    $.ajax({
+        url: 'delete-moduleclass/' + idStd + '/',
+        method: 'POST',
+        data: JSON.stringify(listModuleClass),
+        contentType: 'application/json',
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        success: function (data) {
+            alert("Xóa học phần thành công");
+            location.reload();
+        },
+        error: function () {
+            alert("Xóa học phần thất bại");
+        }
+    });
+}
 
 //tao xac nhan csrftoken
 function getCSRFToken() {
