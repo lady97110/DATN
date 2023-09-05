@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(){
     var globalRow = null;
-
+    const display_table = document.getElementById("added-moduleclass");
+    display_table.style.display = "none";
     //lấy danh sách các môn trong cơ sở dữ liệu
     const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const get_list_modulBtn = document.getElementById("get-list-module");
@@ -94,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function(){
     const semesterSelect = document.getElementById("list-semester");
     get_semester(semesterSelect);
     semesterSelect.addEventListener("change",function(){
+        const display_table = document.getElementById("added-moduleclass");
+    display_table.style.display = "block";
     const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const idSemester = semesterSelect.value;
     get_moduleclass(idClass, idSemester);

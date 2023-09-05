@@ -4,7 +4,7 @@
 }
 
 
-input, select {
+button , input, select {
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -41,6 +41,8 @@ th, td{
     border:1px solid black;
     padding: 5px 10px;
     text-align: center;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 
@@ -132,4 +134,16 @@ thead{
 
 .add-btn{
     margin-top: 10px;
+}
+
+::placeholder{
+    opacity: 0.5;
+}
+
+#search-btn{
+    margin-left: 10px;
+    border-radius: 5px;
+    background-color: rgb(62, 59, 231);
+    color: #f0f0f0;
+    border-color: azure;
 }

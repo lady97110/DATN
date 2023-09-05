@@ -10,6 +10,8 @@ from schedule.models import *
 import json
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
+
+@login_required(login_url='login_admin')
 def admin_moduleclass(request):
 
     getidAdmin = request.user.idAdmin                                           # thong tin admin

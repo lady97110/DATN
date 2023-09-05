@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
-
+    
     // lay va tao danh sach khoa
     optionFaculty = document.getElementById("list-faculty");
     $.ajax({
@@ -121,8 +121,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-
-            //function lay danh sach lop
+    //function lay danh sach lop
     function get_class() {
         const idCourse_value = document.getElementById("list-idCourse").value;
         const department_value = document.getElementById("list-department").value;

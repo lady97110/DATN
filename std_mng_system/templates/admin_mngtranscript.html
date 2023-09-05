@@ -1,0 +1,63 @@
+{% extends 'core_admin.html' %}
+{% load static %}
+{% block title %}Quản lý Điểm {% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/admin_mngtranscript.css' %}">
+<script src="{% static 'js/admin_mngtranscript.js' %}"></script>
+{% endblock %}
+
+{% block titlepage %}QUẢN LÝ ĐIỂM{% endblock %}
+
+{% block content %}
+<div>
+    <div>
+        <div class="search-zone">
+            <div class="div-search">
+                <h5 class="search-class">LỚP HỌC PHẦN</h5>
+
+                <div class="searchbox-class">
+                    <span>Lớp: </span>
+                    <div>
+                        <input id="search-class-input" placeholder="mã lớp HP"></input>
+                        <button id="search-class-btn" type="button">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Lớp</th>
+                                <th>Khoa</th>
+                                <th>Ngành</th>
+                                <th>Khóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-class">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="div-search">
+                <h5 class="search-class">MÔN HỌC PHẦN</h5>
+                <div class="searchbox-module">
+                    <div>
+                    <span>Học phần: </span>
+                    </div>
+                    <div>
+                        <input id="search-class-input" placeholder="học phần"></input>
+                        <div id="list-module">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'login_admin',
     'admin_mngprofilestd',
     'admin_moduleclass',
+    'admin_mngtranscript',
 ]
 
 

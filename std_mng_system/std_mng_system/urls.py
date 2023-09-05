@@ -22,6 +22,7 @@ from login_std import views as login_std_views
 from login_admin import views as login_admin_views
 from admin_mngprofilestd import views as admin_mngprofilestd_views
 from admin_moduleclass import views as admin_moduleclass_views
+from admin_mngtranscript import views as admin_mngtranscript_views
 
 
 
@@ -54,4 +55,7 @@ urlpatterns = [
     #quản lý lop mon hoc
     path('admin-moduleclass/', admin_moduleclass_views.admin_moduleclass, name = 'admin_moduleclass'),
     path('admin-moduleclass/', include('admin_moduleclass.urls')),
+    #quan ly diem
+    path('admin-mngtranscript/', admin_mngtranscript_views.admin_mngtranscript, name = 'admin_mngtranscript'),
+    path('admin-mngtranscript/', include('admin_mngtranscript.urls')),
 ]
