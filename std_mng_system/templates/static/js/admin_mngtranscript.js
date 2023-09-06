@@ -64,8 +64,16 @@ document.addEventListener("DOMContentLoaded",function() {
    blank_table(tbody_class, 4, 4);
 
     //bang danh sach sinh vien
-    
     blank_table(tbody_std, 20, 10);
+
+    //nut in bang tren trinh duyet
+    const export_table = document.getElementById('btn-print-std');
+    export_table.addEventListener('click',function () {
+        const table_export = document.getElementById("tb-list-std");
+        export_to_excel(table_export);
+    });
+        
+    
     auto_close_tag();
 });
 
@@ -301,4 +309,14 @@ function auto_number(tbody){
         numberCell.textContent = index + 1;
         index += 1;
     });
+}
+
+
+//xuat ra file excel
+function export_to_excel(table) {
+    var wb = XLSX.utils.table_to_book(table);
+    console.log(wb);
+    var wbout = XLSX.write(wb, {bookType: "xlsx", type:"array"});
+    console.log(wbout);
+    
 }

@@ -77,10 +77,6 @@ def get_list_std(request, idClass, idModule):
         'overall_grade_text': std_module.overall_grade_text,
         'is_pass': 'Đạt' if std_module.is_pass else 'Không đạt',
     } for std_module in std_modules]
-    df = pd.DataFrame(transcripts)
-
-
-    df.to_excel('data.xlsx', index=False)
     return JsonResponse({'transcripts': transcripts})
 
 
