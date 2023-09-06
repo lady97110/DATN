@@ -1,12 +1,13 @@
 .result-row:hover{
-    background-color: #8b8282; 
+    background-color: #519eca; 
     cursor: pointer;
 }
 
 
 button , input, select {
-    border: 1px solid black;
+    border: 1px solid rgb(156, 152, 152);
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 #list-idClass{

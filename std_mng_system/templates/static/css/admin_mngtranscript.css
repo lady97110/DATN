@@ -6,6 +6,7 @@
     flex-grow: 1;
 }
 
+
 .search-class{
     display: inline-block;
     padding-bottom: 5px;
@@ -16,17 +17,21 @@
     display: flex;
     margin-left: 10%;
     align-items: center;
+    margin-top: 20px;
 }
 
 .searchbox-module{
     margin-left: 10%;
     display: flex;
+    margin-top: 20px;
 }
 
 button , input, select {
-    border: 1px solid black;
+    border: 1px solid rgb(143, 142, 142);
     border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
 
 
 #search-class-btn{
@@ -60,20 +65,23 @@ thead{
 }
 
 
-tr:hover{
-    background-color: #8b8282; 
+tbody tr:hover{
+    background-color: #519eca; 
     cursor: pointer;
 }
 
 #list-module{
-    display: block;
+    display: none;
     background-color: white;
-    border: 1px solid #303030;
-    width: fit-content;
-    overflow: auto;
-    z-index: 1;
-
+    border: 1px solid #777777;
+    width: 206px;
+    max-height: 188px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 10;    
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
+
 
 #list-module option:hover{
     background-color: #519eca;
@@ -88,9 +96,133 @@ tr:hover{
 span{
     font-size: 16px;
     font-weight: 600;
+    margin-right: 10px;
 }
+
+#search-module-input{
+    width: 206px;
+}
+
+.inputbox-module-clicked{
+    border-bottom: none!important;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    width: 206px;
+    box-shadow: 0 0px #ffffff !important;
+}
+
+#table-class{
+    padding-left: 20px;
+    margin-top: 20px;
+    height: 163px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 600px;
+}
+
+#table-class table {
+    width: 100%;
+}
+
+#table-class td {
+    height: 32px;
+}
+
+
+#table-class table thead{
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+}
+
 
 ::placeholder{
     opacity: 0.5;
 }
 
+.search-zone{
+    border: 2px solid #8b8282;
+    height: 301px;
+}
+
+.clicked-row{
+    background-color: #519eca;
+    font-weight: bold;
+}
+
+
+.div-info{
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    align-items: end;
+    
+}
+#main-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 50px;
+    height: fit-content;
+}
+
+.title-span{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-span-class{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+
+
+.title-span{
+    display: flex;
+    flex-direction: column;
+}
+
+#main-info span{
+    display: flex;
+    justify-content: center;
+}
+
+.data-zone{
+    margin-top: 15px;
+    border: 2px solid ;
+}
+
+#list-std{
+    box-sizing: border-box;
+    margin: 10px;
+    height: 353px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#tb-list-std{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#tbody-std td{
+    height: 32px;
+}
+
+#tb-list-std thead{
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+}
+
+.action-btn{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.main-page{
+    margin-bottom: 100px;
+}

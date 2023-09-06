@@ -94,16 +94,14 @@ def get_moduleclass(request, idStd):
     return JsonResponse({'moduleclasses': moduleclass_data})
 
 
-#lay lich hoc va lich thi lop hoc phan
+#lay lich hoc lop hoc phan
 @login_required(login_url='login_std')
 def get_detail_schedule(request, idModuleClass):
     schedules = ScheduleModuleClass.objects.filter(idModuleClass__idModuleClass=idModuleClass)
-    schedule_exam = ScheduleFinalExam.objects.get(idModuleClass__idModuleClass=idModuleClass)
 
     schedule_data = [model_to_dict(schedule) for schedule in schedules]
-    schedule_exam_data = model_to_dict(schedule_exam)
 
-    return JsonResponse({'schedule': schedule_data, 'schedule_exam': schedule_exam_data})
+    return JsonResponse({'schedule': schedule_data})
 
 
 #luu hoc phan sinh vien da chon

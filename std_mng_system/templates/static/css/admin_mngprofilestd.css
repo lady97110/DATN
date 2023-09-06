@@ -113,7 +113,7 @@ th{
 
 
 #row-table:hover{
-    background-color: #8b8282; 
+    background-color: #519eca; 
     cursor: pointer;
 }
 
@@ -267,15 +267,10 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-left: 5px; 
 }
 
-.bordercard input, .bordercard select {
-    border: 1px solid black;
+button , input, select {
+    border: 1px solid rgb(156, 152, 152);
     border-radius: 5px;
-}
-
-
-.search-box input, .search-box select {
-    border: 1px solid black;
-    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 select, input {

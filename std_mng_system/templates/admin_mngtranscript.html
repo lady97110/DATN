@@ -11,51 +11,89 @@
 {% block titlepage %}QUẢN LÝ ĐIỂM{% endblock %}
 
 {% block content %}
-<div>
-    <div>
-        <div class="search-zone">
-            <div class="div-search">
-                <h5 class="search-class">LỚP HỌC PHẦN</h5>
 
-                <div class="searchbox-class">
-                    <span>Lớp: </span>
-                    <div>
-                        <input id="search-class-input" placeholder="mã lớp HP"></input>
-                        <button id="search-class-btn" type="button">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
+<div class="main-page">
+    <div class="search-zone">
+        <div class="div-search">
+            <h5 class="search-class ml-4 mt-2">LỚP HỌC PHẦN</h5>
 
+            <div class="searchbox-class">
+                <span>Lớp:</span>
                 <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Lớp</th>
-                                <th>Khoa</th>
-                                <th>Ngành</th>
-                                <th>Khóa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-class">
-                        </tbody>
-                    </table>
+                    <input id="search-class-input" placeholder="nhập tên lớp"></input>
+                    <button id="search-class-btn" type="button">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
 
-            <div class="div-search">
-                <h5 class="search-class">MÔN HỌC PHẦN</h5>
-                <div class="searchbox-module">
-                    <div>
-                    <span>Học phần: </span>
-                    </div>
-                    <div>
-                        <input id="search-class-input" placeholder="học phần"></input>
-                        <div id="list-module">
-                        </div>
+            <div id="table-class">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><span class="text">Lớp</span></th>
+                            <th><span class="text">Khoa</span></th>
+                            <th><span class="text">Ngành</span></th>
+                            <th><span class="text">Khóa</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-class">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="div-search">
+            <h5 class="search-class ml-4 mt-2">HỌC PHẦN</h5>
+            <div class="searchbox-module">
+                <div>
+                    <span>Học phần:</span>
+                </div>
+                <div>
+                    <input id="search-module-input" class="inputbox-module" placeholder="nhâp học phần"></input>
+                    <div id="list-module">
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="data-zone">
+        <div>
+            <button type="button" id="btn-show-std" class="action-btn">Danh sách sinh viên</button>
+            <button type="button" id="btn-print-std" class="action-btn">In ra excel</button>
+
+            <label>
+                <div class="title-span-class">
+                    <span>Lớp:</span>
+                    <span id="choosen-class"></span>
+                </div>
+                <div class="title-span">
+                    <span class="mb-2">Học phần</span>
+                    <span id="choosen-module"></span>
+                </div>
+            </label>
+        </div>
+        <div id="list-std">
+            <table id="tb-list-std">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>MSSV</th>
+                        <th>Họ tên</th>
+                        <th>Ngày sinh</th>
+                        <th>Điểm QT</th>
+                        <th>Điểm KT</th>
+                        <th>Điểm TK</th>
+                        <th>Thang điểm 4</th>
+                        <th>Điểm chữ</th>
+                        <th>Đạt</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-std">
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>

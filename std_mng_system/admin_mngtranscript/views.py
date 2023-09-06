@@ -10,6 +10,8 @@ from schedule.models import *
 from datetime import datetime
 from django.db.models import Q
 from login_admin.models import profile_admin
+import pandas as pd
+
 
 
 # Create your views here.
@@ -53,4 +55,32 @@ def get_list_module(request, idClass):
         }
         modules_data.append(data)
     return JsonResponse({'modules': modules_data})
+
+
+#lay danh sach sinh vien thuoc lop hoc phan
+@login_required(login_url='login_admin')
+def get_list_std(request, idClass, idModule):
+    obj_idClass = FacultyClasses.objects.get(idClass=idClass)
+    obj_module = Module.objects.get(idModule=idModule)
+    obj_moduleclass = ModuleClass.objects.get(idClass=obj_idClass, module = obj_module)
+
+    std_modules = Student_ModuleClass.objects.filter(module_class = obj_moduleclass)
+
+    transcripts = [{
+        'idStd' : std_module.idStd.idStd,
+        'nameStd' : std_module.idStd.nameStd,
+        'date_birth' : std_module.idStd.datebirthStd.strftime('%d/%m/%Y'),
+        'process_grade' : std_module.process_grade,
+        'final_grade' : std_module.final_grade,
+        'overall_grade' : std_module.overall_grade,
+        'overall_grade_4': std_module.overall_grade_4,
+        'overall_grade_text': std_module.overall_grade_text,
+        'is_pass': 'Đạt' if std_module.is_pass else 'Không đạt',
+    } for std_module in std_modules]
+    df = pd.DataFrame(transcripts)
+
+
+    df.to_excel('data.xlsx', index=False)
+    return JsonResponse({'transcripts': transcripts})
+
 

@@ -17,6 +17,7 @@ class profile_admin(models.Model):
     emailAdmin = models.CharField(max_length=40, verbose_name='Email', blank=True, null=True)
     addressAdmin = models.CharField(max_length=50, verbose_name='Quê quán')
     last_login = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
 
 
     def __str__(self):
