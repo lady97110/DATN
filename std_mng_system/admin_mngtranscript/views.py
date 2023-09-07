@@ -157,7 +157,15 @@ def get_semester_std(request, idStd):
         transcripts = Student_ModuleClass.objects.filter(idStd = std)
         id_moduleclasses = transcripts.values_list('module_class', flat= True).distinct()
         moduleclasses = ModuleClass.objects.filter(idModuleClass__in = id_moduleclasses)
-        id_semester = 
- 
-    except:
-        pass
+        id_semester = moduleclasses.values_list('semester', flat= True).distinct()
+        semesters = Semester.objects.filter(idSemester__in = id_semester)
+        data_semesters = []
+        for semester in semesters:
+            data_semester = {
+                'idSemester': semester.idSemester,
+                'nameSemester': semester.nameSemester,
+            }
+            data_semesters.append(data_semester)
+        return JsonResponse({'semesters': data_semesters}) 
+    except (Student_ModuleClass.DoesNotExist, ModuleClass.DoesNotExist, Semester.DoesNotExist) as e:
+        return JsonResponse({'error': "Sinh viên này không chưa có học kỳ nào"})

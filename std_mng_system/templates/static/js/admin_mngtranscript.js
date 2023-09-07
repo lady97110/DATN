@@ -66,6 +66,10 @@ document.addEventListener("DOMContentLoaded", function () {
     //bang danh sach sinh vien
     blank_table(tbody_std, 10, 10);
 
+    //bang diem cua sinh vien
+    const tbody_moduleclass = document.getElementById("tbody-moduleclass");
+    blank_table(tbody_moduleclass, 10, 11);
+
     //nut in bang danh sach
     const export_table = document.getElementById('btn-print-std');
     export_table.addEventListener('click', function () {
@@ -117,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(function(data){
                 const semester_selectbox = document.getElementById("select-semester");
+                semester_selectbox.innerHTML = "<option value='-1' selected>--Học kỳ--</option></option>";
                 data.semesters.forEach(function(semester){
                     const option = document.createElement("option");
                     option.value = semester.idSemester;

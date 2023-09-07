@@ -105,8 +105,8 @@
                     </div>
                 </div>
             </div>
-            <div id="list-std">
-                <table id="tb-list-std">
+            <div id="list-std" class="div-table">
+                <table id="tb-list-std" class="table">
                     <thead>
                         <tr>
                             <th></th>
@@ -129,19 +129,43 @@
                 <button type="button" id="commit-save-data" class="action-btn" disabled>Lưu vào CSDL</button>
             </div>
         </div>
+
+        
         <div class="student-area">
             <div class="action-area">
                 <div class="show-list-std">
-                    <button type="button" id="btn-show-module" class="action-btn">Danh sách học phần</button>
                 </div>
                 <div class="excel-area semester">
                     <span>Học kỳ</span>
-                    <select id="select-semester"></select>
+                    <select id="select-semester">
+                        <option value="-1">--Học kỳ--</option>
+                    </select>
                 </div>
                 <div class="print-to-excel">
                     <button type="button" id="btn-print-std" class="action-btn"><i class="fa fa-table mr-2"
                             aria-hidden="true"></i>In ra excel</button>
                 </div>
+            </div>
+            <div id="list-module-std" class="div-table">
+                <table id="tb-list-module" class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Mã học phần</th>
+                            <th>Tên học phần</th>
+                            <th>Lớp</th>
+                            <th>Số tín chỉ</th>
+                            <th>Điểm QT</th>
+                            <th>Điểm KT</th>
+                            <th>Điểm TK</th>
+                            <th>Thang điểm 4</th>
+                            <th>Điểm chữ</th>
+                            <th>Đạt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-moduleclass">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

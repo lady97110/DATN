@@ -202,15 +202,15 @@ span{
     border-radius: 15px;
 }
 
-#list-std{
+.div-table{
     box-sizing: border-box;
     margin: 10px;
-    height: 354px;
+    height: 367px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-#tb-list-std{
+.table{
     width: 100%;
     box-sizing: border-box;
 }
@@ -219,11 +219,20 @@ span{
     height: 32px;
 }
 
-#tb-list-std thead{
+
+#tbody-moduleclass td{
+    height: 32px;
+}
+
+
+.table thead{
     position: sticky;
     top: 0px;
     z-index: 2;
 }
+
+
+
 
 .action-btn{
     font-size: 16px;
@@ -278,6 +287,8 @@ span{
 
 .excel-area{
     flex-grow: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .info-std{
@@ -289,4 +300,10 @@ span{
 
 .search-student{
     display: flex;
+}
+
+
+#list-module-std{
+    margin-top: 50px;
+    margin-bottom: 100px;
 }
