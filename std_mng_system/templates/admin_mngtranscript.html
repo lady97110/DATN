@@ -77,11 +77,11 @@
     </div>
 
     <div class="data-zone">
-        <div class="moduleclass-area d-none">
+        <div class="moduleclass-area" id="moduleclass-area">
             <div>
                 <div class="action-area">
                     <div class="show-list-std">
-                        <button type="button" id="btn-show-std" class="action-btn">Danh sách sinh viên</button>
+                        <button type="button" id="btn-show-std" class="action-btn">Xem danh sách sinh viên</button>
                     </div>
                     <div class="excel-area">
                         <span>Nhập file excel</span>
@@ -130,8 +130,7 @@
             </div>
         </div>
 
-
-        <div class="student-area">
+        <div class="student-area" id="student-area">
             <div class="action-area">
                 <div class="show-list-std">
                 </div>
@@ -142,8 +141,8 @@
                     </select>
                 </div>
                 <div class="print-to-excel">
-                    <button type="button" id="btn-print-std" class="action-btn"><i class="fa fa-table mr-2"
-                            aria-hidden="true"></i>In ra excel</button>
+                    <button type="button" id="btn-print-moduleclass" class="action-btn" disabled><i
+                            class="fa fa-table mr-2" aria-hidden="true"></i>In ra excel</button>
                 </div>
             </div>
             <div id="list-module-std" class="div-table">

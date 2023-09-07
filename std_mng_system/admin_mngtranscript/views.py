@@ -177,9 +177,34 @@ def get_semester_std(request, idStd):
 @login_required(login_url='login_admin')
 def get_transcript_semester(request, idStd, semester):
     std = profile_std.objects.get(idStd=idStd)
-    this_semester = Semester.objects.get(idSemester = semester)
-    transcript_ar = []
+    if semester == 'all':
+        try:
+            transcript_all = []
+            transcripts = Student_ModuleClass.objects.filter(idStd = std)
+            if not transcripts.exists():
+                raise Student_ModuleClass.DoesNotExist
+            for transcript in transcripts:
+                data_transcript = {
+                    'idModule': transcript.module_class.module.idModule,
+                    'nameModule': transcript.module_class.module.nameModule,
+                    'credit': transcript.module_class.module.credits,
+                    'moduleclass': transcript.module_class.idClass.idClass,
+                    'process_grade': transcript.process_grade,
+                    'final_grade': transcript.final_grade,
+                    'overall_grade': transcript.overall_grade,
+                    'overall_grade_4': transcript.overall_grade_4,
+                    'overall_grade_text': transcript.overall_grade_text,
+                    'is_pass': 'Đạt' if transcript.is_pass else ('Không đạt' if transcript.is_pass is False else "")
+                }
+                transcript_all.append(data_transcript)
+            return JsonResponse({'transcripts': transcript_all})
+        except Student_ModuleClass.DoesNotExist:
+            return JsonResponse({'error':"Không tìm thấy dữ liệu bảng điểm trong CSDL"})  
+        
+
     try:
+        this_semester = Semester.objects.get(idSemester = semester)
+        transcript_semester = []
         transcripts = Student_ModuleClass.objects.filter(idStd = std , module_class__semester = this_semester)
         if not transcripts.exists():
             raise Student_ModuleClass.DoesNotExist
@@ -196,9 +221,8 @@ def get_transcript_semester(request, idStd, semester):
                 'overall_grade_text': transcript.overall_grade_text,
                 'is_pass': 'Đạt' if transcript.is_pass else ('Không đạt' if transcript.is_pass is False else "")
             }
-            transcript_ar.append(data_transcript)
-        print(transcript_ar)
-        return JsonResponse({'transcripts': transcript_ar})
+            transcript_semester.append(data_transcript)
+        return JsonResponse({'transcripts': transcript_semester})
     except Student_ModuleClass.DoesNotExist:
         return JsonResponse({'error':"Không tìm thấy dữ liệu bảng điểm trong CSDL"})  
 

@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const search_classBtn = document.getElementById("search-class-btn");
     const div_list_module = document.getElementById("list-module");
     const inputbox = document.getElementById("search-module-input");
+    const moduleclass_area = document.getElementById("moduleclass-area");
+    const student_area = document.getElementById("student-area");
+    moduleclass_area.style.display = "block";
+    student_area.style.display = "none";
+
 
     //nut tim lop
     search_classBtn.addEventListener("click", function () {
@@ -70,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const tbody_moduleclass = document.getElementById("tbody-moduleclass");
     blank_table(tbody_moduleclass, 10, 11);
 
-    //nut in bang danh sach
+    //nut in bang danh sach theo lop
     const export_table = document.getElementById('btn-print-std');
     export_table.addEventListener('click', function () {
         const idClass = document.getElementById("choosen-class").textContent;
@@ -85,6 +90,26 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
         export_to_excel(table_export, name_file, tableInfo);
     });
+
+
+    //nut in bang diem theo sinh vien
+    const export_table_moduleclass = document.getElementById("btn-print-moduleclass");
+    export_table_moduleclass.addEventListener("click", function () {
+        const nameStd = document.getElementById("nameStd").textContent;
+        const idStd = document.getElementById("idStd").textContent;
+        const semester_selected  = document.getElementById("select-semester");
+        const semester = semester_selected.selectedOptions[0].textContent;
+        const name_file = idStd + "_" + nameStd + "_" +semester;
+        const table_export = document.getElementById("tb-list-module");
+        var tableInfo = [
+            ["Bảng điểm sinh viên"],
+            ["Họ tên:", nameStd, "MSSV:", idStd],
+            ["Học kỳ:", semester],
+            [],
+        ];
+        export_to_excel(table_export, name_file, tableInfo);
+    });
+        
 
 
     //tai len file excel
@@ -112,18 +137,20 @@ document.addEventListener("DOMContentLoaded", function () {
         get_profile_std(idStd)
             .then(function (data) {
                 const profile = data.profile;
-                document.getElementById("idStd").textContent = profile.idStd;         
-                document.getElementById("idStd").setAttribute("idStd",profile.idStd);         
+                document.getElementById("idStd").textContent = profile.idStd;
+                document.getElementById("idStd").setAttribute("idStd", profile.idStd);
                 document.getElementById("nameStd").textContent = profile.nameStd;
                 document.getElementById("birthStd").textContent = profile.datebirthStd;
                 document.getElementById("idClass").textContent = profile.idClass;
                 document.getElementById("faculty").textContent = profile.faculty;
+                moduleclass_area.style.display = "none";
+                student_area.style.display = "block";
                 return get_semester_std(idStd);
             })
-            .then(function(data){
+            .then(function (data) {
                 const semester_selectbox = document.getElementById("select-semester");
-                semester_selectbox.innerHTML = "<option value='-1' selected>--Học kỳ--</option></option>";
-                data.semesters.forEach(function(semester){
+                semester_selectbox.innerHTML = "<option value='-1' selected>--Học kỳ--</option></option><option value='all'>Tất cả học kỳ</option></option>";
+                data.semesters.forEach(function (semester) {
                     const option = document.createElement("option");
                     option.value = semester.idSemester;
                     option.textContent = semester.nameSemester;
@@ -138,18 +165,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //selectbox hoc ky
     const semester_selectbox = document.getElementById("select-semester");
-    semester_selectbox.addEventListener("change", function(){
+    semester_selectbox.addEventListener("change", function () {
         const semester = semester_selectbox.value;
-        const idStd = document.getElementById("idStd").getAttribute("idStd");
-        const tbody = document.getElementById("tbody-moduleclass");
-        get_transcript_semester(idStd, semester)
-            .then(function(data){
-                fill_transcript_std_to_table(tbody ,data);
-            })
-            .catch(function(error){
-                alert(error);
-            });
-        
+        if (semester != -1) {
+            const idStd = document.getElementById("idStd").getAttribute("idStd");
+            const tbody = document.getElementById("tbody-moduleclass");
+            get_transcript_semester(idStd, semester)
+                .then(function (data) {
+                    fill_transcript_std_to_table(tbody, data);
+                    const export_table_moduleclass = document.getElementById("btn-print-moduleclass");
+                    export_table_moduleclass.disabled = false;
+                })
+                .catch(function (error) {
+                    alert(error);
+                });
+        };
     });
 
     auto_close_tag();
@@ -261,6 +291,8 @@ function get_list_module(idClass) {
 
 //tao list search mon hoc
 function selectbox_module(data) {
+    const moduleclass_area = document.getElementById("moduleclass-area");
+    const student_area = document.getElementById("student-area");
     const div_options = document.getElementById("list-module");
     div_options.innerHTML = "";
     data.modules.forEach(function (module) {
@@ -271,6 +303,9 @@ function selectbox_module(data) {
         div_options.appendChild(option);
 
         option.addEventListener("click", function () {
+            moduleclass_area.style.display = "block";
+            student_area.style.display = "none";
+            
             const show_module = document.getElementById("choosen-module");
             show_module.textContent = option.textContent;
             show_module.setAttribute("idModule", option.value);
@@ -418,37 +453,36 @@ function fill_transcript_std_to_table(tbody, data) {
         row.appendChild(cell3);
 
         const cell4 = document.createElement("td");
-        cell4.textContent = transcript.credit;
+        cell4.textContent = transcript.moduleclass;
         row.appendChild(cell4);
 
-        const cell11 = document.createElement("td");
-        cell4.textContent = transcript.moduleclass;
-        row.appendChild(cell11);
-
         const cell5 = document.createElement("td");
-        cell5.textContent = transcript.process_grade;
-        row.appendChild(cell5);
+        cell5.textContent = transcript.credit;
+        row.appendChild(cell5)
 
         const cell6 = document.createElement("td");
-        cell6.textContent = transcript.final_grade;
+        cell6.textContent = transcript.process_grade;
         row.appendChild(cell6);
 
         const cell7 = document.createElement("td");
-        cell7.textContent = transcript.overall_grade;
+        cell7.textContent = transcript.final_grade;
         row.appendChild(cell7);
 
         const cell8 = document.createElement("td");
-        cell8.textContent = transcript.overall_grade_4;
+        cell8.textContent = transcript.overall_grade;
         row.appendChild(cell8);
 
         const cell9 = document.createElement("td");
-        cell9.textContent = transcript.overall_grade_text;
+        cell9.textContent = transcript.overall_grade_4;
         row.appendChild(cell9);
 
         const cell10 = document.createElement("td");
-        cell10.textContent = transcript.is_pass;
+        cell10.textContent = transcript.overall_grade_text;
         row.appendChild(cell10);
 
+        const cell11 = document.createElement("td");
+        cell11.textContent = transcript.is_pass;
+        row.appendChild(cell11)
         tbody.appendChild(row);
     });
     auto_number(tbody);
@@ -576,49 +610,48 @@ function get_profile_std(idStd) {
 
 //lay danh sach ky cua sinh vien
 function get_semester_std(idStd) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         $.ajax({
-            url: 'get-semester-std/'+idStd+'/',
+            url: 'get-semester-std/' + idStd + '/',
             method: 'get',
             dataType: 'json',
-            success: function(data){
-                if (data.semesters){
+            success: function (data) {
+                if (data.semesters) {
                     resolve(data);
                 }
-                else{
+                else {
                     reject(data.error);
                 }
             },
-            error: function(){
+            error: function () {
                 alert("Có lỗi trong quá trình xử lý");
             }
         });
     });
-    
+
 }
 
 
 //lay bang diem sau theo   ky hoc
 function get_transcript_semester(idStd, semester) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         $.ajax({
-            url:'get-transcript-semester/'+idStd+'/'+semester+'/',
-            method:'GET',
-            dataType:'json',
-            success: function(data){
-                console.log(data.transcripts);
-                // if(data.transcripts){
-                //     resolve(data);
-                // }
-                // else{
-                //     reject(data.error);
-                // }
+            url: 'get-transcript-semester/' + idStd + '/' + semester + '/',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.transcripts) {
+                    resolve(data);
+                }
+                else {
+                    reject(data.error);
+                }
             },
-            erorr: function(){
+            error: function () {
                 alert("Có lỗi trong quá trình xử lý");
             }
         });
-    });    
+    });
 }
 
 
