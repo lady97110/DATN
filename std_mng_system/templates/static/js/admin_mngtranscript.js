@@ -112,7 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
         get_profile_std(idStd)
             .then(function (data) {
                 const profile = data.profile;
-                document.getElementById("idStd").textContent = profile.idStd;
+                document.getElementById("idStd").textContent = profile.idStd;         
+                document.getElementById("idStd").setAttribute("idStd",profile.idStd);         
                 document.getElementById("nameStd").textContent = profile.nameStd;
                 document.getElementById("birthStd").textContent = profile.datebirthStd;
                 document.getElementById("idClass").textContent = profile.idClass;
@@ -134,6 +135,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     });
 
+
+    //selectbox hoc ky
+    const semester_selectbox = document.getElementById("select-semester");
+    semester_selectbox.addEventListener("change", function(){
+        const semester = semester_selectbox.value;
+        const idStd = document.getElementById("idStd").getAttribute("idStd");
+        const tbody = document.getElementById("tbody-moduleclass");
+        get_transcript_semester(idStd, semester)
+            .then(function(data){
+                fill_transcript_std_to_table(tbody ,data);
+            })
+            .catch(function(error){
+                alert(error);
+            });
+        
+    });
 
     auto_close_tag();
 });
@@ -382,6 +399,62 @@ function fill_transcript_to_table(tbody, data) {
 }
 
 
+
+//ham dien bang diem cua sinh vien theo ky vao bang
+function fill_transcript_std_to_table(tbody, data) {
+    tbody.innerHTML = "";
+    data.transcripts.forEach(function (transcript) {
+        const row = document.createElement("tr");
+
+        const cell1 = document.createElement("td");
+        row.appendChild(cell1);
+
+        const cell2 = document.createElement("td");
+        cell2.textContent = transcript.idModule;
+        row.appendChild(cell2);
+
+        const cell3 = document.createElement("td");
+        cell3.textContent = transcript.nameModule;
+        row.appendChild(cell3);
+
+        const cell4 = document.createElement("td");
+        cell4.textContent = transcript.credit;
+        row.appendChild(cell4);
+
+        const cell11 = document.createElement("td");
+        cell4.textContent = transcript.moduleclass;
+        row.appendChild(cell11);
+
+        const cell5 = document.createElement("td");
+        cell5.textContent = transcript.process_grade;
+        row.appendChild(cell5);
+
+        const cell6 = document.createElement("td");
+        cell6.textContent = transcript.final_grade;
+        row.appendChild(cell6);
+
+        const cell7 = document.createElement("td");
+        cell7.textContent = transcript.overall_grade;
+        row.appendChild(cell7);
+
+        const cell8 = document.createElement("td");
+        cell8.textContent = transcript.overall_grade_4;
+        row.appendChild(cell8);
+
+        const cell9 = document.createElement("td");
+        cell9.textContent = transcript.overall_grade_text;
+        row.appendChild(cell9);
+
+        const cell10 = document.createElement("td");
+        cell10.textContent = transcript.is_pass;
+        row.appendChild(cell10);
+
+        tbody.appendChild(row);
+    });
+    auto_number(tbody);
+}
+
+
 //ham auto danh so thu tu
 function auto_number(tbody) {
     const rows = tbody.querySelectorAll("tr");
@@ -522,6 +595,30 @@ function get_semester_std(idStd) {
         });
     });
     
+}
+
+
+//lay bang diem sau theo   ky hoc
+function get_transcript_semester(idStd, semester) {
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            url:'get-transcript-semester/'+idStd+'/'+semester+'/',
+            method:'GET',
+            dataType:'json',
+            success: function(data){
+                console.log(data.transcripts);
+                // if(data.transcripts){
+                //     resolve(data);
+                // }
+                // else{
+                //     reject(data.error);
+                // }
+            },
+            erorr: function(){
+                alert("Có lỗi trong quá trình xử lý");
+            }
+        });
+    });    
 }
 
 

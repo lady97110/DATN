@@ -31,6 +31,8 @@ def admin_mngtranscript(request):
 def get_search_class(request, value):
     try:
         results = FacultyClasses.objects.filter(idClass__icontains=value)
+        if not results.exists():
+            raise FacultyClasses.DoesNotExist
         classes_data = [{
             'idClass': result.idClass,
             'department': result.department.nameDepartment,
@@ -169,3 +171,37 @@ def get_semester_std(request, idStd):
         return JsonResponse({'semesters': data_semesters}) 
     except (Student_ModuleClass.DoesNotExist, ModuleClass.DoesNotExist, Semester.DoesNotExist) as e:
         return JsonResponse({'error': "Sinh viên này không chưa có học kỳ nào"})
+    
+
+#lay bang diem theo ky
+@login_required(login_url='login_admin')
+def get_transcript_semester(request, idStd, semester):
+    std = profile_std.objects.get(idStd=idStd)
+    this_semester = Semester.objects.get(idSemester = semester)
+    transcript_ar = []
+    try:
+        transcripts = Student_ModuleClass.objects.filter(idStd = std , module_class__semester = this_semester)
+        if not transcripts.exists():
+            raise Student_ModuleClass.DoesNotExist
+        for transcript in transcripts:
+            data_transcript = {
+                'idModule': transcript.module_class.module.idModule,
+                'nameModule': transcript.module_class.module.nameModule,
+                'credit': transcript.module_class.module.credits,
+                'moduleclass': transcript.module_class.idClass.idClass,
+                'process_grade': transcript.process_grade,
+                'final_grade': transcript.final_grade,
+                'overall_grade': transcript.overall_grade,
+                'overall_grade_4': transcript.overall_grade_4,
+                'overall_grade_text': transcript.overall_grade_text,
+                'is_pass': 'Đạt' if transcript.is_pass else ('Không đạt' if transcript.is_pass is False else "")
+            }
+            transcript_ar.append(data_transcript)
+        print(transcript_ar)
+        return JsonResponse({'transcripts': transcript_ar})
+    except Student_ModuleClass.DoesNotExist:
+        return JsonResponse({'error':"Không tìm thấy dữ liệu bảng điểm trong CSDL"})  
+
+
+
+

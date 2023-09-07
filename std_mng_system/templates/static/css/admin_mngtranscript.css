@@ -210,7 +210,7 @@ span{
     overflow-x: hidden;
 }
 
-.table{
+.table-custom{
     width: 100%;
     box-sizing: border-box;
 }
@@ -225,7 +225,7 @@ span{
 }
 
 
-.table thead{
+.table-custom thead{
     position: sticky;
     top: 0px;
     z-index: 2;
