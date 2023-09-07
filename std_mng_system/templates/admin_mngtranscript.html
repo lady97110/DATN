@@ -18,12 +18,22 @@
             <h5 class="search-class ml-4 mt-2">LỚP HỌC PHẦN</h5>
 
             <div class="searchbox-class">
-                <span>Lớp:</span>
                 <div>
-                    <input id="search-class-input" placeholder="nhập tên lớp"></input>
-                    <button id="search-class-btn" type="button">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
+                    <span>Lớp</span>
+                    <div>
+                        <input id="search-class-input" placeholder="nhập tên lớp"></input>
+                        <button id="search-class-btn" type="button" class="search-btn-custom">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="searchbox-module">
+                    <span>Học phần</span>
+                    <div>
+                        <input id="search-module-input" class="inputbox-module" placeholder="nhâp học phần"></input>
+                        <div id="list-module">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -44,62 +54,95 @@
         </div>
 
         <div class="div-search">
-            <h5 class="search-class ml-4 mt-2">HỌC PHẦN</h5>
-            <div class="searchbox-module">
-                <div>
-                    <span>Học phần:</span>
-                </div>
-                <div>
-                    <input id="search-module-input" class="inputbox-module" placeholder="nhâp học phần"></input>
-                    <div id="list-module">
+            <h5 class="search-class ml-4 mt-2">SINH VIÊN</h5>
+            <div class="searchbox-student">
+                <div class="search-student">
+                    <span>Sinh viên:</span>
+                    <div>
+                        <input id="search-student-input" class="inputbox-student" placeholder="mssv"></input>
+                        <button id="search-std-btn" type="button" class="search-btn-custom">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
                     </div>
+                </div>
+                <div class="info-std">
+                    <label><span>MSSV:</span> <span id="idStd"></span></label>
+                    <label><span>Họ Tên:</span> <span id="nameStd"></span></label>
+                    <label><span>Ngày sinh:</span> <span id="birthStd"></span></label>
+                    <label><span>Lớp:</span> <span id="idClass"></span></label>
+                    <label><span>Khoa:</span> <span id="faculty"></span></label>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="data-zone">
-        <div>
-            <button type="button" id="btn-show-std" class="action-btn">Danh sách sinh viên</button>
-            <button type="button" id="btn-print-std" class="action-btn">In ra excel</button>
-
+        <div class="moduleclass-area d-none">
             <div>
-                <span>Nhập file excel</span>
-                <input type="file">
-                <button id="uploadBtn" class="action-btn">Upload</button>
+                <div class="action-area">
+                    <div class="show-list-std">
+                        <button type="button" id="btn-show-std" class="action-btn">Danh sách sinh viên</button>
+                    </div>
+                    <div class="excel-area">
+                        <span>Nhập file excel</span>
+                        <input type="file" id="input-excel-file">
+                        <button id="uploadBtn" class="action-btn">Upload</button>
+                    </div>
+                    <div class="print-to-excel">
+                        <button type="button" id="btn-print-std" class="action-btn"><i class="fa fa-table mr-2"
+                                aria-hidden="true"></i>In ra excel</button>
+                    </div>
+                </div>
+
+                <div class="title-table">
+                    <div class="title-span-class">
+                        <span>Lớp:</span>
+                        <span id="choosen-class" class="span-value"></span>
+                    </div>
+                    <div class="title-span-module">
+                        <span class="mb-2">Học phần:</span>
+                        <span id="choosen-module" class="span-value"></span>
+                    </div>
+                </div>
             </div>
-
-            <label>
-                <div class="title-span-class">
-                    <span>Lớp:</span>
-                    <span id="choosen-class"></span>
-                </div>
-                <div class="title-span">
-                    <span class="mb-2">Học phần</span>
-                    <span id="choosen-module"></span>
-                </div>
-            </label>
+            <div id="list-std">
+                <table id="tb-list-std">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>MSSV</th>
+                            <th>Họ tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Điểm QT</th>
+                            <th>Điểm KT</th>
+                            <th>Điểm TK</th>
+                            <th>Thang điểm 4</th>
+                            <th>Điểm chữ</th>
+                            <th>Đạt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-std">
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn-save">
+                <button type="button" id="commit-save-data" class="action-btn" disabled>Lưu vào CSDL</button>
+            </div>
         </div>
-        <div id="list-std">
-            <table id="tb-list-std">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>MSSV</th>
-                        <th>Họ tên</th>
-                        <th>Ngày sinh</th>
-                        <th>Điểm QT</th>
-                        <th>Điểm KT</th>
-                        <th>Điểm TK</th>
-                        <th>Thang điểm 4</th>
-                        <th>Điểm chữ</th>
-                        <th>Đạt</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-std">
-                </tbody>
-            </table>
-
+        <div class="student-area">
+            <div class="action-area">
+                <div class="show-list-std">
+                    <button type="button" id="btn-show-module" class="action-btn">Danh sách học phần</button>
+                </div>
+                <div class="excel-area semester">
+                    <span>Học kỳ</span>
+                    <select id="select-semester"></select>
+                </div>
+                <div class="print-to-excel">
+                    <button type="button" id="btn-print-std" class="action-btn"><i class="fa fa-table mr-2"
+                            aria-hidden="true"></i>In ra excel</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

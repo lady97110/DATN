@@ -60,23 +60,104 @@ def get_list_module(request, idClass):
 #lay danh sach sinh vien thuoc lop hoc phan
 @login_required(login_url='login_admin')
 def get_list_std(request, idClass, idModule):
-    obj_idClass = FacultyClasses.objects.get(idClass=idClass)
-    obj_module = Module.objects.get(idModule=idModule)
-    obj_moduleclass = ModuleClass.objects.get(idClass=obj_idClass, module = obj_module)
+    try:
+        obj_idClass = FacultyClasses.objects.get(idClass=idClass)
+        obj_module = Module.objects.get(idModule=idModule)
+        obj_moduleclass = ModuleClass.objects.get(idClass=obj_idClass, module = obj_module)
+        std_modules = Student_ModuleClass.objects.filter(module_class = obj_moduleclass)
+        transcripts = [{
+            'idStd' : std_module.idStd.idStd,
+            'nameStd' : std_module.idStd.nameStd,
+            'date_birth' : std_module.idStd.datebirthStd.strftime('%d/%m/%Y'),
+            'process_grade' : std_module.process_grade,
+            'final_grade' : std_module.final_grade,
+            'overall_grade' : std_module.overall_grade,
+            'overall_grade_4': std_module.overall_grade_4,
+            'overall_grade_text': std_module.overall_grade_text,
+            'is_pass': 'Đạt' if std_module.is_pass else ('Không đạt' if std_module.is_pass is False else ""),
+        } for std_module in std_modules]
+        return JsonResponse({'transcripts': transcripts})
+    except (ModuleClass.DoesNotExist, FacultyClasses.DoesNotExist, Module.DoesNotExist) as e:
+        return JsonResponse({'error': "Không tồn tại lớp học phần này"})
 
-    std_modules = Student_ModuleClass.objects.filter(module_class = obj_moduleclass)
 
-    transcripts = [{
-        'idStd' : std_module.idStd.idStd,
-        'nameStd' : std_module.idStd.nameStd,
-        'date_birth' : std_module.idStd.datebirthStd.strftime('%d/%m/%Y'),
-        'process_grade' : std_module.process_grade,
-        'final_grade' : std_module.final_grade,
-        'overall_grade' : std_module.overall_grade,
-        'overall_grade_4': std_module.overall_grade_4,
-        'overall_grade_text': std_module.overall_grade_text,
-        'is_pass': 'Đạt' if std_module.is_pass else 'Không đạt',
-    } for std_module in std_modules]
-    return JsonResponse({'transcripts': transcripts})
+#upload file excel
+@login_required(login_url='login_admin')
+def upload_file_excel(request, idClass, idModule, action):
+    response_data = []
+    if request.method == 'POST':
+        excel_file = request.FILES.get('excel_file')
+        if excel_file:
+            df = pd.read_excel(excel_file, skiprows=4)
+            for row in df.itertuples():
+                idStd = row[2]
+                process_grade = row[5]
+                final_grade = row[6]
+                try:
+                    moduleclass = ModuleClass.objects.get(idClass__idClass = idClass, module__idModule = idModule)
+                    std_module = Student_ModuleClass.objects.get(idStd__idStd = idStd, module_class = moduleclass)
+                    std_module.process_grade = process_grade
+                    std_module.final_grade = final_grade
+                    std_module.calculate_grade()
+                    std_moduleclass = {
+                        'idStd' : std_module.idStd.idStd,
+                        'nameStd' : std_module.idStd.nameStd,
+                        'date_birth' : std_module.idStd.datebirthStd.strftime('%d/%m/%Y'),
+                        'process_grade' : std_module.process_grade,
+                        'final_grade' : std_module.final_grade,
+                        'overall_grade' : std_module.overall_grade,
+                        'overall_grade_4': std_module.overall_grade_4,
+                        'overall_grade_text': std_module.overall_grade_text,
+                        'is_pass': 'Đạt' if std_module.is_pass else ('Không đạt' if std_module.is_pass is False else "")                        
+                    }
+                    if action == 'upload':
+                        response_data.append(std_moduleclass)
+                    elif action == 'save':
+                        std_module.save()
+                        response_data.append(std_moduleclass)
+                    else:
+                        return JsonResponse({'error': "Hành động không hợp lệ"})
+                except ModuleClass.DoesNotExist:
+                    return JsonResponse({'error': "Hãy chọn lớp học phần cần thao tác"})
+                except Student_ModuleClass.DoesNotExist:
+                    return JsonResponse({'error': "Không tồn tại sinh viên có mã  số " + idStd + " trong CSDL"})
+            return JsonResponse({'transcripts': response_data})
+        else:
+            return JsonResponse({'error': "File Excel định dạng không đúng"})
+        
 
 
+#lay thong tin sinh vien
+@login_required(login_url='login_admin')
+def get_profile_std(request, idStd):
+    try:
+        this_std = profile_std.objects.get(idStd=idStd)
+        class_std = this_std.idClass
+        department_std = class_std.department
+        faculty = department_std.faculty
+
+        this_profile = {
+            'idStd': idStd,
+            'nameStd': this_std.nameStd,
+            'datebirthStd': this_std.datebirthStd.strftime('%d/%m/%Y'),
+            'idClass': class_std.idClass,
+            'faculty': faculty.nameFaculty,
+        }
+        return JsonResponse({'profile': this_profile})
+    except profile_std.DoesNotExist:
+        return JsonResponse({'error': "MSSV không tồn tại"})
+
+
+
+#lay danh sach ky cua sinh vien
+@login_required(login_url='login_admin')
+def get_semester_std(request, idStd):
+    try:
+        std = profile_std.objects.get(idStd=idStd)
+        transcripts = Student_ModuleClass.objects.filter(idStd = std)
+        id_moduleclasses = transcripts.values_list('module_class', flat= True).distinct()
+        moduleclasses = ModuleClass.objects.filter(idModuleClass__in = id_moduleclasses)
+        id_semester = 
+ 
+    except:
+        pass

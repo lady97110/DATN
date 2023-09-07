@@ -66,7 +66,7 @@ class Student_ModuleClass(models.Model):
         return f'{self.idStd.idStd} - {self.module_class.module.nameModule}'
 
 
-    def save(self, *args, **kwargs):
+    def calculate_grade(self):
         if self.process_grade is not None and self.final_grade is not None:
             self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
             
@@ -103,7 +103,14 @@ class Student_ModuleClass(models.Model):
                 self.overall_grade_text = 'F'
                 self.is_pass = False
 
+
+    def save_grade(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+        
+    def save(self, *args, **kwargs):
+        self.calculate_grade()
+        self.save_grade()
 
     class Meta:
         verbose_name = 'Bảng điểm'

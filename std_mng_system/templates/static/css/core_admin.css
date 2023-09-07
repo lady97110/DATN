@@ -22,7 +22,6 @@
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    background-color: #f2f4f7;
     min-height: 100vh;
 }
 
@@ -111,3 +110,10 @@
   li a{
     font-weight: 600;
   }
+
+
+#dropdownMenuButton{
+  border: none !important;
+    border-radius: none !important;
+    box-shadow: none !important;
+}
