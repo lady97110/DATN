@@ -50,16 +50,6 @@ def admin_mngprofilestd(request):
             messages.error(request, 'Không có kết quả phù hợp.')
     return render(request, 'admin_mngprofilestd.html', {'search_form': search_form, 'results': results, 'search_field': search_field, **context})
 
-@login_required(login_url='login_admin')
-def delete_profile(request):
-    try:
-        idStd = gotidStd
-        profile = profile_std.objects.get(idStd=idStd)
-        profile.delete()
-        return JsonResponse({'confirm': True})
-    except profile_std.DoesNotExist:
-        return JsonResponse({'confirm': False})
-    
 
 @login_required(login_url='login_admin')
 def get_profile_detail(request, idStd):
@@ -88,7 +78,7 @@ def get_profile_detail(request, idStd):
 # lấy danh sách khoa
 @login_required(login_url='login_admin')
 def get_faculty(request):
-    faculties = Faculty.objects.all()
+    faculties = Faculty.objects.exclude(idFaculty = 'unknown')
     faculties_data = [{'idFaculty': faculty.idFaculty, 'nameFaculty': faculty.nameFaculty} for faculty in faculties]
     return JsonResponse({'faculties': faculties_data})
 

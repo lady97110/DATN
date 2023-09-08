@@ -1,14 +1,71 @@
+.head-transcript {
+  display: flex;
+  flex-direction: row;
+  height: 80px;
+}
+
+.head-block {
+  flex-grow: 1;
+}
+
+.title-span {
+  font-size: 21px;
+  font-weight: 700;
+  color: #5b636e;
+}
+
+#list-module-std{
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+#tb-list-module{
+  border: 2px solid rgb(133, 130, 130);
+}
+
+.table-custom{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#tbody-moduleclass td{
+  height: 32px;
+}
+
+th, td{
+  border:1px solid black;
+  padding: 5px 10px;
+  text-align: center;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+thead{
+  background-color:  #acd6e9;
+  border-bottom: 1px solid;
+}
+
+tbody{
+  background-color: white;
+}
+
 table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+  border: 2px solid rgb(133, 130, 130);
+}
+
+
+.overall-detail{
+  display: flex;
+  flex-direction: column;
+}
+
+.average-transcript{
+  border: none !important;
+  text-align: left !important ;
+}
+
+.name-semester-row{
+  background-color: #f5f5f5;
   
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
+}

@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     var globalRow = null;
     const display_table = document.getElementById("added-moduleclass");
-    display_table.style.display = "none";
     //lấy danh sách các môn trong cơ sở dữ liệu
     const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const get_list_modulBtn = document.getElementById("get-list-module");
@@ -90,13 +89,16 @@ document.addEventListener("DOMContentLoaded", function(){
         };
     });
 
+    //bang danh sach hoc phan trong
+    const table_blank = document.getElementById("choosen-module");
+    blank_table(table_blank,7,7);
+
+
 
     //danh sach kỳ
     const semesterSelect = document.getElementById("list-semester");
     get_semester(semesterSelect);
     semesterSelect.addEventListener("change",function(){
-        const display_table = document.getElementById("added-moduleclass");
-    display_table.style.display = "block";
     const idClass = document.getElementById("choosen-class").getAttribute("data-value");
     const idSemester = semesterSelect.value;
     get_moduleclass(idClass, idSemester);
@@ -379,6 +381,7 @@ function add_rows_schedule(schedule) {
     const cell3 = document.createElement("td");
     const input_period = document.createElement("input");
     input_period.type = "number";
+    input_period.min = "0";
     input_period.value = schedule.periods_count;
     cell3.appendChild(input_period);
     tr_schedule.appendChild(cell3);
@@ -548,7 +551,7 @@ function checkbox_all(alltr) {
 
 //update lai stt
 function updateRowNumbers() {
-    const tbody = document.getElementById("choosen-module");
+    const tbody = document.getElementById("added-moduleclass");
     const rows = tbody.querySelectorAll("tr");
     index = 0;
     rows.forEach(function (row) {
@@ -668,4 +671,18 @@ function btnSaveSchedule() {
             });
         };
     });
+}
+
+
+
+//tao bang trong
+function blank_table(tbody, number_row, number_cell) {
+    for (let i = 0; i < number_row; i++) {
+        const row = document.createElement("tr");
+        for (let i = 0; i < number_cell; i++) {
+            const cell = document.createElement("td");
+            row.appendChild(cell);
+        };
+        tbody.appendChild(row);
+    }
 }

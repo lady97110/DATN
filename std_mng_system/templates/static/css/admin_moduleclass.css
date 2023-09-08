@@ -10,12 +10,13 @@ button , input, select {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-#list-idClass{
-    display: none;
+
+#tbody-module input{
+    box-shadow: none! important;
 }
 
 .site-view{
-    padding: 20px;
+    padding: 10px;
 }
 
 
@@ -29,13 +30,14 @@ button , input, select {
     margin-left: 30px;
 }
 
-.filter-select > span{
+.filter-select span{
     font-weight: 600;
 }
 
 .search-results{
     margin-top: 30px;
     padding-left: 40px;
+    margin-bottom: 30px;
 }
 
 th, td{
@@ -57,9 +59,8 @@ thead{
 }
 
 #list-idClass{
-    max-height: 176px;
-    overflow-y:auto;
-    border: 2px solid rgb(133, 130, 130);
+   
+    width: 100%;
 }
 
 #list-idClass thead{
@@ -79,12 +80,13 @@ thead{
     margin-top: 20px;
 }
 
-#manage-center div, #manage-center span {
+#manage-center div {
     flex-grow: 1;
 }
 
 #choosen-class{
     font-weight: 600;
+    margin-right: 150px;
 }
 
 
@@ -98,7 +100,8 @@ thead{
 .added-moduleclass{
         margin-top: 30px;
         padding-left: 40px;
-        display: inline-block;
+        padding-right: 40px;
+        display:block;
 }
 
 
@@ -115,6 +118,8 @@ thead{
 
 .table-choosenmodule{
     border: 2px solid rgb(133, 130, 130);
+    width: 100%;
+    height: 100%;
 }
 
 .trash-icon {
@@ -147,4 +152,40 @@ thead{
     background-color: rgb(62, 59, 231);
     color: #f0f0f0;
     border-color: azure;
+}
+
+
+table td {
+    height: 32px;
+}
+
+.tb-results-class{
+    width: 519px;
+    max-height: 176px;
+    overflow-y:auto;
+}
+
+.search-class-box{
+    flex-grow: 1;
+    justify-content: center;
+    flex-direction: row !important;
+}
+
+
+.search-zone{
+    border: 4px solid #b8b1b1;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.add-moduleclass{
+    margin-top: 20px;
+    border: 4px solid #b8b1b1;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.clicked-row{
+    background-color: #519eca;
+    font-weight: bold;
 }

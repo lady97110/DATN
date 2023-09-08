@@ -348,6 +348,7 @@ function choosen_row(event, tbody) {
     selectRow.classList.add("clicked-row");
 }
 
+
 //tao bang trong
 function blank_table(tbody, number_row, number_cell) {
     for (let i = 0; i < number_row; i++) {

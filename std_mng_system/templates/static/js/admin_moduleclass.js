@@ -186,7 +186,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     result_rows.appendChild(newRow);
 
-                    newRow.addEventListener("click",function () {
+                    newRow.addEventListener("click",function (event) {
+                        choosen_row(event, result_rows );
                         idClass = newRow.getAttribute("idClass");
                         choosen_class(idClass);
                         const semesterSelect = document.getElementById("list-semester");
@@ -209,5 +210,16 @@ document.addEventListener("DOMContentLoaded", function(){
         choosen_class_value.textContent = "LỚP: " + idClass;
         choosen_class_value.setAttribute("data-value", idClass);
     };
+
+
+    //highlight dong dang duoc chon
+    function choosen_row(event, tbody) {
+        const rows = tbody.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].classList.remove("clicked-row");
+        }
+        const selectRow = event.currentTarget;
+        selectRow.classList.add("clicked-row");
+    }
 
 

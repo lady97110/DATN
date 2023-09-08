@@ -1,6 +1,8 @@
     function rowClick(row) {
-        const showProfile = document.querySelector(".showprofile");
-        const profileedit = document.querySelector(".edit-profile");
+        const showProfile = document.getElementById("showprofile");
+        const profileedit = document.getElementById("edit-profile");
+        const form_editprofile = document.getElementById("form-editprofile");
+        form_editprofile.style.display = "block";
         profileedit.style.display = "none";
         showProfile.style.display = "flex";
             var idStd = row.getAttribute("data-idStd");
@@ -10,24 +12,24 @@
                 dataType: 'json',
                 success: function (data) {
                     var select = data;
-                    document.querySelector("#select-idStd").textContent = select.idStd;
-                    document.querySelector("#select-password-edit").value = select.password;
-                    document.querySelector("#select-phoneStd").textContent = select.phoneStd;
-                    document.querySelector("#select-nameStd").textContent = select.nameStd;
-                    document.querySelector("#select-emailStd").textContent = select.emailStd;
-                    document.querySelector("#select-datebirthStd").textContent = select.datebirth;
-                    document.querySelector("#select-datebirthStd").setAttribute("data-value", select.datebirthStd);
-                    document.querySelector("#select-idClass-faculty").textContent = select.faculty; 
-                    document.querySelector("#select-idClass-faculty").setAttribute("data-value", select.idFaculty);  //mã khoa
-                    document.querySelector("#select-genderStd").textContent = select.genderStd;
-                    document.querySelector("#select-addressStd").textContent = select.addressStd;
-                    document.querySelector("#select-identityStd").textContent = select.identityStd;
-                    document.querySelector("#select-ethnicityStd").textContent = select.ethnicityStd;
-                    document.querySelector("#select-idClass-department").textContent = select.department;
-                    document.querySelector("#select-idClass-idCourse").setAttribute("data-value", select.idCourse);  //Mã khóa
-                    document.querySelector("#select-idClass-idCourse").textContent = select.nameCourse;
-                    document.querySelector("#select-idClass").textContent = select.idClass;
-                    var graduate = document.querySelector("#select-graduate");
+                    document.getElementById("select-idStd").textContent = select.idStd;
+                    document.getElementById("select-password-edit").value = select.password;
+                    document.getElementById("select-phoneStd").textContent = select.phoneStd;
+                    document.getElementById("select-nameStd").textContent = select.nameStd;
+                    document.getElementById("select-emailStd").textContent = select.emailStd;
+                    document.getElementById("select-datebirthStd").textContent = select.datebirth;
+                    document.getElementById("select-datebirthStd").setAttribute("data-value", select.datebirthStd);
+                    document.getElementById("select-idClass-faculty").textContent = select.faculty; 
+                    document.getElementById("select-idClass-faculty").setAttribute("data-value", select.idFaculty);  //mã khoa
+                    document.getElementById("select-genderStd").textContent = select.genderStd;
+                    document.getElementById("select-addressStd").textContent = select.addressStd;
+                    document.getElementById("select-identityStd").textContent = select.identityStd;
+                    document.getElementById("select-ethnicityStd").textContent = select.ethnicityStd;
+                    document.getElementById("select-idClass-department").textContent = select.department;
+                    document.getElementById("select-idClass-idCourse").setAttribute("data-value", select.idCourse);  //Mã khóa
+                    document.getElementById("select-idClass-idCourse").textContent = select.nameCourse;
+                    document.getElementById("select-idClass").textContent = select.idClass;
+                    var graduate = document.getElementById("select-graduate");
 
                     
                     if (select.graduate) {
@@ -69,7 +71,7 @@
                                         option.textContent = classe.idClass;
                                         optionClass.appendChild(option);
                                     });
-                                    document.querySelector("#select-idClass").setAttribute("data-value", select.idClass);
+                                    document.getElementById("select-idClass").setAttribute("data-value", select.idClass);
                                 },
                                 error: function(){
                                     alert('Có lỗi trong quá trình lấy dữ liệu');
@@ -80,7 +82,7 @@
                             alert("Không thể lấy thông tin sinh viên.");
                         },
                     });
-                    document.querySelector("#select-idClass-department").setAttribute("data-value", select.idDepartment);  //mã ngành
+                    document.getElementById("select-idClass-department").setAttribute("data-value", select.idDepartment);  //mã ngành
                 },
                 error: function () {
                     alert("Không thể lấy thông tin sinh viên.");
@@ -113,30 +115,6 @@
     }
 
 
-    function deleteProfile() {
-        const csrfToken = getCSRFToken();
-        $.ajax({
-            url: 'delete-profile/',
-            method: 'post',
-            dataType: 'json',
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            success: function(data) {
-                if (data.confirm) {
-                    location.reload();
-                    alert('Xóa thành công');
-                }
-                else {
-                    alert('Xóa không thành công, thử lại');
-                }
-            },
-            error: function() {
-                alert('Lỗi trong quá trình xử lý.');
-            },
-        }); 
-    }
-
 
     function getCSRFToken() {
         const cookies = document.cookie.split('; ');
@@ -152,15 +130,6 @@
     //load
 document.addEventListener("DOMContentLoaded", function() {
 
-        //nut tim kiem
-        const resultstable = document.getElementById("results-table");
-        const vluecount = document.getElementById("avc");
-        if (vluecount != null){
-            resultstable.style.display = "flex";
-        }
-        else{
-            resultstable.style.display = "none";
-        };
         
 
         //click xem thong tin tu bang ket qua
@@ -172,26 +141,18 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
 
-        //nút xác nhận xóa
-        const confirmDeleteButton = document.querySelector("#confirmDeleteButton");
-        if (confirmDeleteButton) {
-            confirmDeleteButton.addEventListener("click", function (event){
-                event.preventDefault();
-                deleteProfile();
-            });           
-        };
         // Nút đóng detail
         const closeBtnDetail = document.getElementById("closedetail");
-        const profiledetail = document.querySelector(".showprofile");
+        const profile_area = document.getElementById("form-editprofile");
+        const profiledetail = document.getElementById("showprofile");
         closeBtnDetail.addEventListener("click", function() {
-            profiledetail.style.display = "none";
+            profile_area.style.display = "none";
         });
 
         // Nút đóng edit
         const closeBtnEdit = document.getElementById("closeedit");
-        const profileedit = document.querySelector(".edit-profile");
         closeBtnEdit.addEventListener("click", function() {
-            profileedit.style.display = "none";
+            profile_area.style.display = "none";
         });
 
         // Nút thêm mới
@@ -200,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const hidden_idStd = document.getElementById("value-idStd");
         const text_Std = document.getElementById("select-idStd-edit");
         const graduate = document.getElementById("gradutelb");
+        const profileedit = document.getElementById("edit-profile");
         addprofileBtn.addEventListener("click", function() {
             clearFormInputs();
             graduate.style.display = "none";
@@ -209,7 +171,10 @@ document.addEventListener("DOMContentLoaded", function() {
             profiledetail.style.display = "none";
             titlecard.textContent = "Thêm mới hồ sơ";
             profileedit.style.display = "flex";
+            profile_area.style.display = "flex";
+
             const optionFaculty = document.getElementById("select-idClass-faculty-edit");
+            maxlength_input_number();
             $.ajax({
                 url: 'get-faculty/',
                 method: 'get',
@@ -239,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
             text_Std.style.display="";
             refreshBtn.style.display="none";
             profileedit.style.display = "flex";
+            profile_area.style.display = "flex";
             profiledetail.style.display = "none";
             document.getElementById("select-idStd-edit").textContent =  document.getElementById("select-idStd").textContent;
             document.getElementById("value-idStd").value =  document.getElementById("select-idStd").textContent;
@@ -255,6 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("select-idClass-idCourse-edit").value =  document.getElementById("select-idClass-idCourse").getAttribute("data-value");
             document.getElementById("select-idClass-edit").value =  document.querySelector("#select-idClass").getAttribute("data-value");
             document.getElementById("select-graduate-edit").value =  document.querySelector("#select-graduate").getAttribute("data-value");
+            maxlength_input_number();
         });
 
 
@@ -372,18 +339,18 @@ document.addEventListener("DOMContentLoaded", function() {
         saveBtn.addEventListener("click", function(event) {
             const csrfToken = getCSRFToken();
             var profile_data = {
-                idStd : $("#value-idStd").val(),
-                password : $("#select-password-edit").val(),
-                phoneStd : $("#select-phoneStd-edit").val(),
-                nameStd : $("#select-nameStd-edit").val(),
-                emailStd : $("#select-emailStd-edit").val(),
-                datebirthStd : $("#select-datebirthStd-edit").val(),
-                genderStd : $("#select-genderStd-edit").val(),
-                addressStd : $("#select-addressStd-edit").val(),
-                idClass : $("#select-idClass-edit").val(),
-                identityStd : $("#select-identityStd-edit").val(),
-                ethnicityStd : $("#select-ethnicityStd-edit").val(),
-                graduate : $("#select-graduate-edit").val(),
+                idStd : document.getElementById("value-idStd").value,
+                password : document.getElementById("select-password-edit").value,
+                phoneStd : document.getElementById("select-phoneStd-edit").value,
+                nameStd : document.getElementById("select-nameStd-edit").value,
+                emailStd : document.getElementById("select-emailStd-edit").value,
+                datebirthStd : document.getElementById("select-datebirthStd-edit").value,
+                genderStd : document.getElementById("select-genderStd-edit").value,
+                addressStd : document.getElementById("select-addressStd-edit").value,
+                idClass : document.getElementById("select-idClass-edit").value,
+                identityStd : document.getElementById("select-identityStd-edit").value,
+                ethnicityStd : document.getElementById("select-ethnicityStd-edit").value,
+                graduate : document.getElementById("select-graduate-edit").value,
             };
             var requiredFields = document.querySelectorAll(".not-empty");
             var passed = true;
@@ -393,7 +360,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     return;
                 };
             });
-
             if (passed){
             $.ajax({
                 url: 'update-or-create-profile/',
@@ -423,6 +389,42 @@ document.addEventListener("DOMContentLoaded", function() {
             alert("Hãy nhập đủ các trường bắt buộc !")
         };
         });
+
+
+
+        //bang ket qua sinh vien trong
+        const tbody_results = document.getElementById("results-body");
+        blank_table(tbody_results, 4, 9);
+
 });
 
 
+
+
+
+//tao bang trong
+function blank_table(tbody, number_row, number_cell) {
+    for (let i = 0; i < number_row; i++) {
+        const row = document.createElement("tr");
+        for (let i = 0; i < number_cell; i++) {
+            const cell = document.createElement("td");
+            row.appendChild(cell);
+        };
+        tbody.appendChild(row);
+    }
+}
+
+
+//maxlength input number
+function maxlength_input_number(){
+    document.querySelectorAll('input[type="number"]').forEach(function(input){
+        input.addEventListener("input", function(){
+            var length = input.value.length;
+            const maxLength = input.maxLength;
+            if (length > maxLength) {
+                input.value = input.value.slice(0, maxLength);
+
+            };
+        });
+    });
+}

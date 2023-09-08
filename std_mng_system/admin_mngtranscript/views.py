@@ -170,7 +170,7 @@ def get_semester_std(request, idStd):
             data_semesters.append(data_semester)
         return JsonResponse({'semesters': data_semesters}) 
     except (Student_ModuleClass.DoesNotExist, ModuleClass.DoesNotExist, Semester.DoesNotExist) as e:
-        return JsonResponse({'error': "Sinh viên này không chưa có học kỳ nào"})
+        return JsonResponse({'error': "Sinh viên này không có học kỳ nào trong CSDL"})
     
 
 #lay bang diem theo ky

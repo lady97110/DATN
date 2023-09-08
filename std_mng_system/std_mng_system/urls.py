@@ -23,28 +23,30 @@ from login_admin import views as login_admin_views
 from admin_mngprofilestd import views as admin_mngprofilestd_views
 from admin_moduleclass import views as admin_moduleclass_views
 from admin_mngtranscript import views as admin_mngtranscript_views
+from student_transcript import views as student_transcript_views
 
 
 
 urlpatterns = [
     #superuser
-    path('admin/', admin.site.urls),
+    path('superuser/', admin.site.urls),
     #trang sinh vien
     path('', login_std_views.login_std, name='login_std'),
-    path('loginadmin', login_admin_views.login_admin, name='login_admin'),
+    path('admin/', login_admin_views.login_admin, name='login_admin'),
     path('profile/', login_std_views.profile_view, name='profile'),
     path('admin-page/',login_admin_views.admin_page_view, name='admin_page'),
     path('logout-std/', login_std_views.logout_std_view, name='logout_std'),
     path('logout-admin/', login_admin_views.logout_admin_view, name='logout_admin'),
     path('change-password/', login_std_views.change_password, name='change_password'),
-    # path('transcript/', course_views.transcript_view, name='transcript'),
+    #ket qua hoc tap
+    path('transcript/', student_transcript_views.transcript_view, name='student_transcript'),
+    path('transcript/', include('student_transcript.urls')),
     #dang ky hoc phan
     path('module-registration/', course_views.module_registration_view, name= 'module_registration'),
     path('module-registration/', include('course.urls')),
     # path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
     # trang quan tri vien
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
-    path('delete-profile/', admin_mngprofilestd_views.delete_profile, name='delete_profile'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),
     path('get-faculty/', admin_mngprofilestd_views.get_faculty, name = 'get_faculty'),
     path('get-department/<str:idFaculty>/', admin_mngprofilestd_views.get_department, name = 'get_department'),

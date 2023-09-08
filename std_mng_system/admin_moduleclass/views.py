@@ -69,8 +69,12 @@ def get_search_class(request ,input_value):
 #lấy danh sách môn  học
 @login_required(login_url='login_admin')
 def get_list_module(request, idClass):
-    Department = FacultyClasses.objects.get(idClass = idClass).department
-    module_departments = Module.objects.filter(department = Department)
+    Department_idClass = FacultyClasses.objects.get(idClass = idClass).department
+    unknown_department = Department.objects.get(idDepartment = 'unknown')
+    module_departments = Module.objects.filter(
+        Q(department = Department_idClass) |
+        Q(department = unknown_department)
+    )
     module_departments_data = [{'idModule': module_department.idModule, 'nameModule': module_department.nameModule, 'credits': module_department.credits, 'department': module_department.department.nameDepartment} for module_department in module_departments]
     return JsonResponse({'module_departments': module_departments_data})
 

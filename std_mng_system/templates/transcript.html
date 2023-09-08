@@ -1,55 +1,61 @@
 {% extends 'core_std.html' %}
 {% load static %}
 {% block head %}
-  <link rel="stylesheet" href="{% static 'css/transcript.css' %}">
-  <script src="{% static 'js/transcript.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/transcript.css' %}">
+<script src="{% static 'js/transcript.js' %}"></script>
 {% endblock %}
 
 {% block title %}Kết quả học tập{% endblock title %}
 
 {% block content %}
-
-  <h2>Kết quả học tập</h2>
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-       <thead>
-        <tr>
-      <th>STT</th>
-      <th>Mã học phần</th>
-      <th>Tên học phần</th>
-      <th>Mã lớp </th>
-      <th>Số tín chỉ </th>
-      <th>ĐQT </th>
-      <th>ĐKT </th>
-      <th>Điểm tổng kết </th>
-      <th>Thang điểm 4 </th>
-      <th>Điểm chữ </th>
-      <th>Đạt </th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for transcript in transcripts %}
-    <tr>
-      <td>{{ forloop.counter }} </td>
-      <td>{{transcript.idSub.idSub}}</td>
-      <td>{{transcript.idSub.nameSub}}</td>
-      <td>{{transcript.idClass}}</td>
-      <td class="creditnum">{{transcript.idSub.creditsnum}}</td>
-      <td>{{transcript.progress_grade}}</td>
-      <td>{{transcript.final_grade}}</td>
-      <td class="over_grade">{{transcript.overall_grade}}</td>
-      <td class="over_grade_4">{{transcript.overall_grade_4}}</td>
-      <td>{{transcript.overall_grade_text}}</td>
-      <td class="pass">{% if transcript.stt_pass %} Đạt{% else %}Chưa đạt{% endif %}</td>
-    </tr>
-    {% endfor %}
-       </tbody>
-  </table>
-   <div>
-    <p class="font-weight-bold">Điểm trung bình: <span id="average"></span></p>
-    <p class="font-weight-bold">Điểm trung bình hệ 4: <span id="average_4"></span></p>
-    <p class="font-weight-bold">Số tín chỉ tích lũy: <span id="totalcredited"></span></p>
+<div>
+  <div class="head-transcript">
+    <div class="head-block">
+      <div>
+        <span class="title-span">Kết quả học tập</span>
+      </div>
+    </div>
+    <div class="head-block">
+      <div>
+        <span>Học kỳ</span>
+        <select id="select-semester"></select>
+      </div>
+    </div>
+  </div>
+  <div class="table-transcript">
+    <div id="list-module-std" class="div-table">
+      <table id="tb-list-module" class="table-custom">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Mã học phần</th>
+            <th>Tên học phần</th>
+            <th>Lớp</th>
+            <th>Số tín chỉ</th>
+            <th>Điểm QT</th>
+            <th>Điểm KT</th>
+            <th>Điểm TK</th>
+            <th>Thang điểm 4</th>
+            <th>Điểm chữ</th>
+            <th>Đạt</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-moduleclass">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="overall-transcript">
+    {% comment %} <div class="overall-detail">
+      <label><span>Điểm trung bình học kỳ hệ 10:</span><span></span></label>
+      <label><span>Điểm trung bình học kỳ hệ 4:</span><span></span></label>
+      <label><span>Điểm trung bình tích lũy:</span><span></span></label>
+      <label><span>Điểm trung bình tích lũy (hệ 4):</span><span></span></label>
+      <label><span>Tổng số tín chỉ đã đăng ký:</span><span></span></label>
+      <label><span>Tổng số tín chỉ tích lũy:</span><span></span></label>
+      <label><span>Tổng số tín chỉ đạt:</span><span></span></label>
+      <label><span>Tổng số tín chỉ nợ tính đến hiện tại:</span><span></span></label>
+    </div> {% endcomment %}
+  </div>
 </div>
 {% endblock content %}
-
-
