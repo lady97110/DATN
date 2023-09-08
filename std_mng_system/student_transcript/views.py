@@ -52,9 +52,7 @@ def get_transcript_semester(request, idStd, semester):
     if semester == 'all':
         transcripts = transcript_all(idStd)
         overall = calculate_overall_grade_all(transcripts)
-        print(overall)
-        return JsonResponse({'transcripts': transcripts}) 
-        
+        return JsonResponse({'transcripts': transcripts, 'overall': overall}) 
 
     try:
         this_semester = Semester.objects.get(idSemester = semester)
@@ -62,7 +60,8 @@ def get_transcript_semester(request, idStd, semester):
         if not transcripts.exists():
             raise Student_ModuleClass.DoesNotExist
         transcript_semester = query_to_json_transcript(transcripts)
-        return JsonResponse({'transcripts': transcript_semester})
+        overall_semester = calculate_overall_grade_semester(transcript_semester)
+        return JsonResponse({'transcripts': transcript_semester, 'overall': overall_semester})
     except Student_ModuleClass.DoesNotExist:
         return JsonResponse({'error':"Không tìm thấy dữ liệu bảng điểm trong CSDL"})  
 
@@ -132,16 +131,18 @@ def calculate_overall_grade_semester(transcripts):
     all_credits = 0
     owe_credits = 0
     for transcript in transcripts:
-        if transcript.is_pass:
-            sum_semester_10 = sum_semester_10 + transcript.overall_grade*transcript.module_class.module.credits
-            sum_semester_4 = sum_semester_4 + transcript.overall_grade_4*transcript.module_class.module.credits
-            credits_pass = credits_pass + transcript.module_class.module.credits
-            all_credits = all_credits + transcript.module_class.module.credits
+        if transcript['is_pass'] == "Đạt":
+            sum_semester_10 = sum_semester_10 + transcript['overall_grade']*transcript['credit']
+            sum_semester_4 = sum_semester_4 + transcript['overall_grade_4']*transcript['credit']
+            credits_pass = credits_pass + transcript['credit']
+            all_credits = all_credits + transcript['credit']
+        elif transcript['is_pass'] == "Không đạt":
+            all_credits = all_credits + transcript['credit']
+            owe_credits = owe_credits + transcript['credit']
         else:
-            all_credits = all_credits + transcript.module_class.module.credits
-            owe_credits = owe_credits + transcript.module_class.module.credits
-    average_semester_10 = sum_semester_10 / credits
-    average_semester_4 = sum_semester_4 / credits
+            return None
+    average_semester_10 = sum_semester_10 / credits_pass
+    average_semester_4 = sum_semester_4 / credits_pass
     overall_semester = {
         'credits_pass': credits_pass,
         'all_credits': all_credits,
@@ -162,39 +163,38 @@ def calculate_overall_grade_all(transcripts_all):
     all_credits = 0
     collect_credits = 0
     owe_credits = 0
-    print(transcripts_all)
     count_semester = 0
     for transcript_semester in transcripts_all:
         count_semester = count_semester + 1
-        nameSemester = transcript_semester.semester
-        transcripts = transcript_semester.transcripts
+        nameSemester = transcript_semester['semester']
+        transcripts = transcript_semester['transcripts']
         overall_semester = calculate_overall_grade_semester(transcripts)
+        if overall_semester is not None:
+            collect_all_10 = collect_all_10 + overall_semester['average_10']
+            collect_all_4 = collect_all_4 + overall_semester['average_4']
+            all_credits = all_credits + overall_semester['all_credits']
+            collect_credits = collect_credits + overall_semester['credits_pass']
+            owe_credits = overall_semester['owe_credits']
+            collect_10 = collect_all_10 / count_semester
+            collect_4 = collect_all_4 / count_semester
 
-        collect_all_10 = collect_all_10 + overall_semester.average_10
-        collect_all_4 = collect_all_4 + overall_semester.average_4
-        all_credits = all_credits + overall_semester.all_credits
-        collect_credits = collect_credits + overall_semester.credits_pass
-        owe_credits = overall_semester.owe_credits
-        collect_10 = collect_all_10 / count_semester
-        collect_4 = collect_all_4 / count_semester
+            final_overall_semester = {
+                'average_semester_10': overall_semester['average_10'],
+                'average_semester_4' : overall_semester['average_4'],
+                'average_10' : collect_10,
+                'average_4' : collect_4,
+                'all_credits': all_credits,
+                'collected_credits': collect_credits,                       #tat cả
+                'passed_credits': overall_semester['credits_pass'],                          #hoc ky
+                'owe_credits': owe_credits                               #tin chi no trong ky
+            }
 
-        final_overall_semester = {
-            'average_semester_10': overall_semester.average_10,
-            'average_semester_4' : overall_semester.average_4,
-            'average_10' : collect_10,
-            'average_4' : collect_4,
-            'all_credits': all_credits,
-            'collected_credits': collect_credits,                       #tat cả
-            'passed_credits': overall_semester.credits_pass,                          #hoc ky
-            'owe_credits': owe_credits                               #tin chi no trong ky
-        }
+            semester_overall = {
+                'smester': nameSemester,
+                'overall': final_overall_semester
+            }
 
-        semester_overall = {
-            'smester': nameSemester,
-            'overall': final_overall_semester
-        }
-
-        transcript_all.append(semester_overall)
+            transcript_all.append(semester_overall)
     return transcript_all
         
 

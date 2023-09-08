@@ -122,7 +122,7 @@ def upload_file_excel(request, idClass, idModule, action):
                 except ModuleClass.DoesNotExist:
                     return JsonResponse({'error': "Hãy chọn lớp học phần cần thao tác"})
                 except Student_ModuleClass.DoesNotExist:
-                    return JsonResponse({'error': "Không tồn tại sinh viên có mã  số " + idStd + " trong CSDL"})
+                    return JsonResponse({'error': "Không tồn tại sinh viên có mã  số " + str(idStd) + " trong CSDL"})
             return JsonResponse({'transcripts': response_data})
         else:
             return JsonResponse({'error': "File Excel định dạng không đúng"})
