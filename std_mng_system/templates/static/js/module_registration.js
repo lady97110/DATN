@@ -95,7 +95,33 @@ document.addEventListener("DOMContentLoaded", function () {
             const idModuleClass = row.getAttribute("idModuleClass");
             listModuleClass.push(idModuleClass);
         }
-        save_moduleclass(idStd, listModuleClass);
+        save_moduleclass(idStd, listModuleClass)
+            .then(function(data) {
+                if (data.success) {
+                    alert("Lưu học phần vào CSDL thành công");
+                    location.reload();
+                }
+                else if(data.full_slot){
+                    alert("Hết số lượng được phép đăng ký");
+                    location.reload();
+                }
+                else if(data.duplicate){
+                    var mess_dup = "Không được đăng ký môn có trùng lịch học: \n ";
+                    for (var messs in data.duplicate) {
+                        mess_dup += data.duplicate[messs] + "\n";
+                    }
+                    alert(mess_dup);
+                    location.reload();
+                }
+                else {
+                    var message = "Không được đăng ký nhiều hơn một lớp cùng môn trong một học kỳ: \n ";
+                    for (var mess in data.exist) {
+                        message += data.exist[mess] + "\n";
+                    }
+                    alert(message);
+                    location.reload();
+                };
+            });
     });
 
 
@@ -280,6 +306,7 @@ function table_schedule(datas, td_parent) {
 
 //ham gui du lieu danh sach lop hoc phan can luu
 function save_moduleclass(idStd, listModuleClass) {
+    return new Promise(function(resolve, reject) {
     const csrfToken = getCSRFToken();
     $.ajax({
         url: 'save-moduleclass/' + idStd + '/',
@@ -291,32 +318,13 @@ function save_moduleclass(idStd, listModuleClass) {
             'X-CSRFToken': csrfToken
         },
         success: function (data) {
-            if (data.success) {
-                alert("Lưu học phần vào CSDL thành công");
-                location.reload();
-            }
-            else if(data.full_slot){
-                alert("Hết số lượng được phép đăng ký");
-            }
-            else if(data.duplicate){
-                var mess_dup = "Không được đăng ký môn có trùng lịch học: \n ";
-                for (var messs in data.duplicate) {
-                    mess_dup += data.duplicate[messs] + "\n";
-                }
-                alert(mess_dup);
-            }
-            else {
-                var message = "Không được đăng ký nhiều hơn một lớp cùng môn trong một học kỳ: \n ";
-                for (var mess in data.exist) {
-                    message += data.exist[mess] + "\n";
-                }
-                alert(message);
-            }
+            resolve(data);
         },
         error: function (data) {
 
         }
     });
+});
 }
 
 

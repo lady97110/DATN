@@ -145,10 +145,10 @@ def save_moduleclass(request, idStd):
                         new.save()
                     else:
                         return JsonResponse({'full_slot': True})
-                    return JsonResponse({'success': True})
                 else:
                     list_duplicate.append(duplicate_mess)
                     return JsonResponse({'duplicate': list_duplicate})
+            return JsonResponse({'success': True})
         else:
             return JsonResponse({'exist': list_exist})
         
@@ -208,12 +208,13 @@ def check_duplicate_schedule(idStd_object, ModuleClass_check):
                 period = schedule1.period_start
                 schedule_list = [dayofweek, period]
                 check = sub_check(schedule_list, schedule_check_list)
+                if check:
+                    return check
     return check
 
 
 
 def sub_check(s, s_check):
-    print(s, s_check)
     check = False
     if(s[0] == s_check[0]) and (s[1] == s_check[1]):
         check = True
