@@ -1,23 +1,16 @@
-# from django.shortcuts import render
-# from login_std.models import profile_std
-# from course.models import std_sub
-# from django.contrib.auth.decorators import login_required
-# # Create your views here.
+from django.shortcuts import render
+from login_std.models import profile_std
+from django.contrib.auth.decorators import login_required
+from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from course.models import *
+# Create your views here.
 
 
 
-# @login_required(login_url='login')
-# def tuitionfee_view(request):
-#     getidStd = request.user.username
-#     stdinfo = profile_std.objects.get(idStd = getidStd)
-
-#     subjected = std_sub.objects.filter(idStd=stdinfo).select_related('idSub')
-
-#     context = {
-#         'stdinfo': stdinfo,
-#         'subjected':subjected
-#     }
-
-#     return render(request, 'tuitionfee.html', context)
-
+@receiver(post_save, sender = Student_ModuleClass)
+@receiver(post_delete, sender = Student_ModuleClass)
+def update_tuitionfee(sender,  instance, **kwargs):
+    std = instance.idStd
 
