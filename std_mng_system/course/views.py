@@ -81,13 +81,16 @@ def get_moduleclass(request, idStd):
 
     moduleclasses = ModuleClass.objects.filter(idClass=idClass, semester__idSemester = global_semester)
     for moduleclass in moduleclasses:
+
+        transcripts = Student_ModuleClass.objects.filter(module_class = moduleclass)
+        count_slot = len(transcripts)
         info =  {
             'idModuleClass': moduleclass.idModuleClass,
             'idModule': moduleclass.module.idModule,
             'nameModule': moduleclass.module.nameModule,
             'credit': moduleclass.module.credits,
             'idClass': moduleclass.idClass.idClass,
-            'slot': '0',
+            'slot': count_slot,
             'max_slot': moduleclass.max_slot,
         }
         moduleclass_data.append(info)
@@ -126,12 +129,26 @@ def save_moduleclass(request, idStd):
         if not exist:
             for idModuleClass in list_idModuleClass:
                 moduleclass = ModuleClass.objects.get(idModuleClass=idModuleClass)
-                new = Student_ModuleClass(
-                    module_class = moduleclass,
-                    idStd = idStd,
-                )
-                new.save()
-            return JsonResponse({'success': True})
+                idModule = moduleclass.module
+                duplicate_mess = idModule.idModule+" - " + idModule.nameModule
+                transcripts = Student_ModuleClass.objects.filter(module_class = moduleclass)
+                count_slot = len(transcripts)
+                max_slot = moduleclass.max_slot
+                check = check_duplicate_schedule(idStd, moduleclass)
+                list_duplicate = []
+                if not check:
+                    if (count_slot < max_slot):
+                        new = Student_ModuleClass(
+                            module_class = moduleclass,
+                            idStd = idStd,
+                        )
+                        new.save()
+                    else:
+                        return JsonResponse({'full_slot': True})
+                    return JsonResponse({'success': True})
+                else:
+                    list_duplicate.append(duplicate_mess)
+                    return JsonResponse({'duplicate': list_duplicate})
         else:
             return JsonResponse({'exist': list_exist})
         
@@ -169,4 +186,37 @@ def delete_moduleclass(request, idStd):
                 pass
     
         return JsonResponse({'success': True})
-        
+
+
+
+#ham kiem tra xem có trung lich hoc, lich thi
+def check_duplicate_schedule(idStd_object, ModuleClass_check):
+    check = None
+    global global_semester
+    list_transcripts = Student_ModuleClass.objects.filter(idStd = idStd_object)
+    list_idModuleClass = list_transcripts.values_list('module_class', flat = True).distinct()
+    list_moduleclass_semester = ModuleClass.objects.filter(idModuleClass__in= list_idModuleClass, semester__idSemester = global_semester)
+    schedules_check = ScheduleModuleClass.objects.filter(idModuleClass = ModuleClass_check)
+    for schedule_check in schedules_check:
+        day_check = schedule_check.days_of_week
+        period_check = schedule_check.period_start
+        schedule_check_list = [day_check, period_check]
+        for moduleclass in list_moduleclass_semester:
+            schedule_moduleclass = ScheduleModuleClass.objects.filter(idModuleClass=moduleclass)
+            for schedule1 in schedule_moduleclass:
+                dayofweek = schedule1.days_of_week
+                period = schedule1.period_start
+                schedule_list = [dayofweek, period]
+                check = sub_check(schedule_list, schedule_check_list)
+    return check
+
+
+
+def sub_check(s, s_check):
+    print(s, s_check)
+    check = False
+    if(s[0] == s_check[0]) and (s[1] == s_check[1]):
+        check = True
+    return check
+
+

@@ -215,6 +215,7 @@ function table_info_moduleclass(data, schedule) {
     cell1.innerHTML = '<input type="checkbox">';
     tr.appendChild(cell1);
 
+
     const cell2 = document.createElement("td");
     cell2.textContent = data.idModule;
     tr.appendChild(cell2);
@@ -293,6 +294,16 @@ function save_moduleclass(idStd, listModuleClass) {
             if (data.success) {
                 alert("Lưu học phần vào CSDL thành công");
                 location.reload();
+            }
+            else if(data.full_slot){
+                alert("Hết số lượng được phép đăng ký");
+            }
+            else if(data.duplicate){
+                var mess_dup = "Không được đăng ký môn có trùng lịch học: \n ";
+                for (var messs in data.duplicate) {
+                    mess_dup += data.duplicate[messs] + "\n";
+                }
+                alert(mess_dup);
             }
             else {
                 var message = "Không được đăng ký nhiều hơn một lớp cùng môn trong một học kỳ: \n ";

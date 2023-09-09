@@ -1,4 +1,5 @@
 
+import json
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -6,10 +7,8 @@ from .backends import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import profile_std
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.test import override_settings
-
+from django.http import JsonResponse
 
 #view login danh cho sinh vien
 @override_settings(AUTHENTICATION_BACKENDS=['login_std.backends.CustomAuthBackendStd'])
@@ -43,6 +42,7 @@ def profile_view(request):
     return render(request, 'profile.html', context)
 
 
+
 @login_required(login_url='login_std')
 def logout_std_view(request):
     logout(request)
@@ -50,20 +50,33 @@ def logout_std_view(request):
 
 
 
+#change password page
+@login_required(login_url='login_std')
+def change_password_view(request):
+    getidStd = request.user.idStd
+   
+    stdinfo = profile_std.objects.get(idStd=getidStd)
+    context = {'stdinfo': stdinfo}
+
+    return render(request, 'change_password.html', context)
+
+
+#change password
 @login_required(login_url='login_std')
 def change_password(request):
-    getidStd = request.user.username
-    stdinfo = profile_std.objects.get(idStd=getidStd)
+    idStd = request.user.idStd
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Đổi mật khẩu thành công!')
-            return redirect('change_password')
-        else:
-            messages.error(request, 'Có lỗi, hãy kiểm tra lại!')
-    else:
-        form = PasswordChangeForm(request.user)
-    context = {'form': form,'stdinfo': stdinfo}
-    return render(request, 'change_password.html', context)
+        data_password = json.loads(request.body)
+        old_password = data_password.get('old_password')
+        new_password = data_password.get('new_password')
+        try:
+            std = profile_std.objects.get(idStd = idStd)
+            is_check = check_password(old_password, std.password)
+            if (is_check):
+                std.set_custom_password(new_password)
+                std.save()
+                return JsonResponse({"ok":"ok"})
+            else:
+                return JsonResponse({"notok":"notok"})
+        except:
+            pass

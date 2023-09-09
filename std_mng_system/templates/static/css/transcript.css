@@ -12,15 +12,14 @@
   font-size: 21px;
   font-weight: 700;
   color: #5b636e;
+  margin-top: 10px;
+  margin-left: 20px;
+  border-bottom: 2px solid #afa4a4a1;
 }
 
 #list-module-std{
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 100px;
-}
-
-#tb-list-module{
-  border: 2px solid rgb(133, 130, 130);
 }
 
 .table-custom{
@@ -50,9 +49,6 @@ tbody{
   background-color: white;
 }
 
-table {
-  border: 2px solid rgb(133, 130, 130);
-}
 
 
 .overall-detail{
@@ -100,4 +96,41 @@ table {
   touch-action: manipulation;
   vertical-align: baseline;
   white-space: nowrap;
+}
+
+
+.semester-selectbox{
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: end;
+}
+
+
+.semester-selectbox>span{
+  font-size: 15px;
+  margin-right: 5px;
+  font-weight: 600;
+}
+
+.semester-selectbox>select{
+border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+.print-to-excel{
+  display: flex;
+  justify-content: right;
+  height: 100%;
+  align-items: end;
+}
+
+#btn-print-transcript{
+  margin-right: 30px;
+}
+
+
+.overall-transcript{
+  height: 200px;
 }

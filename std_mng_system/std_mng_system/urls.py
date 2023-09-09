@@ -24,6 +24,7 @@ from admin_mngprofilestd import views as admin_mngprofilestd_views
 from admin_moduleclass import views as admin_moduleclass_views
 from admin_mngtranscript import views as admin_mngtranscript_views
 from student_transcript import views as student_transcript_views
+from schedule import views as schedule_views
 
 
 
@@ -32,19 +33,24 @@ urlpatterns = [
     path('superuser/', admin.site.urls),
     #trang sinh vien
     path('', login_std_views.login_std, name='login_std'),
-    path('admin/', login_admin_views.login_admin, name='login_admin'),
     path('profile/', login_std_views.profile_view, name='profile'),
-    path('admin-page/',login_admin_views.admin_page_view, name='admin_page'),
     path('logout-std/', login_std_views.logout_std_view, name='logout_std'),
+    path('change-password/', login_std_views.change_password_view, name='change_password'),
+    path('change-password/', include('login_std.urls')),
+    #trang admin
+    path('admin/', login_admin_views.login_admin, name='login_admin'),
     path('logout-admin/', login_admin_views.logout_admin_view, name='logout_admin'),
-    path('change-password/', login_std_views.change_password, name='change_password'),
+    path('change-password-admin/', login_admin_views.change_password_admin_view, name='change_password_admin'),
+    path('change-password-admin/', include('login_admin.urls')),
     #ket qua hoc tap
     path('transcript/', student_transcript_views.transcript_view, name='student_transcript'),
     path('transcript/', include('student_transcript.urls')),
     #dang ky hoc phan
     path('module-registration/', course_views.module_registration_view, name= 'module_registration'),
     path('module-registration/', include('course.urls')),
-    # path('tuitionfee/', tuitionfee_views.tuitionfee_view, name='tuitionfee'),
+    #lich hoc
+    path('schedule/', schedule_views.schedule_view, name= 'student_schedule'),
+    path('schedule/', include('schedule.urls')),
     # trang quan tri vien
     path('admin-mngprofilestd', admin_mngprofilestd_views.admin_mngprofilestd , name = 'admin_mngprofilestd'),
     path('detail-profile-std/<str:idStd>/', admin_mngprofilestd_views.get_profile_detail, name = 'detail_profile_std'),

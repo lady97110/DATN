@@ -6,8 +6,8 @@ from faculty.models import *
 class Semester(models.Model):
     idSemester = models.CharField(max_length= 10, verbose_name= 'Mã học kỳ', primary_key= True)
     nameSemester = models.CharField(max_length= 30, verbose_name= 'Học kỳ')
-    start_date = models.DateField(verbose_name= 'Ngày bắt đầu', blank= True, null= True)
-    end_date = models.DateField(verbose_name= 'Ngày kết thúc', blank= True, null= True)
+    start_date = models.DateField(verbose_name= 'Ngày bắt đầu')
+    end_date = models.DateField(verbose_name= 'Ngày kết thúc')
     
     def __str__(self):
         return f"{self.idSemester} - {self.nameSemester}"

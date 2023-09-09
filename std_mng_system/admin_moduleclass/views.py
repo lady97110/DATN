@@ -173,7 +173,7 @@ def save_moduleclass(request, idClass, idModule, idSemester):
             save_Schedule(tableSchedules, thisModuleClass)
             
             save_ScheduleExam(tableScheduleExam, thisModuleClass)
-    
+            thisModuleClass.save()
             response_data['result'] = 'updated'
             return JsonResponse(response_data) 
             

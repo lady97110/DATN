@@ -1,0 +1,67 @@
+{% extends 'core_std.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+<script src="{% static 'js/schedule.js' %}"></script>
+{% endblock %}
+
+{% block title %}Lịch học{% endblock title %}
+
+{% block content %}
+<div>
+    <div class="head-schedule">
+        <div class="head-block">
+            <div class="title-block">
+                <span class="title-span" id="title">Lịch học</span>
+            </div>
+        </div>
+        <div class="head-block">
+            <div class="calender-picker">
+                <input type="date" id="calender1" min="2000-01-01" max="2100-12-31" />
+            </div>
+
+            <div class= "toggle-btn">
+                <button type="button" id="toggle-btn" class="btn-custom-1">Lịch thi</button>
+            </div>
+        </div>
+        <div class="head-block"></div>
+    </div>
+    <div class="body-schedule">
+        <div class="div-table" id="table-schedule">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th class="period-th">Tiết học</th>
+                        <th class="p-th">Thứ 2</th>
+                        <th class="p-th">Thứ 3</th>
+                        <th class="p-th">Thứ 4</th>
+                        <th class="p-th">Thứ 5</th>
+                        <th class="p-th">Thứ 6</th>
+                        <th class="p-th">Thứ 7</th>
+                        <th class="p-th">Chủ nhật</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-schedule">
+                </tbody>
+            </table>
+        </div>
+        <div class="div-table" id="table-exam">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Mã học phần</th>
+                        <th>Tên học phần</th>
+                        <th>Lớp</th>
+                        <th>Ngày thi</th>
+                        <th>Tiết bắt đầu</th>
+                        <th>Phòng</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-exam-schedule">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer-schedule"></div>
+</div>
+{% endblock content %}

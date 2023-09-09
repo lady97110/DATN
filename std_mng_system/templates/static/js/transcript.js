@@ -28,12 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const semester_selectbox = document.getElementById("select-semester");
   semester_selectbox.addEventListener("change", function () {
     const semester = semester_selectbox.value;
+    const idStd = document.getElementById("idStd").getAttribute("idStd");
+    const tbody = document.getElementById("tbody-moduleclass");
+    tbody.innerHTML = "";
     if (semester != -1) {
-      const idStd = document.getElementById("idStd").getAttribute("idStd");
-      const tbody = document.getElementById("tbody-moduleclass");
       get_transcript_semester(idStd, semester)
         .then(function (data) {
-          tbody.innerHTML = "";
           if (semester == "all") {
             for (var i = 0; i < data.transcripts.length; i++) {
               var transcript = data.transcripts[i];
@@ -58,7 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
             };
           }
           else {
-            const nameSemester = semester_selectbox.textContent;
+            const nameSemester = semester_selectbox.selectedOptions[0].textContent;
+
             if (data.overall) {
               overall = {
                 average_semester_10: data.overall.average_10,
@@ -181,7 +182,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_colspan.colSpan = 11;
   td_colspan.textContent = nameSemester;
   row_title.appendChild(td_colspan);
-  row_title.classList.add("name-semester-row");
+  row_title.classList.add("name-semester-row", "not-data");
   tbody.appendChild(row_title);
   data.transcripts.forEach(function (transcript) {
     const row = document.createElement("tr");
@@ -229,7 +230,6 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
     cell11.textContent = transcript.is_pass;
     row.appendChild(cell11)
     tbody.appendChild(row);
-    // auto_number(tbody);
   });
 
 
@@ -243,6 +243,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td1.classList.add("average-transcript");
   row1.appendChild(td1);
   row1.appendChild(td_sub1);
+  row1.classList.add("not-data");
   tbody.appendChild(row1);
 
   const td_sub2 = document.createElement('td');
@@ -255,6 +256,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td2.classList.add("average-transcript");
   row2.appendChild(td2);
   row2.appendChild(td_sub2);
+  row2.classList.add("not-data");
   tbody.appendChild(row2);
 
   const row3 = document.createElement("tr");
@@ -267,6 +269,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub3.colSpan = 5;
   td_sub3.classList.add("average-transcript");
   row3.appendChild(td_sub3);
+  row3.classList.add("not-data");
   tbody.appendChild(row3);
 
   const row4 = document.createElement("tr");
@@ -279,6 +282,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub4.colSpan = 5;
   td_sub4.classList.add("average-transcript");
   row4.appendChild(td_sub4);
+  row4.classList.add("not-data");
   tbody.appendChild(row4);
 
   const row5 = document.createElement("tr");
@@ -291,6 +295,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub5.colSpan = 5;
   td_sub5.classList.add("average-transcript");
   row5.appendChild(td_sub5);
+  row5.classList.add("not-data");
   tbody.appendChild(row5);
 
   const row6 = document.createElement("tr");
@@ -303,6 +308,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub6.colSpan = 5;
   td_sub6.classList.add("average-transcript");
   row6.appendChild(td_sub6);
+  row6.classList.add("not-data");
   tbody.appendChild(row6);
 
   const row7 = document.createElement("tr");
@@ -315,6 +321,7 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub7.colSpan = 5;
   td_sub7.classList.add("average-transcript");
   row7.appendChild(td_sub7);
+  row7.classList.add("not-data");
   tbody.appendChild(row7);
 
   const row8 = document.createElement("tr");
@@ -327,8 +334,11 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
   td_sub8.colSpan = 5;
   td_sub8.classList.add("average-transcript");
   row8.appendChild(td_sub8);
+  row8.classList.add("not-data");
   tbody.appendChild(row8);
 
+
+  auto_number(tbody);
 }
 
 
@@ -336,10 +346,13 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
 function auto_number(tbody) {
   const rows = tbody.querySelectorAll("tr");
   index = 0;
+  console.log(rows);
   rows.forEach(function (row) {
-    const numberCell = row.querySelector("td:first-child");
-    numberCell.textContent = index + 1;
-    index += 1;
+    if (!row.classList.contains("not-data")) {
+      const numberCell = row.querySelector("td:first-child");
+      numberCell.textContent = index + 1;
+      index += 1;
+    };
   });
 }
 

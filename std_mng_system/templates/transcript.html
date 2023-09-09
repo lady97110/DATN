@@ -8,7 +8,7 @@
 {% block title %}Kết quả học tập{% endblock title %}
 
 {% block content %}
-<div>
+<div class="p-3 bg-white">
   <div class="head-transcript">
     <div class="head-block">
       <div>
@@ -16,14 +16,16 @@
       </div>
     </div>
     <div class="head-block">
-      <div>
+      <div class= "semester-selectbox">
         <span>Học kỳ</span>
         <select id="select-semester"></select>
       </div>
+    </div>
+    <div class="head-block">
       <div class="print-to-excel">
-                    <button type="button" id="btn-print-transcript" class="action-btn btn-custom-1"><i
-                            class="fa fa-table mr-2 fa-table-custom" aria-hidden="true"></i>In ra excel</button>
-                </div>
+        <button type="button" id="btn-print-transcript" class="action-btn btn-custom-1"><i
+            class="fa fa-table mr-2 fa-table-custom" aria-hidden="true"></i>In ra excel</button>
+      </div>
     </div>
   </div>
   <div class="table-transcript">
