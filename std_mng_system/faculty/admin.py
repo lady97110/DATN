@@ -7,6 +7,8 @@ from django.utils.safestring import mark_safe
 class FacultyAdmin(admin.ModelAdmin):
     list_display = ('idFaculty','nameFaculty')
     search_fields = ('idFaculty', 'nameFaculty',)
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 admin.site.register(Faculty, FacultyAdmin)
 
