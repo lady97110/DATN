@@ -100,9 +100,12 @@ def update_tuitionfee(sender,  instance, **kwargs):
                 if (not tuitionfee_exists.exists()) or (len(tuitionfee_exists) <= len(semesters)):
                     raise tuitionfee.DoesNotExist
                 for tuitionfee_exist in tuitionfee_exists:
+                    check = True
                     semester_tuitionfee = tuitionfee_exist.idSemester
-                    if semester_tuitionfee.idSemester != semester.idSemester:
-                        save_tuitionfee_zero(tuitionfee_exist)
+                    if semester_tuitionfee.idSemester == semester.idSemester:
+                        check = False
+                if check:
+                    save_tuitionfee_zero(tuitionfee_exist)
             except tuitionfee.DoesNotExist:
                 pass
             credits_semesters = 0
