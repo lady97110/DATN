@@ -66,4 +66,7 @@ urlpatterns = [
     #quan ly diem
     path('admin-mngtranscript/', admin_mngtranscript_views.admin_mngtranscript, name = 'admin_mngtranscript'),
     path('admin-mngtranscript/', include('admin_mngtranscript.urls')),
+    #hoc phi
+    path('tuitionfee/', tuitionfee_views.tuitionfee_view, name = 'tuitionfee'),
+    path('tuitionfee/', include('tuitionfee.urls')),
 ]

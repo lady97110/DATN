@@ -6,7 +6,7 @@ from course.models import *
 class tuitionfee(models.Model):
     id =  models.AutoField(primary_key=True),
     idStd = models.ForeignKey(profile_std, on_delete=models.CASCADE, verbose_name= 'Mã sinh viên')
-    idSemester = models.ForeignKey(Semester, on_delete=models.CASCADE, verbose_name= 'Học kỳ')
+    idSemester = models.ForeignKey(Semester, on_delete=models.CASCADE, verbose_name= 'Học kỳ', related_name="semester_tuitionfee")
     totalcredit = models.IntegerField(verbose_name= 'Tín chỉ đăng ký')
     total_tuitionfee = models.CharField(max_length= 20, verbose_name= 'Học phí')
     paid_tuitionfee = models.CharField(max_length= 20, verbose_name= 'Đã đóng')
