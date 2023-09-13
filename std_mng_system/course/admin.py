@@ -13,7 +13,7 @@ admin.site.register(Semester, SemesterAdmin)
 #đăng ký bảng môn học sinh viên vào trang quản trị
 class Student_ModuleClassAdmin(admin.ModelAdmin):
     list_display = ('id', 'module_class_display', 'idStd_display', 'process_grade', 'final_grade', 'overall_grade', 'overall_grade_4', 'overall_grade_text', 'is_pass')
-    search_fields = ('id','idSub','idStd', 'process_grade', 'final_grade', 'overall_grade', 'overall_grade_4', 'overall_grade_text','stt_pass')
+    search_fields = ('id','module_class__module__idModule','idStd__idStd', 'process_grade', 'final_grade', 'overall_grade', 'overall_grade_4', 'overall_grade_text','is_pass')
   
 
     def module_class_display(self, obj):

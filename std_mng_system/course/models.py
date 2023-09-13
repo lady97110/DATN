@@ -124,6 +124,8 @@ class RegistrationSchedule(models.Model):
     idCourse = models.ForeignKey(idCourse, on_delete= models.CASCADE, verbose_name= "Khóa")
     start_date = models.DateField(verbose_name="Ngày bắt đầu")
     end_date = models.DateField(verbose_name="Ngày kết thúc")
+    def __str__(self):
+        return self.semester.nameSemester
 
     class Meta:
         verbose_name = "Lịch đăng ký học phần"

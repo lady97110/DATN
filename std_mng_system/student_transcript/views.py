@@ -146,8 +146,8 @@ def calculate_overall_grade_semester(transcripts):
     overall_semester = {
         'credits_pass': credits_pass,
         'all_credits': all_credits,
-        'average_10': average_semester_10,
-        'average_4': average_semester_4,
+        'average_10': round(average_semester_10,2),
+        'average_4': round(average_semester_4,2),
         'owe_credits': owe_credits,
     }
     return overall_semester
@@ -181,8 +181,8 @@ def calculate_overall_grade_all(transcripts_all):
             final_overall_semester = {
                 'average_semester_10': overall_semester['average_10'],
                 'average_semester_4' : overall_semester['average_4'],
-                'average_10' : collect_10,
-                'average_4' : collect_4,
+                'average_10' : round(collect_10,2),
+                'average_4' : round(collect_4,2),
                 'all_credits': all_credits,
                 'collected_credits': collect_credits,                       #tat cả
                 'passed_credits': overall_semester['credits_pass'],                          #hoc ky

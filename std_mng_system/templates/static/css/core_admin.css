@@ -117,3 +117,9 @@
     border-radius: none !important;
     box-shadow: none !important;
 }
+
+
+.actived{
+  color: black!important;
+    background-color: #d9dcdf;
+}

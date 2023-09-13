@@ -35,7 +35,7 @@ def admin_mngprofilestd(request):
         elif search_field == 'address':
             results = profile_std.objects.filter(addressStd__icontains=search_query)
         elif search_field == 'class':
-            results = profile_std.objects.filter(idFacultyClass__idFacultyClass__icontains=search_query)
+            results = profile_std.objects.filter(idClass__idClass__icontains=search_query)
         elif search_field == 'gender':
             results = profile_std.objects.filter(genderStd__icontains=search_query)
         elif search_field == 'ethnicity':
