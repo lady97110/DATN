@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert(error);
             });
 
-
 });
 
 
@@ -92,6 +91,19 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(function (error) {
             alert(error);
         });
+
+
+
+
+    
+        //nut ngay hien tai
+        const now_btn = document.getElementById("today-btn");
+        now_btn.addEventListener("click", function(){
+            location.reload();
+        });
+
+
+        
 });
 
 

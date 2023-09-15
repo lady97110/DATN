@@ -19,6 +19,7 @@
             <div class="calender-picker">
                 <span class="span-mark">Tìm kiếm</span>
                 <input type="date" id="calender1" min="2000-01-01" max="2100-12-31" />
+                <button type="button" id="today-btn">Hiện tại</button>
             </div>
 
             <div class= "toggle-btn">
@@ -33,13 +34,13 @@
                 <thead>
                     <tr>
                         <th class="period-th">Tiết học</th>
-                        <th class="p-th">Thứ 2</th>
-                        <th class="p-th">Thứ 3</th>
-                        <th class="p-th">Thứ 4</th>
-                        <th class="p-th">Thứ 5</th>
-                        <th class="p-th">Thứ 6</th>
-                        <th class="p-th">Thứ 7</th>
-                        <th class="p-th">Chủ nhật</th>
+                        <th class="p-th" dow="1" >Thứ 2</th>
+                        <th class="p-th" dow="2" >Thứ 3</th>
+                        <th class="p-th" dow="3" >Thứ 4</th>
+                        <th class="p-th" dow="4" >Thứ 5</th>
+                        <th class="p-th" dow="5" >Thứ 6</th>
+                        <th class="p-th" dow="6" >Thứ 7</th>
+                        <th class="p-th" dow="0" >Chủ nhật</th>
                     </tr>
                 </thead>
                 <tbody id="tbody-schedule">
