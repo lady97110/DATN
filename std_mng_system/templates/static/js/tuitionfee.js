@@ -36,7 +36,7 @@ function fill_data_to_table(tbody, data) {
     const semester = data.semester;
     const moduleclasses = data.moduleclasses;
     const tuitionfee = data.tuitionfee;
-    console.log(data.tuitionfee);
+    console.log(tuitionfee);
 
     const row_title = document.createElement("tr");
     const td_colspan = document.createElement("td");

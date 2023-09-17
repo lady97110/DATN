@@ -38,7 +38,7 @@ def get_tuitionfee(request):
         tuitionfee_semester = {
             'semester': semseter.nameSemester,
             'moduleclasses': moduleclass_tuitionfee,
-            'tuititonfee':tuitionfee_data,
+            'tuitionfee': tuitionfee_data
         }
         semester_tuitionfee.append(tuitionfee_semester)
     return JsonResponse({'semester_tuitionfees':semester_tuitionfee})

@@ -228,9 +228,10 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
 
     const cell11 = document.createElement("td");
     cell11.textContent = transcript.is_pass;
-    row.appendChild(cell11)
-    
-  });tbody.appendChild(row);
+    row.appendChild(cell11);
+
+    tbody.appendChild(row);
+  });
 
 
   const td_sub1 = document.createElement('td');
