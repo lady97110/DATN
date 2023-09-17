@@ -40,7 +40,7 @@ def schedule_view(request):
 
 
 
-#lay danh sach mon hoc thuoc hoc ky cua sinh vien
+#lay danh sach mon hoc thuoc hoc ky va lich hoc tuong  ung
 @login_required(login_url='login_std')
 def get_moduleclass_schedule(request, idStd):
     try:
@@ -76,7 +76,7 @@ def get_moduleclass_schedule(request, idStd):
             schedule_exam_data = {
                 'classroom': schedule_exam.class_room.nameClassRoom,
                 'period': schedule_exam.period_start,
-                'date_exam': schedule_exam.date_exam,
+                'date_exam': schedule_exam.date_exam.strftime('%d/%m/%Y'),
             }
 
             data_1 = {

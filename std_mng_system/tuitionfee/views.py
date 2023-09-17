@@ -26,13 +26,14 @@ def tuitionfee_view(request):
 
 #lay du lieu ve hoc phi:
 @login_required(login_url='login_std')
-def get_tuitionfee(request, idStd):
+def get_tuitionfee(request):
+    idStd = request.user.idStd
     std = profile_std.objects.get(idStd=idStd)
     semesters = Semester.objects.filter(semester_tuitionfee__idStd = std)
     semester_tuitionfee = []
     for semseter in semesters:
         moduleclass_tuitionfee = get_moduleclass(std, semseter)
-        this_tuititonfee = tuitionfee.objects.get(std, semseter)
+        this_tuititonfee = tuitionfee.objects.get(idStd = std, idSemester = semseter)
         tuitionfee_data = model_to_dict(this_tuititonfee)
         tuitionfee_semester = {
             'semester': semseter.idSemester,
@@ -59,16 +60,12 @@ def get_moduleclass(std, semester):
                 'idModule': idModule,
                 'nameModule': nameModule,
                 'credit': credit,
-                'idClass': idClass
+                'idClass': idClass.idClass
             }
             list_moduleclass_data.append(moduleclass_data)
-        data = {
-            'moduleclasses': list_moduleclass_data
-        }
+        data =  list_moduleclass_data
     except ModuleClass.DoesNotExist:
-        data = {
-            'moduleclasses': None
-        }
+        pass
     return data
     
 

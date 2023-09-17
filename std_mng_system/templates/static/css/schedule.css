@@ -111,7 +111,7 @@
     color: rgb(11, 138, 0);
   }
 
-  button , input, select {
+  input, select {
     border: 1px solid black;
     border-radius: 5px;
 }
@@ -152,4 +152,13 @@
 
 #toggle-btn{
     margin-right: 30px;
+}
+
+#span-input{
+  display: flex;
+  align-items: center;
+}
+
+#print-schedule-exam{
+  display: none;
 }

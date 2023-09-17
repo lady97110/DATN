@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const current_date = new Date();
+
+    var current_date = new Date();
     const idStd = document.getElementById("idStd").getAttribute("idStd");
 
     const tbody = document.getElementById("tbody-schedule");
@@ -10,13 +11,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var month = (current_date.getMonth() + 1).toString().padStart(2, '0');
     var day = current_date.getDate().toString().padStart(2, '0');
 
-
     var date_now = year + '-' + month + '-' + day;
     //tao bang cho
     create_table(tbody);
 
     blank_table(tbody_exam, 5, 6);
 
+
+    //dien ngay tuong ung voi thu vao thead
+    get_date_closest_monday(current_date);
 
     //gan gia tri mac dinh cho lich
     const calender = document.getElementById("calender1");
@@ -29,16 +32,34 @@ document.addEventListener("DOMContentLoaded", function () {
         const table_exam = document.getElementById("table-exam");
         const table_schedule = document.getElementById("table-schedule");
         const title_page = document.getElementById("title");
+        const span_input = document.getElementById("span-input");
+        const today_btn = document.getElementById("today-btn");
+        const backweek_btn = document.getElementById("backweek-btn");
+        const nextweek_btn = document.getElementById("nextweek-btn");
+        const print_btn = document.getElementById("print-schedule");
+        const printex_btn = document.getElementById("print-schedule-exam");
         if (table_exam.style.display == "block") {
             table_exam.style.display = "none";
+            printex_btn.style.display = "none";
             table_schedule.style.display = "block";
             calender.style.display = "block";
+            span_input.style.display = "flex";
+            today_btn.style.display = "block";
+            backweek_btn.style.display = "block";
+            nextweek_btn.style.display = "block";
+            print_btn.style.display = "block";
             toggle_btn.textContent = "Lịch thi";
             title_page.textContent = "Lịch học";
         } else {
             calender.style.display = "none";
             table_exam.style.display = "block";
+            printex_btn.style.display = "block";
             table_schedule.style.display = "none";
+            span_input.style.display = "none";
+            today_btn.style.display = "none";
+            backweek_btn.style.display = "none";
+            nextweek_btn.style.display = "none";
+            print_btn.style.display = "none";
             toggle_btn.textContent = "Lịch học";
             title_page.textContent = "Lịch thi";
         };
@@ -52,13 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 fill_schedule_to_table(tbody, data.schedules, date_check);
 
                 fill_schedule_exam_to_table(tbody_exam, data.schedules);
-
             })
             .catch(function (error) {
                 alert(error);
             });
-
-});
+    });
 
 
 
@@ -78,10 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(function (error) {
                 alert(error);
             });
-
+        get_date_closest_monday(date_check);
     });
 
 
+    //lich hoc cua tuan hien tai
     get_schedule(idStd)
         .then(function (data) {
 
@@ -102,8 +122,79 @@ document.addEventListener("DOMContentLoaded", function () {
             location.reload();
         });
 
+    //nut tuan tiep theo
+    const nextweek_btn = document.getElementById("nextweek-btn");
+    nextweek_btn.addEventListener("click", function(){
+        current_date.setDate(current_date.getDate() + 7);
+        tbody.innerHTML = "";
+        get_schedule(idStd)
+            .then(function (data) {
+                create_table(tbody);
+                fill_schedule_to_table(tbody, data.schedules, current_date);
 
-        
+
+                fill_schedule_exam_to_table(tbody_exam, data.schedules);
+
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+        get_date_closest_monday(current_date);
+    });
+
+
+    //nut tuan truoc
+    const backweek_btn = document.getElementById("backweek-btn");
+    backweek_btn.addEventListener("click", function(){
+        current_date.setDate(current_date.getDate() - 7);
+        tbody.innerHTML = "";
+        get_schedule(idStd)
+            .then(function (data) {
+                create_table(tbody);
+                fill_schedule_to_table(tbody, data.schedules, current_date);
+
+
+                fill_schedule_exam_to_table(tbody_exam, data.schedules);
+
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+        get_date_closest_monday(current_date);
+    });
+
+
+    //nut in lich
+    const print_btn = document.getElementById("print-schedule");
+    const table_to_print = document.getElementById("table-schedule");
+    print_btn.addEventListener("click", function () {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<link rel="stylesheet" href="/static/css/schedule.css" media="print">');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(table_to_print.outerHTML);
+        mywindow.document.write('</body></html>');
+        mywindow.document.close();
+        mywindow.focus();
+        setTimeout(function () { mywindow.print(); mywindow.close(); }, 500);
+    });
+
+    //nut in lich thi
+    const printex_btn = document.getElementById("print-schedule-exam");
+    const tableex_to_print = document.getElementById("table-exam");
+    printex_btn.addEventListener("click", function () {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.write('<html><head>');
+        mywindow.document.write('<link rel="stylesheet" href="/static/css/schedule.css" media="print">');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write(tableex_to_print.outerHTML);
+        mywindow.document.write('</body></html>');
+        mywindow.document.close();
+        mywindow.focus();
+        setTimeout(function () { mywindow.print(); mywindow.close(); }, 500);
+    });
+
+
 });
 
 
@@ -253,4 +344,35 @@ function blank_table(tbody, number_row, number_cell) {
         };
         tbody.appendChild(row);
     }
+}
+
+
+
+//ngay theo tuan
+function date_in_year(date_of_monday){
+    for (let i=0; i<7; i++){
+        var date_date = new Date();
+        date_date.setDate(date_of_monday.getDate() + i);
+        const date_of_dow = document.getElementById(i);
+
+        var year = date_date.getFullYear();
+        var month = (date_date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date_date.getDate().toString().padStart(2, '0');
+
+        var date_str = day + '/' + month + '/' + year;
+
+        date_of_dow.textContent = date_str;
+    };
+}
+
+
+//xac dinh ngay thu 2 gan nhat
+function get_date_closest_monday(this_date){
+    function is_Monday(date_check){
+        return date_check.getDay() == 1;
+    };
+    while(!is_Monday(this_date)){
+        this_date.setDate(this_date.getDate() -1);
+    };
+    date_in_year(this_date);
 }

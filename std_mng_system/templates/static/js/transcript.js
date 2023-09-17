@@ -346,7 +346,6 @@ function fill_transcript_std_to_table(tbody, nameSemester, data, overall) {
 function auto_number(tbody) {
   const rows = tbody.querySelectorAll("tr");
   index = 0;
-  console.log(rows);
   rows.forEach(function (row) {
     if (!row.classList.contains("not-data")) {
       const numberCell = row.querySelector("td:first-child");

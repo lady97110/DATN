@@ -2,14 +2,14 @@
 {% load static %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/transcript.css' %}">
-{% comment %} <script src="{% static 'js/transcript.js' %}"></script> {% endcomment %}
+<script src="{% static 'js/tuitionfee.js' %}"></script>
 {% endblock %}
 
 {% block title %}Học phí{% endblock title %}
 
 {% block content %}
 <div class="p-3 bg-white">
-  <div class="head-transcript">
+  <div class="head-tuitionfee">
     <div class="head-block">
       <div>
         <span class="title-span">Học phí</span>
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-  <div class="table-transcript">
+  <div class="table-tuitionfee">
     <div id="list-module-std" class="div-table">
       <table id="tb-list-module" class="table-custom">
         <thead>
@@ -46,7 +46,7 @@
             <th>Đạt</th>
           </tr>
         </thead>
-        <tbody id="tbody-moduleclass">
+        <tbody id="tbody-tuitionfee">
         </tbody>
       </table>
     </div>
