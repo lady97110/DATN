@@ -514,7 +514,7 @@ function export_to_excel(table, name_file, tableInfo) {
     }
     var wb = XLSX.utils.book_new();
     var ws = XLSX.utils.aoa_to_sheet(tableInfo);
-    XLSX.utils.book_append_sheet(wb, ws, name_file);
+    XLSX.utils.book_append_sheet(wb, ws, "sheet 1");
     var wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     var blob = new Blob([wbout], { type: "application/octet-stream" });
     var url = URL.createObjectURL(blob);

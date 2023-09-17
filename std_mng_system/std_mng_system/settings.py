@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'admin_moduleclass',
     'admin_mngtranscript',
     'student_transcript',
+    'add_data',
 ]
 
 

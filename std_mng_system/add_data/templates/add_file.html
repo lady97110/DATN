@@ -1,0 +1,18 @@
+{% extends 'core_admin.html' %}
+{% load static %}
+{% block title %}Quản lý Điểm {% endblock %}
+
+{% block head %}
+
+
+<script src="{% static 'js/add_file.js' %}"></script>
+{% endblock %}
+
+{% block titlepage %}QUẢN LÝ ĐIỂM{% endblock %}
+
+{% block content %}
+
+ <input type="file" id="input-excel-file">
+                        <button id="uploadBtn" class="action-btn">Upload</button>
+
+{% endblock %}
