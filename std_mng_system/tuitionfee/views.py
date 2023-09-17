@@ -38,7 +38,8 @@ def get_tuitionfee(request):
         tuitionfee_semester = {
             'semester': semseter.nameSemester,
             'moduleclasses': moduleclass_tuitionfee,
-            'tuitionfee': tuitionfee_data
+            'tuitionfee': tuitionfee_data,
+            'idSemester': semseter.idSemester,
         }
         semester_tuitionfee.append(tuitionfee_semester)
     return JsonResponse({'semester_tuitionfees':semester_tuitionfee})
@@ -150,3 +151,28 @@ def save_tuitionfee_zero(tuitionfee_zero):
     tuitionfee_zero.total_tuitionfee = 0
     tuitionfee_zero.unpaid_tuitionfee = 0
     tuitionfee_zero.save()
+
+
+
+
+#lay danh sach ky cua sinh vien
+@login_required(login_url='login_std')
+def get_semester_std(request):
+    idStd = request.user.idStd
+    try:
+        std = profile_std.objects.get(idStd=idStd)
+        transcripts = Student_ModuleClass.objects.filter(idStd = std)
+        id_moduleclasses = transcripts.values_list('module_class', flat= True).distinct()
+        moduleclasses = ModuleClass.objects.filter(idModuleClass__in = id_moduleclasses)
+        id_semester = moduleclasses.values_list('semester', flat= True).distinct()
+        semesters = Semester.objects.filter(idSemester__in = id_semester)
+        data_semesters = []
+        for semester in semesters:
+            data_semester = {
+                'idSemester': semester.idSemester,
+                'nameSemester': semester.nameSemester,
+            }
+            data_semesters.append(data_semester)
+        return JsonResponse({'semesters': data_semesters}) 
+    except (Student_ModuleClass.DoesNotExist, ModuleClass.DoesNotExist, Semester.DoesNotExist) as e:
+        return JsonResponse({'error': "Sinh viên này không có học kỳ nào trong CSDL"})

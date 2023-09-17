@@ -151,7 +151,7 @@ function get_semester_std(idStd) {
 }
 
 
-//lay bang diem sau theo   ky hoc
+//lay bang diem theo   ky hoc
 function get_transcript_semester(idStd, semester) {
   return new Promise(function (resolve, reject) {
     $.ajax({
