@@ -36,7 +36,7 @@ def get_tuitionfee(request):
         this_tuititonfee = tuitionfee.objects.get(idStd = std, idSemester = semseter)
         tuitionfee_data = model_to_dict(this_tuititonfee)
         tuitionfee_semester = {
-            'semester': semseter.idSemester,
+            'semester': semseter.nameSemester,
             'moduleclasses': moduleclass_tuitionfee,
             'tuititonfee':tuitionfee_data,
         }
