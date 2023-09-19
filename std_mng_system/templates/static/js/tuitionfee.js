@@ -98,6 +98,7 @@ function fill_data_to_table(tbody, data) {
     const semester = data.semester;
     const moduleclasses = data.moduleclasses;
     const tuitionfee = data.tuitionfee;
+    const tuitionfee_scale = data.tuitionfee_scale;
 
     const row_title = document.createElement("tr");
     const td_colspan = document.createElement("td");
@@ -129,7 +130,7 @@ function fill_data_to_table(tbody, data) {
         row.appendChild(cell5)
     
         const cell6 = document.createElement("td");
-        cell6.textContent = (moduleclass.credit * 325000).toLocaleString();
+        cell6.textContent = (moduleclass.credit * tuitionfee_scale).toLocaleString();
         row.appendChild(cell6); 
 
         const cell7 = document.createElement("td");

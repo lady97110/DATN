@@ -31,15 +31,18 @@ def get_tuitionfee(request):
     std = profile_std.objects.get(idStd=idStd)
     semesters = Semester.objects.filter(semester_tuitionfee__idStd = std)
     semester_tuitionfee = []
-    for semseter in semesters:
-        moduleclass_tuitionfee = get_moduleclass(std, semseter)
-        this_tuititonfee = tuitionfee.objects.get(idStd = std, idSemester = semseter)
+    for semester in semesters:
+        tuitionfee_scale_obj = tuitionfee_scale.objects.get(idSemester = semester)
+        tuitionfee_scale_value = int(tuitionfee_scale_obj.scale)
+        moduleclass_tuitionfee = get_moduleclass(std, semester)
+        this_tuititonfee = tuitionfee.objects.get(idStd = std, idSemester = semester)
         tuitionfee_data = model_to_dict(this_tuititonfee)
         tuitionfee_semester = {
-            'semester': semseter.nameSemester,
+            'semester': semester.nameSemester,
             'moduleclasses': moduleclass_tuitionfee,
             'tuitionfee': tuitionfee_data,
-            'idSemester': semseter.idSemester,
+            'idSemester': semester.idSemester,
+            'tuitionfee_scale': tuitionfee_scale_value
         }
         semester_tuitionfee.append(tuitionfee_semester)
     return JsonResponse({'semester_tuitionfees':semester_tuitionfee})
@@ -126,11 +129,14 @@ def update_tuitionfee(sender,  instance, **kwargs):
 
 #ham luu hoc phi
 def save_tuitionfee(std, semester, credits_semesters):
+    tuitionfee_scale_obj = tuitionfee_scale.objects.get(idSemester=semester)
+    tuitionfee_scale_value = int(tuitionfee_scale_obj.scale)
+
     try:
         tuitionfee_semester = tuitionfee.objects.get(idStd = std, idSemester = semester)
         tuitionfee_semester.totalcredit = credits_semesters
-        tuitionfee_semester.total_tuitionfee = credits_semesters * 325000
-        tuitionfee_semester.unpaid_tuitionfee = credits_semesters * 325000 - int(tuitionfee_semester.paid_tuitionfee)
+        tuitionfee_semester.total_tuitionfee = credits_semesters * tuitionfee_scale_value
+        tuitionfee_semester.unpaid_tuitionfee = credits_semesters * tuitionfee_scale_value - int(tuitionfee_semester.paid_tuitionfee)
 
         tuitionfee_semester.save()
         
@@ -139,9 +145,9 @@ def save_tuitionfee(std, semester, credits_semesters):
             idStd = std,
             idSemester = semester,
             totalcredit =  credits_semesters,
-            total_tuitionfee = credits_semesters * 325000,
+            total_tuitionfee = credits_semesters * tuitionfee_scale_value,
             paid_tuitionfee = 0,
-            unpaid_tuitionfee = credits_semesters * 325000
+            unpaid_tuitionfee = credits_semesters * tuitionfee_scale_value
         )
         new_tuitionfee.save()
 

@@ -25,7 +25,9 @@ from admin_moduleclass import views as admin_moduleclass_views
 from admin_mngtranscript import views as admin_mngtranscript_views
 from student_transcript import views as student_transcript_views
 from schedule import views as schedule_views
+from admin_mngnewsfeed import views as admin_mngnewsfeed_views
 from add_data import views as add_data_views
+
 
 
 
@@ -70,8 +72,11 @@ urlpatterns = [
     #hoc phi
     path('tuitionfee/', tuitionfee_views.tuitionfee_view, name = 'tuitionfee'),
     path('tuitionfee/', include('tuitionfee.urls')),
+    #quan ly tin tuc
+    path('admin-mngnewsfeed/', admin_mngnewsfeed_views.admin_mngnewsfeed, name = 'admin_mngnewsfeed'),
+    path('admin-mngnewsfeed/', include('admin_mngnewsfeed.urls')),
 
     #add_file
     path('add-data/', add_data_views.add_data_view),
-    path('add-data/add-data1/', add_data_views.add_file),
+    path('add-data/', include('add_data.urls')),
 ]

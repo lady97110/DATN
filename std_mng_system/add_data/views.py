@@ -57,3 +57,5 @@ def add_file(request):
                     new_profile.save()
                     print("save successful")
     return JsonResponse({'oke': 'oke'})
+
+

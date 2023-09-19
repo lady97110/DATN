@@ -5,6 +5,7 @@ from schedule.models import *
 #đăng ký bảng học kỳ vào trang quản trị viên
 class SemesterAdmin(admin.ModelAdmin):
     list_display = ('idSemester', 'nameSemester','start_date','end_date')
+    search_fields = ['idSemester', 'nameSemester','start_date','end_date']
     
 admin.site.register(Semester, SemesterAdmin)
 
@@ -51,7 +52,8 @@ admin.site.register(ModuleClass, ModuleClassAdmin)
 #đăng ký bảng danh sách môn học vào trang quản trị
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ('idModule','nameModule','credits','department')
-    search_fields = ('idModule','nameModule','credits','department')
+    search_fields = ('idModule','nameModule','credits','department__nameDepartment')
+    autocomplete_fields =('department',)
 
 admin.site.register(Module, ModuleAdmin)
 

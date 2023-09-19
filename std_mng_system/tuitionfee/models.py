@@ -16,4 +16,13 @@ class tuitionfee(models.Model):
         verbose_name = 'Học phí'
         verbose_name_plural = 'Học phí'
     
+
+class tuitionfee_scale(models.Model):
+    id =  models.AutoField(primary_key=True),
+    idSemester = models.OneToOneField(Semester, on_delete=models.CASCADE, verbose_name= 'Học kỳ')
+    scale = models.FloatField(verbose_name="Học phí tín chỉ")
+
+    class Meta:
+        verbose_name = 'Giá tín chỉ'
+        verbose_name_plural = 'Giá tín chỉ'
     

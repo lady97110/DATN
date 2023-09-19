@@ -16,7 +16,7 @@ class profile_std(models.Model):
     ethnicityStd = models.CharField(max_length=10, default='Kinh', verbose_name='Dân tộc')
     phoneStd = models.CharField(max_length=12, verbose_name='Điện thoại', blank=True, null=True)
     emailStd = models.CharField(max_length=40, verbose_name='Email', blank=True, null=True)
-    addressStd = models.CharField(max_length=50, verbose_name='Quê quán')
+    addressStd = models.CharField(max_length=100, verbose_name='Quê quán')
     idClass = models.ForeignKey(FacultyClasses, on_delete= models.PROTECT, verbose_name='Lớp')
     graduate = models.BooleanField(default=True, choices=[(True, 'Chưa tốt nghiêp'), (False, 'Đã tốt nghiệp')], verbose_name='Tình trạng tốt nghiệp')
     last_login = models.DateTimeField(auto_now=True)

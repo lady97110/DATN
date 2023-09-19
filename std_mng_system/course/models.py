@@ -23,6 +23,8 @@ class Module(models.Model):
     nameModule = models.CharField(max_length=70, verbose_name='Tên học phần')
     credits = models.IntegerField(default=0, verbose_name='Số tín chỉ')
     department = models.ForeignKey(Department, on_delete=models.PROTECT, verbose_name= 'Chuyên ngành', related_name='Module_of_Department')
+    process_ratio = models.FloatField(verbose_name='Hệ số điểm quá trình', blank = True, null = True, default= 0.3)
+    final_ratio = models.FloatField(verbose_name='Hệ số điểm kết thúc', blank = True, null = True, default=0.7)
     
 
     def __str__(self):
@@ -67,8 +69,10 @@ class Student_ModuleClass(models.Model):
 
 
     def calculate_grade(self):
+        process_ratio = self.module_class.module.process_ratio
+        final_ratio = self.module_class.module.final_ratio
         if self.process_grade is not None and self.final_grade is not None:
-            self.overall_grade = round(self.process_grade*0.3 + self.final_grade*0.7,2)
+            self.overall_grade = round(self.process_grade*process_ratio + self.final_grade*final_ratio,2)
             
             if self.overall_grade >= 8.5:
                 self.overall_grade_4 = 4.0

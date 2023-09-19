@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'admin_moduleclass',
     'admin_mngtranscript',
     'student_transcript',
+    'admin_mngnewsfeed',
+    'newsfeed',
     'add_data',
+
 ]
 
 
