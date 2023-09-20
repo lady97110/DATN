@@ -49,8 +49,9 @@ def module_registration_view(request):
 def search_moduleclass(request, value):
     global global_semester
     results = ModuleClass.objects.filter(
-        Q(module__idModule__iexact=value, semester__idSemester=global_semester) |
-        Q(idClass__idClass__iexact=value, semester__idSemester=global_semester)
+        Q(module__idModule__icontains=value, semester__idSemester=global_semester) |
+        Q(idClass__idClass__icontains=value, semester__idSemester=global_semester) |
+        Q(module__nameModule__icontains=value, semester__idSemester=global_semester)
     )
     moduleclass_data = []
     for moduleclass in results:

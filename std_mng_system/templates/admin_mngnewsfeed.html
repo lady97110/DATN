@@ -20,11 +20,11 @@
         <div class="search-newsfeed">
             <span class="span-title">Tìm tin tức</span>
             <input id="search-newsfeed-input">
-            <button id="search-class-btn" type="button" class="search-btn-custom">
+            <button id="search-newsfeed-btn" type="button" class="search-btn-custom">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
         </div>
-        <div class="newsfeed-list">
+        <div class="newsfeed-list" id="newsfeed-list">
 
         </div>
     </div>
@@ -35,9 +35,9 @@
         </div>
         <div class="input-data">
             <div class="input-form">
-                <div>
+                <div class="title-input-div">
                     <span class="span-title">Tiêu đề</span>
-                    <input class="input-size" id="input-title">
+                    <textarea class="input-size" id="input-title" rows="4"></textarea>
                 </div>
                 <div>
                     <span class="span-title">Nội dung</span>
@@ -45,21 +45,21 @@
                 </div>
                 <div>
                     <span class="span-title">Ẩn / hiện</span>
-                    <select>
-                        <option>Hiển thị</option>
-                        <option>Ẩn</option>
+                    <select id = "stt-hidden">
+                        <option value="True">Hiển thị</option>
+                        <option value="False">Ẩn</option>
                     </select>
                 </div>
             </div>
             <div class="action-zone">
                 <div>
-                    <button class="action-btn btn0" disabled>Xóa tin</button>
+                    <button class="action-btn btn0" id="delete-btn" disabled>Xóa tin</button>
                 </div>
                 <div>
-                    <button class="action-btn btn1">Làm mới</button>
+                    <button class="action-btn btn1" id="refresh">Làm mới</button>
                 </div>
                 <div>
-                    <button class="action-btn btn2">Lưu vào CSDL</button>
+                    <button class="action-btn btn2" id="add-newsfeed">Lưu vào CSDL</button>
                 </div>
             </div>
         </div>

@@ -140,7 +140,8 @@ def calculate_overall_grade_semester(transcripts):
             all_credits = all_credits + transcript['credit']
             owe_credits = owe_credits + transcript['credit']
         else:
-            return None
+            all_credits = all_credits + transcript['credit']
+            continue
     average_semester_10 = sum_semester_10 / credits_pass
     average_semester_4 = sum_semester_4 / credits_pass
     overall_semester = {

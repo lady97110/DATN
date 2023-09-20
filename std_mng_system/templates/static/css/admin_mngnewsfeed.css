@@ -30,7 +30,7 @@ span{
     margin-right: 10px;
 }
 
-button , input, select {
+button , input, select, textarea {
     border: 1px solid rgb(143, 142, 142);
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -52,8 +52,10 @@ button , input, select {
     width: 400px;
 }
 
-#input-title{
-    height: 5em;
+.title-input-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .action-zone{
@@ -98,4 +100,37 @@ button , input, select {
     margin-right: 20px;
     border: 1px solid #b8b1b1;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
 }
+
+
+
+.div-newsfeed{
+    display: flex;
+    flex-direction: row;
+    height:30px ;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.div-newsfeed:hover{
+    background-color: #519eca; 
+    cursor: pointer;
+}
+
+.div-post-date{
+    display: block;
+    width: 103px;
+}
+
+.div-is-hidden{
+    display: block;
+    width: 70px;
+}
+
+.div-title{
+    flex-grow: 1;
+}
+
