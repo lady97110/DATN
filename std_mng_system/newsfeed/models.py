@@ -5,7 +5,7 @@ from datetime import date
 class newsfeed(models.Model):
     id = models.AutoField(primary_key= True)
     title = models.CharField(max_length=255, verbose_name= "Tiêu đề thông báo")
-    pdf_file = models.BinaryField(editable=True, blank=True, null=True, verbose_name="file_pdf")
+    pdf_file = models.BinaryField(blank=True, null=True, verbose_name="file_pdf")
     post_date = models.DateField(blank=True, null=True, default=date.today, verbose_name="Ngày đăng")
     is_hidden = models.BooleanField(choices=[(True, 'Hiện'), (False, 'Ẩn')], blank = True, null = True, default= True, verbose_name="Ẩn / hiện")
 

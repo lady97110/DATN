@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'student_transcript',
     'admin_mngnewsfeed',
     'newsfeed',
-    'add_data',
 
 ]
 

@@ -81,3 +81,14 @@ def get_newsfeed(request, search_value):
             }
             response_data.append(newsfeed_data)
         return JsonResponse({'newsfeeds': response_data})
+    
+
+
+@login_required(login_url='login_admin')
+def delete_newsfeed(request, idnf):
+    try:
+        nf = newsfeed.objects.get(id = idnf)
+        nf.delete()
+        return JsonResponse({"message": "Xóa tin thành công"})
+    except newsfeed.DoesNotExist:
+        return JsonResponse({"message": "Tin không tồn tại"})

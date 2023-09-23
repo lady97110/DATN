@@ -110,7 +110,7 @@ button , input, select, textarea {
 .div-newsfeed{
     display: flex;
     flex-direction: row;
-    height:30px ;
+    min-height:30px ;
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -134,3 +134,7 @@ button , input, select, textarea {
     flex-grow: 1;
 }
 
+.span-title1{
+    display: inline-block;
+    width: 900px;
+}
